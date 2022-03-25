@@ -11,3 +11,9 @@ A repository containing boilerplate for your application. This is nota project t
 5. Run `yarn` to install dependencies
 6. Run `yarn dev` to start developing
 7. If any problems arise, open an issue
+
+## Screenshots
+
+![image](https://user-images.githubusercontent.com/21298211/160052266-9f9ea8ec-6964-4f76-bccb-2913998e5b23.png)
+
+![image](https://user-images.githubusercontent.com/21298211/160052283-5ee37ed7-be8e-4713-bdb3-2d4279afc36f.png)
