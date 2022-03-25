@@ -1,4 +1,5 @@
 // optional App.css
+// optional App.css
 import './App.css';
 import { AppShell, Navbar, Header, Text, MediaQuery, Burger, ActionIcon, Group, Anchor } from '@mantine/core';
 import { MantineProvider } from '@mantine/core';
@@ -50,7 +51,7 @@ function App() {
     i18n.changeLanguage(lang);
   }, [lang]);
 
-//   const views = [
+  const views = [
 //     { component: Home, path: '/', exact: true, name: t('Home') },
 //     { component: Settings, path: '/settings', name: t('Settings') },
 //     { component: CIFInfo, path: '/cif-info', name: 'CIF ' + t('Info') },
@@ -98,14 +99,14 @@ function App() {
       height: '100%'
     },
     headerRightItems: {
-      marginLeft: "auto"
+      marginLeft: 'auto',
     },
     appShell: {
       main: { backgroundColor: colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] }
     },
     mediaQuery: {
       display: 'none'
-    }
+    },
   }));
 
   const onNavLinkClick = e => {
