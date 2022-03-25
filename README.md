@@ -10,7 +10,7 @@ A repository containing boilerplate for your application. This is nota project t
 4. Now copy the contents of each file in this repo excluding `README.md` into the corresponding file of your project. For example my `package.json`. 
 5. Run `yarn` to install dependencies
 5. Run `yarn dev` to start developing
-7. If you are on a slow computer, look under [tips](#tips) for a faster way to start developing
+7. If you are on a slow computer, see [tips](#tips) for a faster way to start developing
 8. If any problems arise, open an issue
 
 ## Tips
