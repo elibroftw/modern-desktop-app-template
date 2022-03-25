@@ -16,12 +16,14 @@ import { useTranslation } from 'react-i18next';
 // import Settings from './Settings';
 // import CIFInfo from './CIFInfo';
 // import About from './About';
-
 import { defaultLng, translations } from './i18n';
 
 // call stateSetter with value in storage given by key
 function getItem(key, stateSetter, defaultValue) {
-  localforage.getItem(key).then(value => stateSetter(value)).catch(_ => {
+  localforage.getItem(key).then(value => {
+    if (value === null) throw 'keyNotFound';
+    stateSetter(value);
+  }).catch(_ => {
     stateSetter(defaultValue);
     localforage.setItem(key, defaultValue);
   });
@@ -48,7 +50,7 @@ function App() {
     i18n.changeLanguage(lang);
   }, [lang]);
 
-  const views = [
+//   const views = [
 //     { component: Home, path: '/', exact: true, name: t('Home') },
 //     { component: Settings, path: '/settings', name: t('Settings') },
 //     { component: CIFInfo, path: '/cif-info', name: 'CIF ' + t('Info') },
