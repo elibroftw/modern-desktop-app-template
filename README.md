@@ -15,7 +15,7 @@ A repository containing boilerplate for your application. This is nota project t
 ## Tips
 
 - Set `alwaysOnTop` to `true` in `tauri.conf.json` while developing to avoid alt tabbing
-- Use `yarn py` after `pip install pywebview` if you do not want to wait for the Tauri dev build
+- Use `yarn py` after a single `pip install pywebview` if you do not want to wait for the Tauri dev build to compile
 
 ## Screenshots
 
