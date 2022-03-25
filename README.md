@@ -12,6 +12,10 @@ A repository containing boilerplate for your application. This is nota project t
 6. Run `yarn dev` to start developing
 7. If any problems arise, open an issue
 
+## Tips
+
+Set `alwaysOnTop` to `true` in `tauri.conf.json` to avoid alt tabbing.
+
 ## Screenshots
 
 ![image](https://user-images.githubusercontent.com/21298211/160052266-9f9ea8ec-6964-4f76-bccb-2913998e5b23.png)
