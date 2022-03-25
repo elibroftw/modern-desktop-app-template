@@ -1,5 +1,6 @@
 # `yarn py` is an alternative to `yarn tauri dev`
 #  to speed up UI development. Tauri calls from React will not work.
+# pip install pywebview
 import os
 import threading
 import webview
