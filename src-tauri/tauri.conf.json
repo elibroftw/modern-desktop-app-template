@@ -61,7 +61,7 @@
         "fullscreen": false,
         "visible": true,
         "decorations": true,
-        "alwaysOnTop": true
+        "alwaysOnTop": false
       }
     ],
     "security": {
