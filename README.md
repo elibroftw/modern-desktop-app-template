@@ -18,7 +18,7 @@ Set `alwaysOnTop` to `true` in `tauri.conf.json` to avoid alt tabbing.
 
 ## Screenshots
 
-- Components (seen on the left side) were added by yours truly
+- The four views not found in boilerplate were added by yours truly. My About is the ViewExample provided in `src`
 - `Home view` is purposely not translated since it's a filler
 
 ![image](https://user-images.githubusercontent.com/21298211/160052266-9f9ea8ec-6964-4f76-bccb-2913998e5b23.png)
