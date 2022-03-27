@@ -1,6 +1,6 @@
 # Modern Desktop App Template
 
-A repository containing boilerplate for your application. This is nota project to clone. Neither is it an alternative tutorial to my video tutorials. I didn't use svelte because its performance comes at the cost of UI kits; In the future, either React improves or material svelte UI kit catches up with material react UI kit.
+Boilerplate for a modern desktop application. Not a project nor a substitute tutorial for my video tutorials. I didn't use svelte since the alleged performance comes at the cost of good UI kits (community).
 
 ## Instructions
 
