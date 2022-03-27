@@ -1,10 +1,9 @@
 // optional App.css
-// optional App.css
 import './App.css';
 import { AppShell, Navbar, Header, Text, MediaQuery, Burger, ActionIcon, Group, Anchor } from '@mantine/core';
 import { MantineProvider } from '@mantine/core';
 import { SunIcon, MoonIcon } from '@modulz/radix-icons';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { createStyles, useMantineTheme } from '@mantine/styles';
 import { MemoryRouter, NavLink, Route, Routes } from 'react-router-dom';
 import localforage from 'localforage';
@@ -117,14 +116,14 @@ function App() {
 
   function getLanguageHeaders() {
     return Object.keys(translations).map((supportedLang, index) =>
-      <>
+      <Fragment key={index}>
         {
           lang === supportedLang ?
-            <Text>{supportedLang.toUpperCase()}</Text> :
-            <Anchor onClick={() => setLang(supportedLang)}>{supportedLang.toUpperCase()}</Anchor>
+            <Text key={supportedLang} >{supportedLang.toUpperCase()}</Text> :
+            <Anchor key={supportedLang} onClick={() => setLang(supportedLang)}>{supportedLang.toUpperCase()}</Anchor>
         }
-        <Text>{index < Object.keys(translations).length - 1 && '|'}</Text>
-      </>);
+        <Text key={`|-${index}`}>{index < Object.keys(translations).length - 1 && '|'}</Text>
+      </Fragment>);
   }
 
   return (
