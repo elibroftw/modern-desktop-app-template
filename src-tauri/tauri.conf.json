@@ -54,7 +54,8 @@
     },
     "windows": [
       {
-        "title": "title",
+        "title": "tauri.conf.json Main Title",
+        "title": "main",
         "minWidth": 1000,
         "minHeight": 600,
         "resizable": true,
