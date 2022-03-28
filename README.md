@@ -18,6 +18,7 @@ Boilerplate for a modern desktop application. Not a project nor a substitute tut
 - Set `alwaysOnTop` to `true` in `tauri.conf.json` while developing to avoid alt tabbing
 - Use `yarn py` after a single `pip install pywebview` if you do not want to wait for the Tauri dev build to compile
 - Or use `yarn start` if you only need to edit the frontend
+- If a sub-dependency of `package.json` is broken, use `resolutions: {subDependency: version}` to use older verisons of the sub-dependency
 
 ## Screenshots
 
