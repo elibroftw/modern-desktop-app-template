@@ -2,6 +2,13 @@
 
 Tauri and ReactJS boilerplate for a modern desktop application. Not a project nor a substitute tutorial for my video tutorials. I didn't use yew (wasm) since its component libraries are not to the calibre of existing ReactJS component libraries.
 
+## Docs
+
+- [Mantine](https://mantine.dev/core/anchor/)
+- [Tauri (JS)](https://tauri.studio/docs/api/js/)
+- [Tauri (Rust)](https://docs.rs/tauri/1.0.0-rc.4/)
+- [React Icons](https://react-icons.github.io/react-icons)
+
 ## Instructions
 
 1. Follow only the Tauri [prerequisites](https://tauri.studio/docs/getting-started/prerequisites)
