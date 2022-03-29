@@ -2,6 +2,8 @@
 
 Tauri and ReactJS boilerplate for a modern desktop application. Not a project nor a substitute tutorial for my video tutorials. I didn't use yew (wasm) since its component libraries are not to the calibre of existing ReactJS component libraries.
 
+TODO: make this template into a downloadable one
+
 ## Instructions
 
 1. Follow only the Tauri [prerequisites](https://tauri.studio/docs/getting-started/prerequisites)
