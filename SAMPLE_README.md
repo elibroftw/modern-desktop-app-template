@@ -2,6 +2,11 @@
 
 This project was bootstrapped using Vite with the React template.
 
+## Environment
+
+- [Tauri Prerequisites](https://tauri.studio/docs/getting-started/prerequisites),
+- Run `yarn` to install frontend dependencies
+
 ## Docs
 
 - [Mantine](https://mantine.dev/core/anchor/)
