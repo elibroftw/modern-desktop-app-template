@@ -4,7 +4,8 @@ This project was bootstrapped using Vite with the React template.
 
 ## Environment
 
-- [Tauri Prerequisites](https://tauri.studio/docs/getting-started/prerequisites),
+- [Tauri Prerequisites](https://tauri.studio/docs/getting-started/prerequisites)
+- Install yarn with `npm i --global yarn`
 - Run `yarn` to install frontend dependencies
 
 ## Docs
