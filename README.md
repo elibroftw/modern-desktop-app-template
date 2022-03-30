@@ -7,13 +7,14 @@ TODO: make this template into a downloadable one
 ## Instructions
 
 1. Follow only the Tauri [prerequisites](https://tauri.studio/docs/getting-started/prerequisites)
-2. Create the frontend project with `yarn create vite APP-NAME --template react[-ts]` and press enter for the package name
-3. Run `yarn add -D @tauri-apps/cli && yarn tauri init`
-4. Now copy the contents of each file in this repo (excluding `README.md` and `LICENSE.md`) into the corresponding file of your project. For example my `package.json`. 
-5. Run `yarn` to install dependencies
-6. Run `yarn dev` to start developing
-7. If you are on a slow computer, see [tips](#tips) for a faster way to start developing
-8. If any problems arise, open an issue
+2. Install yarn with `npm i --global yarn`
+3. Create the frontend project with `yarn create vite APP-NAME --template react[-ts]` and press enter for the package name
+4. Run `yarn add -D @tauri-apps/cli && yarn tauri init`
+5. Now copy the contents of each file in this repo (excluding `README.md` and `LICENSE.md`) into the corresponding file of your project. For example my `package.json`. 
+6. Run `yarn` to install dependencies
+7. Run `yarn dev` to start developing
+8. If you are on a slow computer, see [tips](#tips) for a faster way to start developing
+9. If any problems arise, open an issue
 
 ## Docs
 
