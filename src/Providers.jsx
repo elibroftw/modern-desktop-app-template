@@ -8,7 +8,6 @@ import Cookies from 'js-cookie';
 import Spashscreen from './Spashscreen';
 import { useState } from 'react';
 
-
 // I love boilerplate
 export default function(props) {
     // cookie or system prefs
