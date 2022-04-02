@@ -1,9 +1,10 @@
 # APP NAME
 
-This project was bootstrapped using Vite with the React template.
+Description goes here.
 
 ## Environment
 
+- This project was bootstrapped with Create React App and converted to use Vite.
 - [Tauri Prerequisites](https://tauri.studio/docs/getting-started/prerequisites),
 - `npm i -g yarn`
 - Run `yarn` to install frontend dependencies
