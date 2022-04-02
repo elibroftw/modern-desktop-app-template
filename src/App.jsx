@@ -17,10 +17,10 @@ import { useLocalForage } from './utils';
 import { translations } from './i18n';
 
 // imported views need to be added to `views`
-import Home from './Views/Home';
-import Settings from './Views/Settings';
-import CIFInfo from './Views/CIFInfo';
-import About from './Views/About';
+// import Home from './Views/Home';
+// import Settings from './Views/Settings';
+// import CIFInfo from './Views/CIFInfo';
+// import About from './Views/About';
 
 // constants
 const HEADER_TITLE = 'HEADER_TITLE goes here';
