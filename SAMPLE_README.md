@@ -4,18 +4,18 @@ This project was bootstrapped using Vite with the React template.
 
 ## Environment
 
-- [Tauri Prerequisites](https://tauri.studio/docs/getting-started/prerequisites)
-- Install yarn with `npm i -g yarn`
+- [Tauri Prerequisites](https://tauri.studio/docs/getting-started/prerequisites),
+- `npm i -g yarn`
 - Run `yarn` to install frontend dependencies
 
-## Docs
+## Resources
 
 - [Mantine](https://mantine.dev/core/anchor/)
 - [Tauri (JS)](https://tauri.studio/docs/api/js/)
 - [Tauri (Rust)](https://docs.rs/tauri/1.0.0-rc.4/)
 - [React Icons](https://react-icons.github.io/react-icons)
 
-## Scripts
+## Scripts in `package.json`
 
 ### `yarn dev`
 
@@ -31,8 +31,12 @@ A performance optimized build of the front-end intended for use in production. O
 
 ### `yarn start`
 
-Runs the app in the development mode and opens [http://localhost:3000](http://localhost:3000) in your browser.
-The page will reload when you make changes. You may also see any lint errors in the console.
+Run the app in the development mode ~~and opens [http://localhost:3000](http://localhost:3000) in your browser~~.
+The page should reload when you make changes. You may also see lint errors in the console.
+
+### `yarn serve`
+
+Serve `/build` with the global `serve` package
 
 ### `npm test`
 
@@ -42,3 +46,8 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 ## Trouble Shooting
 
 If there are issues with sub-dependencies, you can use `resolutions: {}` to freeze versions until dev/building works.
+
+Add `"devtools"` to Tauri features in `Cargo.toml` to get devtools in a production build
+
+If a cookie is not being set from cross-site, add `SameSite: 'lax'` when
+setting cookies.
