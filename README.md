@@ -4,6 +4,10 @@ Tauri and ReactJS boilerplate for a modern desktop application. Not a project no
 
 TODO: make this template into a downloadable one
 
+## RSS (Commit History)
+
+Add https://github.com/elibroftw/modern-desktop-app-template/commits.atom to your RSS reader to stay up to date!
+
 ## Instructions
 
 1. Follow only the Tauri [prerequisites](https://tauri.studio/docs/getting-started/prerequisites)
