@@ -1,9 +1,7 @@
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
-// defaultLng and translation are used by App.js
-// uncomment and move the following lines to index.js
-// // for internationalization (translations)
+// translations is used by App.js to create a language selector
 // import './i18n';
 export const defaultLng = 'en';
 export const translations = {
