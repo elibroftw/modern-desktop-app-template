@@ -23,8 +23,8 @@ import CIFInfo from './Views/CIFInfo';
 import About from './Views/About';
 
 // constants
-const HEADER_TITLE = 'R2-T2: Modern T2 Corporate Internet Filing';
-const FOOTER = 'All changes are saved automatically! No save files required! Portability features will be coming soon.';
+const HEADER_TITLE = 'HEADER_TITLE goes here';
+const FOOTER = 'FOOTER goes here';
 const defualtFooterSeen = {};
 // TODO: footer fetched from online source
 function App() {
@@ -170,7 +170,5 @@ function getAppStyles() {
   }))();
   return classes;
 }
-
-
 
 export default App;
