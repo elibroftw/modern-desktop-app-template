@@ -14,7 +14,7 @@ export default function(props) {
     const preferredColorScheme = Cookies.get('colorScheme') || useColorScheme();
     // use cookie only for theme because its synchronous
     const [ colorScheme, setColorScheme ] = useState(preferredColorScheme);
-    // long tasks should use useState(true);
+    // long tasks should use useState(true)
     const [isLoading, setIsLoading] = useState(false);
     function toggleColorScheme(value) {
         value = value || (colorScheme === 'dark' ? 'light' : 'dark');
