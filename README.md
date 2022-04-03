@@ -13,7 +13,7 @@ Add https://github.com/elibroftw/modern-desktop-app-template/commits.atom to you
 1. Follow only the Tauri [prerequisites](https://tauri.studio/docs/getting-started/prerequisites)
 2. Install yarn with `npm i -g yarn`
 3. Create the frontend project with `yarn create vite APP-NAME --template react[-ts]` and enter a package-name if you have to
-4. Run `yarn add -D @tauri-apps/cli && yarn tauri init`
+4. Run `yarn add -D @tauri-apps/cli && yarn tauri init` in the new directory
 5. Now copy the contents of each file in this repo (excluding `README.md` and `LICENSE.md`) into the corresponding file of your project. For example my `package.json`. 
 6. Run `yarn` to install dependencies (ignore warnings)
 7. Run `yarn dev` to start developing
