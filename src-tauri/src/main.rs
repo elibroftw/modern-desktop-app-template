@@ -1,3 +1,9 @@
+// this hides console in release builds
+#![cfg_attr(
+  all(not(debug_assertions), target_os = "windows"),
+  windows_subsystem = "windows"
+)]
+
 use serde:: Serialize;
 use std::{collections::BTreeMap, fs};
 use tauri;
