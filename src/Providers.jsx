@@ -19,7 +19,7 @@ export default function(props) {
     function toggleColorScheme(value) {
         value = value || (colorScheme === 'dark' ? 'light' : 'dark');
         // cookie expires in a millenia
-        // might want to set sameSite: 'Strict'
+        // sameSite != 'strict' because the cookie is not read for sensitive actions
         Cookies.set('colorScheme', value, { expires: 365000, sameSite: 'lax', path: '/' });
         setColorScheme(value);
     }
