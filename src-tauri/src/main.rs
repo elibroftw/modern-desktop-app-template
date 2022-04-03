@@ -1,4 +1,4 @@
-// this hides console in release builds
+// this hides the console for Windows release builds
 #![cfg_attr(
   all(not(debug_assertions), target_os = "windows"),
   windows_subsystem = "windows"
