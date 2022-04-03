@@ -1,4 +1,4 @@
-// for mantive notifications
+// boilerplate components
 import { NotificationsProvider } from '@mantine/notifications';
 import { MantineProvider, ColorSchemeProvider, Loader, Center, Container } from '@mantine/core';
 import { useHotkeys, useColorScheme } from '@mantine/hooks';
@@ -9,21 +9,23 @@ import Spashscreen from './Spashscreen';
 import { useState } from 'react';
 
 // I love boilerplate
-export default function(props) {
-    // cookie or system prefs
-    const preferredColorScheme = Cookies.get('colorScheme') || useColorScheme();
+export default function (props) {
+    // colorScheme clever logic
+    const cookieColorScheme = Cookies.get('colorScheme');
+    const preferredColorScheme = useColorScheme();
     // use cookie only for theme because its synchronous
-    const [ colorScheme, setColorScheme ] = useState(preferredColorScheme);
-    // long tasks should use useState(true)
-    const [isLoading, setIsLoading] = useState(false);
+    const [colorScheme, setColorScheme] = useState(cookieColorScheme || preferredColorScheme);
     function toggleColorScheme(value) {
         value = value || (colorScheme === 'dark' ? 'light' : 'dark');
-        // cookie expires in a millenia
+        // cookie expires in a millenia.
         // sameSite != 'strict' because the cookie is not read for sensitive actions
         Cookies.set('colorScheme', value, { expires: 365000, sameSite: 'lax', path: '/' });
         setColorScheme(value);
     }
     useHotkeys([['mod+J', () => toggleColorScheme()]]);
+
+    // long tasks should use useState(true)
+    const [isLoading, setIsLoading] = useState(false);
 
     // Override theme for Mantine
     const theme = {
@@ -35,7 +37,7 @@ export default function(props) {
     // https://mantine.dev/theming/mantine-provider/#styles-on-mantineprovider
     // Override styles for Mantine components
     const styles = {
-        Checkbox: { input: { cursor: 'pointer' }, label: { cursor: 'pointer' } },
+        Checkbox: { input: { cursor: 'pointer' }, label: { cursor: 'pointer' } }
     }
 
     // default props for Mantine components
