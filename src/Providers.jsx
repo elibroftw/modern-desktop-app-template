@@ -17,7 +17,7 @@ export default function (props) {
     const [colorScheme, setColorScheme] = useState(cookieColorScheme || preferredColorScheme);
     function toggleColorScheme(value) {
         value = value || (colorScheme === 'dark' ? 'light' : 'dark');
-        // cookie expires in a millenia.
+        // cookie expires in a millenia
         // sameSite != 'strict' because the cookie is not read for sensitive actions
         Cookies.set('colorScheme', value, { expires: 365000, sameSite: 'lax', path: '/' });
         setColorScheme(value);
@@ -27,7 +27,7 @@ export default function (props) {
     // long tasks should use useState(true)
     const [isLoading, setIsLoading] = useState(false);
 
-    // Override theme for Mantine
+    // override theme for Mantine
     const theme = {
         colorScheme,
         loader: 'bars',
@@ -35,7 +35,7 @@ export default function (props) {
     }
 
     // https://mantine.dev/theming/mantine-provider/#styles-on-mantineprovider
-    // Override styles for Mantine components
+    // override styles for Mantine components
     const styles = {
         Checkbox: { input: { cursor: 'pointer' }, label: { cursor: 'pointer' } }
     }
@@ -44,7 +44,7 @@ export default function (props) {
     const defaultProps = {}
 
     return (
-        <MantineProvider theme={theme} styles={styles} withGlobalStyles>
+        <MantineProvider theme={theme} styles={styles} withGlobalStyles withNormalizeCSS withCSSVariables>
             <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
                 <NotificationsProvider>
                     {/* show splashscreen for inital data */}
