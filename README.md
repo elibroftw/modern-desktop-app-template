@@ -42,7 +42,7 @@ I do not recommend pulling from my repo because you will need to edit the same f
 - [Tauri (Rust)](https://docs.rs/tauri/1.0.0-rc.4/)
 - [React Icons](https://react-icons.github.io/react-icons)
 
-## [Tips](/SAMPLE_README.md##tips-and-trouble-shooting)
+## [Tips](/SAMPLE_README.md#tips-and-trouble-shooting)
 
 ## Screenshots
 
