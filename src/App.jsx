@@ -73,6 +73,8 @@ function App() {
       </NavLink>
     );
   }
+  
+  function shouldShowFooter() { return FOOTER && !footersSeenLoading && !(FOOTER in footersSeen); }
 
   return (
     <MemoryRouter>
@@ -106,7 +108,7 @@ function App() {
         //   </MediaQuery>
         // }
         footer={
-          FOOTER && !footersSeenLoading && !(FOOTER in footersSeen) &&
+          shouldShowFooter() &&
           <Footer height={'fit-content'} p="xs" className={classes.footer}>
             {t(FOOTER)}
             <Button variant="subtle" size="xs" onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER]: '' }))}>
