@@ -107,12 +107,12 @@ function App() {
         // }
         footer={
           !footersSeenLoading && !(FOOTER in footersSeen) &&
-            <Footer height={'fit-content'} p="xs" className={classes.footer}>
-              {t(FOOTER)}
-              <Button variant="subtle" size="xs" onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER]: '' }))}>
-                <ImCross />
-              </Button>
-            </Footer>
+          <Footer height={'fit-content'} p="xs" className={classes.footer}>
+            {t(FOOTER)}
+            <Button variant="subtle" size="xs" onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER]: '' }))}>
+              <ImCross />
+            </Button>
+          </Footer>
         }
         className={classes.appShell}>
         <Routes>
