@@ -15,8 +15,9 @@ TODO: make this template into a downloadable one
     - `src-tauri/tauri.conf.json's productName, identifier, title`
     - `src/App.jsx's HEADER_TITLE, FOOTER`
 8. Run `yarn dev` to start developing
-9. Replace `README.md` with `SAMPLE_README.md` and read the [Tips and Trouble Shooting](#tips) section
-10. If any problems arise, open an issue or contact me
+9. Replace `README.md` with `SAMPLE_README.md`
+10. Read [Tips and Trouble Shooting](#tips) section of the new `README.md`
+11. If any problems arise, open an issue or contact me
 
 
 ## Old Instructions
