@@ -1,5 +1,5 @@
 import localforage from 'localforage';
-import { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 export { localforage };
 
 // only supports primitives, arrays, and {} objects
