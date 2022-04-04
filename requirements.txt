@@ -1,0 +1,5 @@
+# for pywebview development and utility scripts
+setuptools
+pywebview
+# pandas
+# openpyxl
