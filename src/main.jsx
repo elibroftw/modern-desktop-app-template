@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-// boilerplate Mantine providers
+// boilerplate components
 import Providers from './Providers';
 // for internationalization (translations)
 import './i18n';
