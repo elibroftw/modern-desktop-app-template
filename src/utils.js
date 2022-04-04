@@ -17,10 +17,12 @@ export function useLocalForage(key, defaultValue) {
         }).catch(() => localforage.setItem(key, defaultValue)).then(() => {
             if (allow) setLoading(false);
         });
-        return () => { allow = false; }
+        return () => allow = false;
     }, []);
-    // useLayoutEffect doesn't work if a promise is returned!
-    useLayoutEffect(() => { localforage.setItem(key, state); }, [state]);
+    // useLayoutEffect does not like Promise return values.
+    // A delay is used here to avoid erasure bugs due to reloading the window very quicky in Tauri (tweak for your needs)
+    // Reloading the window via Mod + R should be disabled in release builds
+    useLayoutEffect(() => { setTimeout(() => localforage.setItem(key, state), 300); }, [state]);
     return [state, setState, loading];
 }
 
