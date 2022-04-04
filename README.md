@@ -17,7 +17,6 @@ Tauri and React boilerplate for a modern desktop application. Not a project nor 
 10. Read [Tips and Trouble Shooting](#tips) section of the new `README.md`
 11. If any problems arise, open an issue or contact me
 
-
 ## Old Instructions
 
 1. Follow only the Tauri [prerequisites](https://tauri.studio/docs/getting-started/prerequisites)
@@ -28,18 +27,10 @@ Tauri and React boilerplate for a modern desktop application. Not a project nor 
 6. Run `yarn` to install dependencies (ignore warnings)
 7. Run `yarn dev` to start developing
 
-
 ## RSS of Commit History
 
 Add https://github.com/elibroftw/modern-desktop-app-template/commits.atom to your RSS reader to stay up to date!
 I do not recommend pulling from my repo because you will need to edit the same files I reorganize
-
-## Docs
-
-- [Mantine](https://mantine.dev/core/anchor/)
-- [Tauri (JS)](https://tauri.studio/docs/api/js/)
-- [Tauri (Rust)](https://docs.rs/tauri/1.0.0-rc.4/)
-- [React Icons](https://react-icons.github.io/react-icons)
 
 ## [Tips](/SAMPLE_README.md#tips-and-trouble-shooting)
 
