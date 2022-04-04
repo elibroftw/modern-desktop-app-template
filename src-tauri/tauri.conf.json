@@ -1,6 +1,6 @@
 {
   "package": {
-    "productName": "productName",
+    "productName": "Product Name",
     "version": "0.1.0"
   },
   "build": {
@@ -14,7 +14,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "App Name",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
