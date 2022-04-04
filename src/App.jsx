@@ -74,6 +74,12 @@ function App() {
     );
   }
   
+  function FooterText() {
+    // footer output logic goes here
+    // example: parse JSON output from online source
+    return t(FOOTER);
+  }
+  
   function shouldShowFooter() { return FOOTER && !footersSeenLoading && !(FOOTER in footersSeen); }
 
   return (
@@ -110,7 +116,7 @@ function App() {
         footer={
           shouldShowFooter() &&
           <Footer height={'fit-content'} p="xs" className={classes.footer}>
-            {t(FOOTER)}
+            <FooterText />
             <Button variant="subtle" size="xs" onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER]: '' }))}>
               <ImCross />
             </Button>
