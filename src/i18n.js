@@ -1,9 +1,9 @@
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
-// translations is used by App.js to create a language selector
-// import './i18n';
+
 export const defaultLng = 'en';
+// this is exported in order to avoid hard coding supported languages in more than 1 place
 export const translations = {
   en: {
     translations: {
