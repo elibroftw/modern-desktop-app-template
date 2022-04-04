@@ -13,6 +13,7 @@ Tauri and React boilerplate for a modern desktop application. Not a project nor 
     - Edit `src/App.jsx's HEADER_TITLE, FOOTER`
     - Remove the `.git` folder
     - Edit `SAMPLE_README.md` and replace `README.md`
+    - Delete or replace `LICENSE.md` since this template is public domain
 8. Run `yarn dev` to start developing
 9. Read [Tips and Trouble Shooting](#tips) section of the new `README.md`
 10. If any problems arise, open an issue or contact me
