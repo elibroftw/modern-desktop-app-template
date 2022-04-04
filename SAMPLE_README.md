@@ -44,11 +44,13 @@ Serve `/build` with the global `serve` package
 Launches the test runner in the interactive watch mode.
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-## Trouble Shooting
+## Tips and Trouble Shooting
 
-If there are issues with sub-dependencies, you can use `resolutions: {}` to freeze versions until dev/building works.
-
-Add `"devtools"` to Tauri features in `Cargo.toml` to get devtools in a production build
-
-If a cookie is not being set from cross-site, add `SameSite: 'lax'` when
-setting cookies.
+- Slow computer / low storage / Frontend edits only? `yarn start`
+  - To use webview however, `yarn py` can be used after a `pip install pywebview`
+  - no Tauri API access of course
+- Publishing to the web? Edit `package.json`, `index.html`, `manifest.html`
+- More than 1 monitor? Set `alwaysOnTop` to `true` in `tauri.conf.json` to avoid alt-tabbing
+- Broken sub-dependency? Use `resolutions: {subDependency: version}`
+- Add `"devtools"` to Tauri features in `Cargo.toml` to get devtools in a production build
+- If a cookie is not being set from cross-site, add `SameSite: 'lax'` when setting cookies.
