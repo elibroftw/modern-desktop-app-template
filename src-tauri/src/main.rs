@@ -25,6 +25,7 @@ fn main() {
   // main window should be invisible to allow either the setup delay or the plugin to show the window
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![custom_command])
+    // use the below if you don't want to save window positions
     // .setup(|app| {
     //     // Delay window open in order to avoid white flash described https://github.com/tauri-apps/tauri/issues/1564
     //     let main_window = app.get_window("main").unwrap();
@@ -34,7 +35,6 @@ fn main() {
     //     });
     //     Ok(())
     // })
-    // maximized window issues: https://github.com/tauri-apps/tauri-plugin-window-state/issues/21
     .plugin(tauri_plugin_window_state::WindowState::default())
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
