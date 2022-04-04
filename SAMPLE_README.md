@@ -54,3 +54,5 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 - Broken sub-dependency? Use `resolutions: {subDependency: version}`
 - Add `"devtools"` to Tauri features in `Cargo.toml` to get devtools in a production build
 - If a cookie is not being set from cross-site, add `SameSite: 'lax'` when setting cookies.
+- Use `cd src-tauri && cargo clean` to fix abnormal bugs or issues
+- Use `cd src-tauri && cargo update` to update Cargo packages
