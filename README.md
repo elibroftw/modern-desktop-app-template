@@ -7,15 +7,15 @@ Tauri and React boilerplate for a modern desktop application. Not a project nor 
 1. Install Tauri [prerequisites](https://tauri.studio/docs/getting-started/prerequisites)
 2. Download or Clone this repository `git clone --depth=1 https://github.com/elibroftw/modern-desktop-app-template.git new-app`
 3. Go into `new-app`
-4. Remove the `.git` folder
-5. Run `yarn` to install packages
-6. While `yarn` is working, edit these core files:
-    - `src-tauri/tauri.conf.json's productName, identifier, title`
-    - `src/App.jsx's HEADER_TITLE, FOOTER`
+4. Run `yarn` to install packages
+5. While `yarn` is working,
+    - Edit `src-tauri/tauri.conf.json's productName, identifier, title`
+    - Edit `src/App.jsx's HEADER_TITLE, FOOTER`
+    - Remove the `.git` folder
+    - Replace `README.md` with `SAMPLE_README.md`
 8. Run `yarn dev` to start developing
-9. Replace `README.md` with `SAMPLE_README.md`
-10. Read [Tips and Trouble Shooting](#tips) section of the new `README.md`
-11. If any problems arise, open an issue or contact me
+9. Read [Tips and Trouble Shooting](#tips) section of the new `README.md`
+10. If any problems arise, open an issue or contact me
 
 ## Old Instructions
 
