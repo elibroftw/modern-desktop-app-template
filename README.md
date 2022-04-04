@@ -12,7 +12,7 @@ Tauri and React boilerplate for a modern desktop application. Not a project nor 
     - Edit `src-tauri/tauri.conf.json's productName, identifier, title`
     - Edit `src/App.jsx's HEADER_TITLE, FOOTER`
     - Remove the `.git` folder
-    - Replace `README.md` with `SAMPLE_README.md`
+    - Edit `SAMPLE_README.md` and replace `README.md`
 8. Run `yarn dev` to start developing
 9. Read [Tips and Trouble Shooting](#tips) section of the new `README.md`
 10. If any problems arise, open an issue or contact me
