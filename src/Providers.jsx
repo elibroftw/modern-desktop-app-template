@@ -42,10 +42,13 @@ export default function (props) {
     }
 
     // default props for Mantine components
-    const defaultProps = {}
+    const defaultProps = {
+        Loader: { size: 'xl' }
+    }
 
     return (
-        <MantineProvider theme={theme} styles={styles} withGlobalStyles withNormalizeCSS withCSSVariables>
+        <MantineProvider defaultProps={defaultProps} theme={theme} styles={styles}
+            withGlobalStyles withNormalizeCSS withCSSVariables>
             <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
                 <NotificationsProvider>
                     <BrowserRouter>
