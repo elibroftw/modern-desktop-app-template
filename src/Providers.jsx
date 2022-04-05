@@ -2,10 +2,11 @@
 import { NotificationsProvider } from '@mantine/notifications';
 import { MantineProvider, ColorSchemeProvider, Loader, Center, Container } from '@mantine/core';
 import { useHotkeys, useColorScheme } from '@mantine/hooks';
+import { BrowserRouter } from 'react-router-dom';
 import Cookies from 'js-cookie';
 // when react-use-cookie gets better, use it instead for better logic abstraction
 // import useCookie from 'react-use-cookie';
-import Spashscreen from './Spashscreen';
+import Splashscreen from './Splashscreen';
 import { useState } from 'react';
 
 // I love boilerplate
@@ -47,8 +48,10 @@ export default function (props) {
         <MantineProvider theme={theme} styles={styles} withGlobalStyles withNormalizeCSS withCSSVariables>
             <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
                 <NotificationsProvider>
-                    {/* show splashscreen for inital data */}
-                    {isLoading ? <Spashscreen /> : props.children}
+                    <BrowserRouter>
+                        {/* show splashscreen for inital data */}
+                        {isLoading ? <Splashscreen /> : props.children}
+                    </BrowserRouter>
                 </NotificationsProvider>
             </ColorSchemeProvider>
         </MantineProvider>
