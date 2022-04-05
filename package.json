@@ -24,7 +24,7 @@
     "build": "cross-env INLINE_RUNTIME_CHUNK=false yarn vite build",
     "preview": "vite preview",
     "serve": "serve -s build",
-    "py": "concurrently \"yarn cross-env BROWSER=none yarn start\" \"python main.py -3000 --devpath http://127.0.0.1:3000\"",
+    "py": "concurrently \"yarn cross-env BROWSER=none yarn start\" \"python main.py --devpath http://127.0.0.1:3000\"",
     "preinstall": "yarn global add serve"
   },
   "eslintConfig": {
