@@ -1,4 +1,5 @@
 # for pywebview development and utility scripts
+pythonnet~=3.0.0a2
 setuptools
 pywebview
 # pandas
