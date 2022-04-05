@@ -1,14 +1,14 @@
-// import './App.css';
-import { AppShell, Navbar, Header, Footer, Aside, Text, MediaQuery, Burger, ActionIcon, Group, Anchor, Button, Checkbox } from '@mantine/core';
+import { AppShell, Navbar, Header, Footer, Aside, Text, MediaQuery, Burger, ActionIcon, Group, Anchor, Button } from '@mantine/core';
 import { useMantineColorScheme } from '@mantine/core';
 import { IoSunnySharp } from 'react-icons/io5';
 import { BsMoonStarsFill } from 'react-icons/bs';
 import { ImCross } from 'react-icons/im';
 import React, { useState, useEffect, Fragment, Suspense, useMemo } from 'react';
 import { createStyles, useMantineTheme } from '@mantine/styles';
-import { MemoryRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { NavLink, Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useHotkeys } from '@mantine/hooks';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 // talk to rust with
 // import { invoke } from '@tauri-apps/api/tauri'
 
@@ -18,9 +18,10 @@ import { translations } from './i18n';
 
 // imported views need to be added to `views`
 // import Home from './Views/Home';
-// import Settings from './Views/Settings';
-// import CIFInfo from './Views/CIFInfo';
-// import About from './Views/About';
+import Fallback from './Views/Fallback';
+// const Settings = React.lazy(() => import('./Views/Settings'));
+// const About = React.lazy(() => import('./Views/About'));
+// const CIFInfo = React.lazy(() => import('./Views/CIFInfo'));
 
 // constants
 const HEADER_TITLE = 'HEADER_TITLE goes here';
@@ -30,10 +31,8 @@ const defualtFooterSeen = {};
 function App() {
   const { t, i18n } = useTranslation();
   // left sidebar
-  // todo: add Example for template
   const views = [
 //     { component: Home, path: '/', exact: true, name: t('Home') },
-//     { component: Settings, path: '/settings', name: t('Settings') },
 //     { component: CIFInfo, path: '/cif-info', name: 'CIF ' + t('Info') },
 //     { component: About, path: '/about', name: t('About') }
   ];
@@ -73,61 +72,62 @@ function App() {
       </NavLink>
     );
   }
-  
+
+  function shouldShowFooter() { return FOOTER && !footersSeenLoading && !(FOOTER in footersSeen); }
+
   function FooterText() {
     // footer output logic goes here
     // example: parse JSON output from online source
     return t(FOOTER);
   }
-  
-  function shouldShowFooter() { return FOOTER && !footersSeenLoading && !(FOOTER in footersSeen); }
 
   return (
-    <MemoryRouter>
-      <AppShell padding="md" navbarOffsetBreakpoint="sm" fixed
-        navbar={
-          <Navbar height='100%' width={{ sm: 200 }} p="xs" hidden={!mobileNavOpened} hiddenBreakpoint="sm">
-            <NavLinks />
-          </Navbar>
-        }
-        header={
-          <Header height={70} p="md" className={classes.header}>
-            <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-              <Burger opened={mobileNavOpened} onClick={() => setMobileNavOpened(o => !o)}
-                size="sm" mr="xl" color={useMantineTheme().colors.gray[6]} />
-            </MediaQuery>
-            <Text>{HEADER_TITLE}</Text>
-            <Group className={classes.headerRightItems}>
-              <LanguageHeaders />
-              <ActionIcon title='Ctrl + J' className={classes.actionIcon} variant="default" onClick={() => toggleColorScheme()} size={30}>
-                {/* icon to show based on colorScheme */}
-                {colorScheme === 'dark' ? <IoSunnySharp size={'1.5em'} /> : <BsMoonStarsFill />}
-              </ActionIcon>
-            </Group>
-          </Header>
-        }
-        // aside={
-        //   <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-        //     <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
-        //       <Text>Right Side. Use for help or support menu?</Text>
-        //     </Aside>
-        //   </MediaQuery>
-        // }
-        footer={
-          shouldShowFooter() &&
-          <Footer height={'fit-content'} p="xs" className={classes.footer}>
-            <FooterText />
-            <Button variant="subtle" size="xs" onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER]: '' }))}>
-              <ImCross />
-            </Button>
-          </Footer>
-        }
-        className={classes.appShell}>
-        <Routes>
-          {views.map((view, index) => <Route key={index} exact={view.exact} path={view.path} element={<view.component />} />)}
-        </Routes>
-      </AppShell>
-    </MemoryRouter>
+    <AppShell padding="md" navbarOffsetBreakpoint="sm" fixed
+      navbar={
+        <Navbar height='100%' width={{ sm: 200 }} p="xs" hidden={!mobileNavOpened} hiddenBreakpoint="sm">
+          <NavLinks />
+        </Navbar>
+      }
+      header={
+        <Header height={70} p="md" className={classes.header}>
+          <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+            <Burger opened={mobileNavOpened} onClick={() => setMobileNavOpened(o => !o)}
+              size="sm" mr="xl" color={useMantineTheme().colors.gray[6]} />
+          </MediaQuery>
+          <Text>{HEADER_TITLE}</Text>
+          <Group className={classes.headerRightItems}>
+            <LanguageHeaders />
+            <ActionIcon title='Ctrl + J' className={classes.actionIcon} variant="default" onClick={() => toggleColorScheme()} size={30}>
+              {/* icon to show based on colorScheme */}
+              {colorScheme === 'dark' ? <IoSunnySharp size={'1.5em'} /> : <BsMoonStarsFill />}
+            </ActionIcon>
+          </Group>
+        </Header>
+      }
+      // aside={
+      //   <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+      //     <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
+      //       <Text>Right Side. Use for help or support menu?</Text>
+      //     </Aside>
+      //   </MediaQuery>
+      // }
+      footer={
+        shouldShowFooter() &&
+        <Footer height={'fit-content'} p="xs" className={classes.footer}>
+          <FooterText />
+          <Button variant="subtle" size="xs" onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER]: '' }))}>
+            <ImCross />
+          </Button>
+        </Footer>
+      }
+      className={classes.appShell}>
+      <Routes>
+        {views.map((view, index) => <Route key={index} exact={view.exact}
+          path={view.path} element={
+            <React.Suspense fallback={<Fallback />}><view.component /></React.Suspense>
+          } />)}
+      </Routes>
+    </AppShell>
   );
 }
 
