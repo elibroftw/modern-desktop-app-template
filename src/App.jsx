@@ -8,7 +8,6 @@ import { createStyles, useMantineTheme } from '@mantine/styles';
 import { NavLink, Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useHotkeys } from '@mantine/hooks';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
 // talk to rust with
 // import { invoke } from '@tauri-apps/api/tauri'
 
