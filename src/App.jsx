@@ -19,9 +19,9 @@ import { translations } from './i18n';
 import Fallback from './Views/Fallback';
 
 // imported views need to be added to `views`
-import Home from './Views/Home';
-import About from './Views/About';
-import CIFInfo from './Views/CIFInfo';
+// import Home from './Views/Home';
+// import About from './Views/About';
+// import CIFInfo from './Views/CIFInfo';
 // if your views are large, you can use lazy loading to reduce the initial load time
 // const Settings = lazy(() => import('./Views/Settings'));
 
