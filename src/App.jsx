@@ -15,12 +15,15 @@ import { useHotkeys } from '@mantine/hooks';
 import { useLocalForage } from './utils';
 import { translations } from './i18n';
 
-// imported views need to be added to `views`
-// import Home from './Views/Home';
+// fallback for React Suspense
 import Fallback from './Views/Fallback';
-// const Settings = React.lazy(() => import('./Views/Settings'));
-// const About = React.lazy(() => import('./Views/About'));
-// const CIFInfo = React.lazy(() => import('./Views/CIFInfo'));
+
+// imported views need to be added to `views`
+import Home from './Views/Home';
+import About from './Views/About';
+import CIFInfo from './Views/CIFInfo';
+// if your views are large, you can use lazy loading to reduce the initial load time
+// const Settings = lazy(() => import('./Views/Settings'));
 
 // constants
 const HEADER_TITLE = 'HEADER_TITLE goes here';
