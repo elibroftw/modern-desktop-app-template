@@ -2,7 +2,6 @@ import localforage from 'localforage';
 import { useState, useLayoutEffect } from 'react';
 export { localforage };
 
-
 // https://reactjs.org/docs/hooks-custom.html
 export function useLocalForage(key, defaultValue) {
     // only supports primitives, arrays, and {} objects
