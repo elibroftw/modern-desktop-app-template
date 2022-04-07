@@ -2,12 +2,13 @@ import localforage from 'localforage';
 import { useState, useLayoutEffect } from 'react';
 export { localforage };
 
-// only supports primitives, arrays, and {} objects
-// https://reactjs.org/docs/hooks-custom.html
 
+// https://reactjs.org/docs/hooks-custom.html
 export function useLocalForage(key, defaultValue) {
+    // only supports primitives, arrays, and {} objects
     const [state, setState] = useState(defaultValue);
     const [loading, setLoading] = useState(true);
+
     // useLayoutEffect will be called before DOM paintings and before useEffect
     useLayoutEffect(() => {
         let allow = true;
@@ -20,9 +21,10 @@ export function useLocalForage(key, defaultValue) {
         return () => allow = false;
     }, []);
     // useLayoutEffect does not like Promise return values.
-    // A delay is used here to avoid erasure bugs due to reloading the window very quicky in Tauri (tweak for your needs)
-    // Reloading the window via Mod + R should be disabled in release builds
-    useLayoutEffect(() => { setTimeout(() => localforage.setItem(key, state), 300); }, [state]);
+    useLayoutEffect(() => {
+        // do not allow setState to be called before data has even been loaded!
+        if (!loading) localforage.setItem(key, state);
+    }, [state]);
     return [state, setState, loading];
 }
 
