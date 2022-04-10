@@ -48,8 +48,8 @@ function App() {
   // catch language changes
   useEffect(() => i18n.changeLanguage(lang), [lang]);
 
-  // getStyles defined below App()
-  const classes = getAppStyles();
+  // getAppStyles defined below App()
+  const { classes } = getAppStyles();
 
   function LanguageHeaders() {
     return Object.keys(translations).map((supportedLang, index) =>
@@ -134,51 +134,47 @@ function App() {
 }
 
 // this can exported in styles.js
-// this needs to be memoized
-function getAppStyles() {
-  const { classes } = createStyles(theme => ({
-    navLink: {
-      display: 'block',
-      width: '100%',
-      padding: theme.spacing.xs,
-      borderRadius: theme.radius.md,
-      color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-      textDecoration: 'none',
-      willChange: 'transform',
+const getAppStyles = createStyles(theme => ({
+  navLink: {
+    display: 'block',
+    width: '100%',
+    padding: theme.spacing.xs,
+    borderRadius: theme.radius.md,
+    color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+    textDecoration: 'none',
+    willChange: 'transform',
 
-      '&:hover:active': {
-        transform: 'translateY(2px)',
-      },
+    '&:hover:active': {
+      transform: 'translateY(2px)',
     },
-    navLinkActive: {
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2],
+  },
+  navLinkActive: {
+    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2],
+  },
+  navLinkInactive: {
+    '&:hover': {
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1]
     },
-    navLinkInactive: {
-      '&:hover': {
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1]
-      },
-    },
-    header: {
-      display: 'flex',
-      alignItems: 'center',
-      height: '100%'
-    },
-    headerRightItems: {
-      marginLeft: 'auto',
-    },
-    appShell: {
-      main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] }
-    },
-    mediaQuery: {
-      display: 'none'
-    },
-    footer: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    }
-  }))();
-  return classes;
-}
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    height: '100%'
+  },
+  headerRightItems: {
+    marginLeft: 'auto',
+  },
+  appShell: {
+    main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] }
+  },
+  mediaQuery: {
+    display: 'none'
+  },
+  footer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }
+}));
 
 export default App;
