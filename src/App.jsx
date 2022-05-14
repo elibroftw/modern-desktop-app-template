@@ -16,7 +16,7 @@ import { useLocalForage } from './utils';
 import { translations } from './i18n';
 
 // fallback for React Suspense
-import Fallback from './Views/Fallback';
+import Fallback from './Fallback';
 
 // imported views need to be added to `views`
 // import Home from './Views/Home';
