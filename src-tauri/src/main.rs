@@ -21,10 +21,16 @@ struct Example<'a> {
 #[tauri::command]
 fn custom_command(window: tauri::Window) {}
 
+#[tauri::command]
+fn process_file(filepath: String) -> String {
+    println!("Processing file: {}", filepath);
+    "Hello from Rust!".into()
+}
+
 fn main() {
   // main window should be invisible to allow either the setup delay or the plugin to show the window
   tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![custom_command])
+    .invoke_handler(tauri::generate_handler![custom_command, process_file])
     // use the below if you don't want to save window positions
     // .setup(|app| {
     //     // Delay window open in order to avoid white flash described https://github.com/tauri-apps/tauri/issues/1564

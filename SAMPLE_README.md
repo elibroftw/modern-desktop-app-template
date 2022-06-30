@@ -16,6 +16,35 @@ Description goes here.
 - [Tauri (Rust)](https://docs.rs/tauri/1.0.0-rc.4/)
 - [React Icons](https://react-icons.github.io/react-icons)
 
+### Calling Rust from the Frontend
+
+```rs
+#[tauri::command]
+fn command1() {
+  println!("I was invoked from JS!");
+}
+
+#[tauri::command]
+fn command2(arg: String) {
+  println!("I was invoked from JS!");
+}
+
+tauri::Builder::default()
+  // ...
+  .invoke_handler(tauri::generate_handler![command1, command2])
+  // ...
+```
+
+```js
+
+import { invoke } from '@tauri-apps/api/tauri'
+// or const invoke = window.__TAURI__.invoke
+// in an async function...
+await invoke('command1');
+await invoke('command2', {arg: 'two'});
+// ...
+```
+
 ## Scripts in `package.json`
 
 ### `yarn dev`
