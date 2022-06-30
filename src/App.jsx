@@ -19,6 +19,7 @@ import { translations } from './i18n';
 import Fallback from './Views/Fallback';
 
 // imported views need to be added to `views`
+import ExampleView from './Views/ExampleView';
 // import Home from './Views/Home';
 // import About from './Views/About';
 // import CIFInfo from './Views/CIFInfo';
@@ -37,6 +38,7 @@ function App() {
 //     { component: Home, path: '/', exact: true, name: t('Home') },
 //     { component: CIFInfo, path: '/cif-info', name: 'CIF ' + t('Info') },
 //     { component: About, path: '/about', name: t('About') }
+      { component: ExampleView, path: '/example-view', name: t('ExampleView') },
   ];
 
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
