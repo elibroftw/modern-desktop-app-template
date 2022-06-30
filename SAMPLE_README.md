@@ -25,8 +25,9 @@ fn command1() {
 }
 
 #[tauri::command]
-fn command2(arg: String) {
+fn command2(arg: String) -> String {
   println!("I was invoked from JS!");
+  return "hi frontend".into();
 }
 
 tauri::Builder::default()
@@ -41,7 +42,7 @@ import { invoke } from '@tauri-apps/api/tauri'
 // or const invoke = window.__TAURI__.invoke
 // in an async function...
 await invoke('command1');
-await invoke('command2', {arg: 'two'});
+await invoke('command2', {arg: 'two'}).then(msg => console.log(msg));
 // ...
 ```
 
