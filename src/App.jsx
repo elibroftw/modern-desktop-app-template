@@ -54,6 +54,7 @@ function App() {
   const { classes } = getAppStyles();
 
   function LanguageHeaders() {
+    // TODO: use https://github.com/i18next/react-i18next/issues/1187#issuecomment-1180631720
     return Object.keys(translations).map((supportedLang, index) =>
       <Fragment key={index}>
         {
