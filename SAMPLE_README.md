@@ -11,10 +11,15 @@ Description goes here.
 
 ## Resources
 
-- [Mantine](https://mantine.dev/core/anchor/)
 - [Tauri (JS)](https://tauri.studio/docs/api/js/)
 - [Tauri (Rust)](https://docs.rs/tauri/1.0.0-rc.4/)
 - [React Icons](https://react-icons.github.io/react-icons)
+
+### Mantine
+
+- [Mantine Docs](https://mantine.dev/pages/basics/)
+- [https://mantine.dev/dates/time-input/](TimeInput)
+- [https://mantine.dev/dates/date-picker/](DatePicker)
 
 ### Calling Rust from the Frontend
 
