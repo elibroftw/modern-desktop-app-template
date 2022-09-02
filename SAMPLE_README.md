@@ -6,7 +6,8 @@ Description goes here.
 
 - This project was bootstrapped with Create React App and converted to use Vite.
 - [Tauri Prerequisites](https://tauri.studio/docs/getting-started/prerequisites),
-- `npm i -g yarn`
+- [NodeJS](https://nodejs.org/en/)
+- yarn `npm i -g yarn`
 - Run `yarn` to install frontend dependencies
 
 ## Resources
