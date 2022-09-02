@@ -1,13 +1,13 @@
 # APP NAME
 
 Description goes here.
+This project was bootstrapped with Create React App and converted to use Vite.
 
 ## Environment
 
-- This project was bootstrapped with Create React App and converted to use Vite.
 - [Tauri Prerequisites](https://tauri.studio/docs/getting-started/prerequisites),
-- [NodeJS](https://nodejs.org/en/)
-- yarn `npm i -g yarn`
+- Install [NodeJS](https://nodejs.org/en/) via [`nvm`](https://github.com/nvm-sh/nvm) or [`nvm-windows`](https://github.com/coreybutler/nvm-windows/releases) (`nvm install latest`)
+- Install `yarn` using `npm i -g yarn`
 - Run `yarn` to install frontend dependencies
 
 ## Resources
