@@ -6,9 +6,16 @@ This project was bootstrapped with Create React App and converted to use Vite.
 ## Environment
 
 - [Tauri Prerequisites](https://tauri.studio/docs/getting-started/prerequisites),
-- Install [NodeJS](https://nodejs.org/en/) via [`nvm`](https://github.com/nvm-sh/nvm) or [`nvm-windows`](https://github.com/coreybutler/nvm-windows/releases) (`nvm install latest`)
+- Install [NodeJS](https://nodejs.org/en/) via [nvm](#how-to-use-nvm)
 - Install `yarn` using `npm i -g yarn`
 - Run `yarn` to install frontend dependencies
+
+### How to use nvm
+
+1. Install [`nvm`](https://github.com/nvm-sh/nvm) or [`nvm-windows`](https://github.com/coreybutler/nvm-windows/releases)
+2. Open up an elevated command prompt (Windows) or use `sudo` (POSIX) for the below commands.
+3. `nvm install latest` which will output a version (X.Y.Z) that was installed
+4. `nvm use X.Y.Z`
 
 ## Resources
 
