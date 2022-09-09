@@ -28,27 +28,22 @@ export default function (props) {
     // long tasks should use useState(true)
     const [isLoading, setIsLoading] = useState(false);
 
-    // override theme for Mantine
+    // override theme for Mantine (default props and styles)
+    // https://mantine.dev/theming/mantine-provider/
     const theme = {
         colorScheme,
         loader: 'bars',
         fontFamily: 'Open Sans, sans serif',
-    }
-
-    // https://mantine.dev/theming/mantine-provider/#styles-on-mantineprovider
-    // override styles for Mantine components
-    const styles = {
-        Checkbox: { input: { cursor: 'pointer' }, label: { cursor: 'pointer' } }
-    }
-
-    // default props for Mantine components
-    const defaultProps = {
-        Loader: { size: 'xl' }
+        components: {
+            Checkbox: { styles: { input: { cursor: 'pointer' }, label: { cursor: 'pointer' }}},
+            TextInput: { styles: { label: { marginTop: '0.5rem' }}},
+            Select: { styles: { label: { marginTop: '0.5rem' }}},
+            Loader: { defaultProps: { size: 'xl' }}
+        }
     }
 
     return (
-        <MantineProvider defaultProps={defaultProps} theme={theme} styles={styles}
-            withGlobalStyles withNormalizeCSS withCSSVariables>
+        <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS withCSSVariables>
             <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
                 <NotificationsProvider>
                     <BrowserRouter>

@@ -22,6 +22,7 @@ This project was bootstrapped with Create React App and converted to use Vite.
 - [Tauri (JS)](https://tauri.studio/docs/api/js/)
 - [Tauri (Rust)](https://docs.rs/tauri/1.0.0-rc.4/)
 - [React Icons](https://react-icons.github.io/react-icons)
+- [VS Code](https://code.visualstudio.com/) + [Tauri Extension](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer Extension](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
 
 ### Mantine
 

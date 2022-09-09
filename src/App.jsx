@@ -47,8 +47,11 @@ function App() {
   // load preferences using localForage
   const [footersSeen, setFootersSeen, footersSeenLoading] = useLocalForage('footersSeen', defualtFooterSeen);
   const [lang, setLang] = useLocalForage('lang', i18n.resolvedLanguage);
-  // catch language changes
-  useEffect(() => i18n.changeLanguage(lang), [lang]);
+
+  function changeLang(lang) {
+    setLang(lang);
+    i18n.changeLanguage(lang);
+  }
 
   // getAppStyles defined below App()
   const { classes } = getAppStyles();
@@ -60,7 +63,7 @@ function App() {
         {
           lang === supportedLang ?
             <Text key={supportedLang} >{supportedLang.toUpperCase()}</Text> :
-            <Anchor key={supportedLang} onClick={() => setLang(supportedLang)}>{supportedLang.toUpperCase()}</Anchor>
+            <Anchor key={supportedLang} onClick={() => changeLang(supportedLang)}>{supportedLang.toUpperCase()}</Anchor>
         }
         <Text key={`|-${index}`}>{index < Object.keys(translations).length - 1 && '|'}</Text>
       </Fragment>
@@ -87,7 +90,7 @@ function App() {
   }
 
   return (
-    <AppShell padding="md" navbarOffsetBreakpoint="sm" fixed
+    <AppShell padding="md" navbarOffsetBreakpoint="sm"
       navbar={
         <Navbar height='100%' width={{ sm: 200 }} p="xs" hidden={!mobileNavOpened} hiddenBreakpoint="sm">
           <NavLinks />

@@ -4,11 +4,11 @@
     "version": "0.1.0"
   },
   "build": {
-    "distDir": "../build",
-    "devPath": "http://127.0.0.1:3000",
-    "beforeDevCommand": "yarn cross-env BROWSER=none yarn start",
+    "beforeDevCommand": "yarn start",
     "beforeBuildCommand": "yarn build",
-    "withGlobalTauri": true
+    "devPath": "http://localhost:1420",
+    "distDir": "../build",
+    "withGlobalTauri": false
   },
   "tauri": {
     "bundle": {
