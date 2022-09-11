@@ -27,8 +27,8 @@ This project was bootstrapped with Create React App and converted to use Vite.
 ### Mantine
 
 - [Mantine Docs](https://mantine.dev/pages/basics/)
-- [https://mantine.dev/dates/time-input/](TimeInput)
-- [https://mantine.dev/dates/date-picker/](DatePicker)
+- [TimeInput](https://mantine.dev/dates/time-input/)
+- [DatePicker](https://mantine.dev/dates/date-picker/)
 
 ### Calling Rust from the Frontend
 
