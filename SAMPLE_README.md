@@ -24,6 +24,7 @@ This project was bootstrapped with Create React App and converted to use Vite.
 - [Tauri (Rust)](https://docs.rs/tauri/)
 - [React Icons](https://react-icons.github.io/react-icons)
 - [Mantine Docs](https://mantine.dev/pages/basics/)
+- [Mantine Default Theme](https://github.com/mantinedev/mantine/blob/master/src/mantine-styles/src/theme/default-theme.ts)
 - [react-18next Trans Component](https://react.i18next.com/latest/trans-component)
 
 ### Calling Rust from the Frontend
