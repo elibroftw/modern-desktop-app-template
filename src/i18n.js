@@ -8,13 +8,15 @@ export const translations = {
   en: {
     translations: {
       contactUsMessage: 'If you have any questions or requests, feel free to send an email to',
+      transExample: 'This template is located on <0>github.com{{variable}}</0>'
     }
   },
   fr: {
     translations: {
       Home: 'Accueil',
       contactUsMessage: "Si vous avez des questions ou des demandes, n'hésitez pas à envoyer un email à",
-      'Monday to Saturday': 'Lundi à Samedi'
+      'Monday to Saturday': 'Lundi à Samedi',
+      transExample: 'Ce modèle se trouve sur <0>github.com{{variable}}</0>'
     }
   }
 }

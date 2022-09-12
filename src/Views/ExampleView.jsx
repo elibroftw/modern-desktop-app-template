@@ -1,6 +1,6 @@
 // component example
-import { Text, Anchor, Space, Button } from '@mantine/core';
-import { useTranslation } from 'react-i18next';
+import { Text, Anchor, Space, Button, Title } from '@mantine/core';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { writeTextFile, BaseDirectory } from '@tauri-apps/api/fs';
 import { downloadDir } from '@tauri-apps/api/path';
@@ -27,6 +27,12 @@ export default function ExampleView() {
             <Text>{ t('Modern Desktop App Examples') }</Text>
             <Space h={'md'}/>
             <Button onClick={createFile}>Do something with fs</Button>
+            <Title order={4}>{ t('Interpolating components in translations') } </Title>
+            <Trans t={t}
+                i18nKey="transExample"
+                default="FALLBACK if key does not exist. This template is located on <0>github.com{{variable}}</0>"
+                values={{variable: '/elibroftw/modern-desktop-template'}}
+                components={[<Anchor href="https://github.com/elibroftw/modern-desktop-app-template"></Anchor>]} />
         </>
         // TODO: FAQ search box
     );
