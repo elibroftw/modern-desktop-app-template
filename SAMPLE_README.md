@@ -19,16 +19,12 @@ This project was bootstrapped with Create React App and converted to use Vite.
 
 ## Resources
 
-- [Tauri (JS)](https://tauri.studio/docs/api/js/)
-- [Tauri (Rust)](https://docs.rs/tauri/1.0.0-rc.4/)
-- [React Icons](https://react-icons.github.io/react-icons)
 - [VS Code](https://code.visualstudio.com/) + [Tauri Extension](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer Extension](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
-
-### Mantine
-
+- [Tauri (JS)](https://tauri.studio/docs/api/js/)
+- [Tauri (Rust)](https://docs.rs/tauri/)
+- [React Icons](https://react-icons.github.io/react-icons)
 - [Mantine Docs](https://mantine.dev/pages/basics/)
-- [TimeInput](https://mantine.dev/dates/time-input/)
-- [DatePicker](https://mantine.dev/dates/date-picker/)
+- [react-18next Trans Component](https://react.i18next.com/latest/trans-component)
 
 ### Calling Rust from the Frontend
 
