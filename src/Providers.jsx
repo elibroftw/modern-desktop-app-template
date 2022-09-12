@@ -1,6 +1,7 @@
 // boilerplate components
+import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
-import { MantineProvider, ColorSchemeProvider, Loader, Center, Container } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 import { useHotkeys, useColorScheme } from '@mantine/hooks';
 import { BrowserRouter } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -46,10 +47,12 @@ export default function (props) {
         <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS withCSSVariables>
             <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
                 <NotificationsProvider>
-                    <BrowserRouter>
-                        {/* show splashscreen for inital data */}
-                        {isLoading ? <Splashscreen /> : props.children}
-                    </BrowserRouter>
+                    <ModalsProvider>
+                        <BrowserRouter>
+                            {/* show splashscreen for inital data */}
+                            {isLoading ? <Splashscreen /> : props.children}
+                        </BrowserRouter>
+                    </ModalsProvider>
                 </NotificationsProvider>
             </ColorSchemeProvider>
         </MantineProvider>

@@ -441,6 +441,13 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@mantine/carousel@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@mantine/carousel/-/carousel-5.3.0.tgz#9c72c1f413a4f1267935f362685286bb750d16a5"
+  integrity sha512-ZhRDyXv2xoBwtA2XNzQQIiwNFl5TOwIZV1SEGtiIFEviICEFnw+q+CvN3Kuyi1rf8SZ1n420QUxgrQXUUy8/Kg==
+  dependencies:
+    "@mantine/utils" "5.3.0"
+
 "@mantine/core@^5.3.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@mantine/core/-/core-5.3.0.tgz#32d3784ef1febf1592603aaefec4f7ecc251be26"
@@ -480,6 +487,13 @@
   resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-5.3.0.tgz#07acde6fbf390a1495a8d37979a2098bdc07bd6e"
   integrity sha512-dTZcFU84RR6jLPwuxti0uaVpUiw3ycfklhLQNgpfNWrsQ0ltNJrQGHF18hc0uPes+4uJPfyBwh1Mn3Lyb5c4fQ==
 
+"@mantine/modals@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@mantine/modals/-/modals-5.3.0.tgz#e8ae1d24dafb019b07dd0b45291de17ac631b57a"
+  integrity sha512-ZSxCAnF0mB1pvr7AHQHFTMgcsIvbeBWLF/Hwm+8i7TYMRXZ+VT54EemZeP/4jFPrE42ymiq+7f6iRpB5K7apRw==
+  dependencies:
+    "@mantine/utils" "5.3.0"
+
 "@mantine/notifications@^5.3.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-5.3.0.tgz#b6a8fab175aae35e74044783319dd4bec88c060b"
@@ -487,6 +501,21 @@
   dependencies:
     "@mantine/utils" "5.3.0"
     react-transition-group "4.4.2"
+
+"@mantine/nprogress@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@mantine/nprogress/-/nprogress-5.3.0.tgz#84bafd3811ee3435b0b7772b094e8fa3189395c4"
+  integrity sha512-Fcf6qtGferjBqp0R1s6I+xBmr22VamrxRqz/zl19nWIoi6+VVpJOp2Exn/elS7E2bUp4O7JoCReTACNx0qVK6g==
+  dependencies:
+    "@mantine/utils" "5.3.0"
+
+"@mantine/prism@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@mantine/prism/-/prism-5.3.0.tgz#d2efbe83c831ea396115b136f3fee85fd8649043"
+  integrity sha512-mBd7IeuuhRrfOJap/V9xgHEu+D6hiU7/b0PU6HTQH9WRInWgkuny+w+0cFvRdaxoMRGrloReBPnHGeMRkG+lng==
+  dependencies:
+    "@mantine/utils" "5.3.0"
+    prism-react-renderer "^1.2.1"
 
 "@mantine/rte@^5.3.0":
   version "5.3.0"
@@ -496,6 +525,13 @@
     "@tabler/icons" "^1.68.0"
     quill-mention "^3.0.8"
     react-quill "2.0.0-beta.4"
+
+"@mantine/spotlight@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@mantine/spotlight/-/spotlight-5.3.0.tgz#7a12996de2a85fe4c085c77fb62dc1abf565321f"
+  integrity sha512-KcXxlySVK5ZI15pN/Tzbqfp24tOOEmbKziyDgR5OdBN4uy81qlIs7VWBxFIAoH8GLxl0A70OmexuaJY3FfGKmQ==
+  dependencies:
+    "@mantine/utils" "5.3.0"
 
 "@mantine/styles@5.3.0":
   version "5.3.0"
@@ -936,6 +972,18 @@ electron-to-chromium@^1.4.172:
   version "1.4.174"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.174.tgz#ffdf57f26dd4558c5aabdb4b190c47af1c4e443b"
   integrity sha512-JER+w+9MV2MBVFOXxP036bLlNOnzbYAWrWU8sNUwoOO69T3w4564WhM5H5atd8VVS8U4vpi0i0kdoYzm1NPQgQ==
+
+embla-carousel-react@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/embla-carousel-react/-/embla-carousel-react-7.0.2.tgz#82e48d8fb14adfe6d4ea415cd1ec8a1de40129f8"
+  integrity sha512-x+/8SbytmhY5K7TrVaZ+NWpGfkI2NaOBgdEseExedwTAOW7MQDoo1lE0yEJz0RHwvTLFBupfbbgL/GxMlhWVHA==
+  dependencies:
+    embla-carousel "7.0.2"
+
+embla-carousel@7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/embla-carousel/-/embla-carousel-7.0.2.tgz#49660d75d26604de1ca1bb0c0be13e7cae65b0ff"
+  integrity sha512-6SHKbLJRvcjunb0VT1Aw7YwK0Dw8ecqEa+ppT1j+kHGEg5I4WvUd8SjRkc1NAuQK0PTBD0d567UCmzEAngeAxw==
 
 emoji-regex@^8.0.0:
   version "8.0.0"
@@ -1463,6 +1511,11 @@ postcss@^8.4.16:
     nanoid "^3.3.4"
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
+
+prism-react-renderer@^1.2.1:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/prism-react-renderer/-/prism-react-renderer-1.3.5.tgz#786bb69aa6f73c32ba1ee813fbe17a0115435085"
+  integrity sha512-IJ+MSwBWKG+SM3b2SUfdrhC+gu01QkV2KmRQgREThBfSQRoufqRfxfHUxpG1WcaFjP+kojcFyO9Qqtpgt3qLCg==
 
 prop-types@^15.6.2, prop-types@^15.8.1:
   version "15.8.1"
