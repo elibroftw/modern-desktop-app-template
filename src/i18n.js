@@ -4,7 +4,7 @@ import { initReactI18next } from 'react-i18next';
 
 export const defaultLng = 'en';
 // this is exported in order to avoid hard coding supported languages in more than 1 place
-export const translations = {
+const resources = {
   en: {
     translations: {
       contactUsMessage: 'If you have any questions or requests, feel free to send an email to',
@@ -26,7 +26,7 @@ i18n
   .use(initReactI18next)
   .init({
     // we init with resources
-    resources: translations,
+    resources,
     fallbackLng: defaultLng,
     debug: false,
 

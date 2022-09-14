@@ -13,7 +13,6 @@ import { useHotkeys } from '@mantine/hooks';
 
 // local js files
 import { useLocalForage } from './utils';
-import { translations } from './i18n';
 
 // fallback for React Suspense
 import Fallback from './Views/Fallback';
@@ -57,15 +56,14 @@ function App() {
   const { classes } = getAppStyles();
 
   function LanguageHeaders() {
-    // TODO: use https://github.com/i18next/react-i18next/issues/1187#issuecomment-1180631720
-    return Object.keys(translations).map((supportedLang, index) =>
+    const languages = i18n.options.resources;
+    return Object.keys(languages).map((supportedLang, index) =>
       <Fragment key={index}>
-        {
-          lang === supportedLang ?
-            <Text key={supportedLang} >{supportedLang.toUpperCase()}</Text> :
-            <Anchor key={supportedLang} onClick={() => changeLang(supportedLang)}>{supportedLang.toUpperCase()}</Anchor>
-        }
-        <Text key={`|-${index}`}>{index < Object.keys(translations).length - 1 && '|'}</Text>
+        {/* language code is a link if not the current language */}
+        {lang === supportedLang ?
+          <Text>{supportedLang.toUpperCase()}</Text> :
+          <Anchor onClick={() => changeLang(supportedLang)}>{supportedLang.toUpperCase()}</Anchor>}
+          <Text>{index < Object.keys(languages).length - 1 && '|'}</Text>
       </Fragment>
     );
   }
