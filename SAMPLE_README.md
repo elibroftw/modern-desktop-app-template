@@ -67,6 +67,10 @@ An alias for `yarn tauri dev` which runs `yarn start` and opens a debug enabled 
 
 An alias for `yarn tauri build` which builds the frontend and bundles it into a Tauri release build
 
+### `yarn run upgrade`
+
+Upgrades packages/crates in `./packages.json` and `./src-tauri/Cargo.toml`
+
 ### `yarn build`
 
 A performance optimized build of the front-end intended for use in production. Output is the `build` folder.
