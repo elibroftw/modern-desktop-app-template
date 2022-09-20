@@ -5,7 +5,7 @@ import { BsMoonStarsFill } from 'react-icons/bs';
 import { ImCross } from 'react-icons/im';
 import React, { useState, useEffect, Fragment, Suspense, useMemo } from 'react';
 import { createStyles, useMantineTheme } from '@mantine/styles';
-import { NavLink, Route, Routes } from 'react-router-dom';
+import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useHotkeys } from '@mantine/hooks';
 // talk to rust with
@@ -34,9 +34,9 @@ function App() {
   const { t, i18n } = useTranslation();
   // left sidebar
   const views = [
-//     { component: Home, path: '/', exact: true, name: t('Home') },
+//     { component: () => <Home prop1={'stuff'} />, path: '/home', name: t('Home') },
 //     { component: CIFInfo, path: '/cif-info', name: 'CIF ' + t('Info') },
-//     { component: About, path: '/about', name: t('About') }
+//     { component: React.memo(About), path: '/about', name: t('About') }
       { component: ExampleView, path: '/example-view', name: t('ExampleView') },
   ];
 
@@ -128,6 +128,7 @@ function App() {
       }
       className={classes.appShell}>
       <Routes>
+        <Route exact path='/' element={<Navigate to={views[0].path} />} />
         {views.map((view, index) => <Route key={index} exact={view.exact}
           path={view.path} element={
             <React.Suspense fallback={<Fallback />}><view.component /></React.Suspense>
