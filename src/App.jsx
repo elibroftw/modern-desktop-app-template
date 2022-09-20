@@ -71,7 +71,7 @@ function App() {
   function NavLinks() {
     // TODO: useHotkeys and abstract this
     return views.map((view, index) =>
-      <NavLink align="left" to={view.path} key={index} onClick={_ => setMobileNavOpened(false)}
+      <NavLink align='left' to={view.path} key={index} end={view.exact} onClick={() => setMobileNavOpened(false)}
         className={({ isActive }) => classes.navLink + ' ' + (isActive ? classes.navLinkActive : classes.navLinkInactive)}>
         {/* TODO: Icons */}
         <Group><Text>{view.name ? view.name : view.name}</Text></Group>
