@@ -39,7 +39,8 @@ export default function (props) {
             Checkbox: { styles: { input: { cursor: 'pointer' }, label: { cursor: 'pointer' }}},
             TextInput: { styles: { label: { marginTop: '0.5rem' }}},
             Select: { styles: { label: { marginTop: '0.5rem' }}},
-            Loader: { defaultProps: { size: 'xl' }}
+            Loader: { defaultProps: { size: 'xl' }},
+            Anchor: { defaultProps: { target: '_blank' }},
         }
     }
 
