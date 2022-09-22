@@ -3,7 +3,7 @@ import { useMantineColorScheme } from '@mantine/core';
 import { IoSunnySharp } from 'react-icons/io5';
 import { BsMoonStarsFill } from 'react-icons/bs';
 import { ImCross } from 'react-icons/im';
-import React, { useState, useEffect, Fragment, Suspense, useMemo } from 'react';
+import React, { useState, useEffect, Fragment, Suspense, useMemo, useRef } from 'react';
 import { createStyles, useMantineTheme } from '@mantine/styles';
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -54,6 +54,11 @@ function App() {
 
   // getAppStyles defined below App()
   const { classes } = getAppStyles();
+  const [navbarClearance, setNavbarClearance] = useState(0);
+  const footerRef = useRef(null);
+  useEffect(() => {
+    if (footerRef.current) setNavbarClearance(footerRef.current.clientHeight);
+  }, [footersSeen]);
 
   function LanguageHeaders() {
     const languages = i18n.options.resources;
@@ -91,7 +96,11 @@ function App() {
     <AppShell padding="md" navbarOffsetBreakpoint="sm"
       navbar={
         <Navbar height='100%' width={{ sm: 200 }} p="xs" hidden={!mobileNavOpened} hiddenBreakpoint="sm">
-          <NavLinks />
+          <Navbar.Section grow><NavLinks /></Navbar.Section>
+          <Navbar.Section>
+            {/* Bottom of Navbar Example: https://github.com/mantinedev/mantine/blob/master/src/mantine-demos/src/demos/core/AppShell/_user.tsx */}
+            <Space h={navbarClearance} /> {/* Acount for footer */}
+          </Navbar.Section>
         </Navbar>
       }
       header={
