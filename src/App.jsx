@@ -45,12 +45,7 @@ function App() {
   const [mobileNavOpened, setMobileNavOpened] = useState(false);
   // load preferences using localForage
   const [footersSeen, setFootersSeen, footersSeenLoading] = useLocalForage('footersSeen', defualtFooterSeen);
-  const [lang, setLang] = useLocalForage('lang', i18n.resolvedLanguage);
-
-  function changeLang(lang) {
-    setLang(lang);
-    i18n.changeLanguage(lang);
-  }
+  const lang = i18n.resolvedLanguage;
 
   // getAppStyles defined below App()
   const { classes } = getAppStyles();
@@ -67,7 +62,7 @@ function App() {
         {/* language code is a link if not the current language */}
         {lang === supportedLang ?
           <Text>{supportedLang.toUpperCase()}</Text> :
-          <Anchor onClick={() => changeLang(supportedLang)}>{supportedLang.toUpperCase()}</Anchor>}
+          <Anchor onClick={() => i18n.changeLanguage(supportedLang)}>{supportedLang.toUpperCase()}</Anchor>}
           <Text>{index < Object.keys(languages).length - 1 && '|'}</Text>
       </Fragment>
     );
