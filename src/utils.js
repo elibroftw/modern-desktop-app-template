@@ -2,6 +2,18 @@ import localforage from 'localforage';
 import { useState, useLayoutEffect } from 'react';
 export { localforage };
 
+export function useCookie(key, defaultValue, { expires=365000, sameSite='lax', path='/'}={}) {
+    // cookie expires in a millenia
+    // sameSite != 'strict' because the cookie is not read for sensitive actions
+    // synchronous
+    const cookieValue = Cookies.get(key);
+    const [state, setState] = useState(cookieValue || defaultValue);
+    useEffect(() => {
+        Cookies.set(key, state, { expires, sameSite, path });
+    }, [state]);
+    return [state, setState];
+}
+
 // https://reactjs.org/docs/hooks-custom.html
 export function useLocalForage(key, defaultValue) {
     // only supports primitives, arrays, and {} objects
@@ -20,8 +32,9 @@ export function useLocalForage(key, defaultValue) {
         return () => allow = false;
     }, []);
     // useLayoutEffect does not like Promise return values.
-    useLayoutEffect(() => {
+    useEffect(() => {
         // do not allow setState to be called before data has even been loaded!
+        // this prevents overwriting
         if (!loading) localforage.setItem(key, state);
     }, [state]);
     return [state, setState, loading];

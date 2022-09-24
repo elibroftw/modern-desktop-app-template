@@ -1,48 +1,63 @@
 // boilerplate components
-import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
+import { MantineProvider, ColorSchemeProvider, Global } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { ModalsProvider } from '@mantine/modals';
 import { useHotkeys, useColorScheme } from '@mantine/hooks';
 import { BrowserRouter } from 'react-router-dom';
-import Cookies from 'js-cookie';
-// when react-use-cookie gets better, use it instead for better logic abstraction
-// import useCookie from 'react-use-cookie';
 import Splashscreen from './Splashscreen';
 import { useState } from 'react';
+import { useCookie } from './utils';
 
 // I love boilerplate
-export default function (props) {
-    // colorScheme clever logic
-    const cookieColorScheme = Cookies.get('colorScheme');
+export default function ({ children }) {
     const preferredColorScheme = useColorScheme();
-    // use cookie only for theme because its synchronous
-    const [colorScheme, setColorScheme] = useState(cookieColorScheme || preferredColorScheme);
+    const [colorScheme, setColorScheme] = useCookie('colorScheme', preferredColorScheme);
+
     function toggleColorScheme(value) {
-        value = value || (colorScheme === 'dark' ? 'light' : 'dark');
-        // cookie expires in a millenia
-        // sameSite != 'strict' because the cookie is not read for sensitive actions
-        Cookies.set('colorScheme', value, { expires: 365000, sameSite: 'lax', path: '/' });
-        setColorScheme(value);
+        setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
     }
+
     useHotkeys([['mod+J', () => toggleColorScheme()]]);
 
     // long tasks should use useState(true)
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setLoading] = useState(false);
 
     // override theme for Mantine (default props and styles)
     // https://mantine.dev/theming/mantine-provider/
     const theme = {
         colorScheme,
-        loader: 'bars',
+        loader: 'oval',
         fontFamily: 'Open Sans, sans serif',
         components: {
             Checkbox: { styles: { input: { cursor: 'pointer' }, label: { cursor: 'pointer' }}},
             TextInput: { styles: { label: { marginTop: '0.5rem' }}},
             Select: { styles: { label: { marginTop: '0.5rem' }}},
             Loader: { defaultProps: { size: 'xl' }},
-            Anchor: { defaultProps: { target: '_blank' }},
+            Space: { defaultProps: {h: 'sm' }},
+            Anchor: { defaultProps: {target: '_blank' }}
         }
     }
+
+    const styles = theme => ({
+        '.row': {
+            display: 'flex',
+            alignItems: 'flex-end',
+            '& > div': {
+                flexGrow: 1,
+            }
+        },
+        '.rowCenter': {
+            display: 'flex',
+            alignItems: 'center',
+            '& > div': {
+                flexGrow: 1,
+            }
+        },
+        '.embeddedInput': {
+            display: 'inline-block',
+            margin: 'auto 5px',
+        }
+    });
 
     return (
         <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS withCSSVariables>
@@ -50,8 +65,9 @@ export default function (props) {
                 <NotificationsProvider>
                     <ModalsProvider>
                         <BrowserRouter>
+                            <Global styles={styles} />
                             {/* show splashscreen for inital data */}
-                            {isLoading ? <Splashscreen /> : props.children}
+                            {isLoading ? <Splashscreen /> : children}
                         </BrowserRouter>
                     </ModalsProvider>
                 </NotificationsProvider>
