@@ -32,6 +32,9 @@
   },
   "scripts": {
     "dev": "tauri dev",
+    "nvmrc": "node -v > .nvmrc",
+    "postinstall": "yarn nvmrc",
+    "predev": "yarn nvmrc",
     "tauri": "tauri",
     "start": "vite",
     "rls": "tauri build",
