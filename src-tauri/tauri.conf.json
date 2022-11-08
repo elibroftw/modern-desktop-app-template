@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "Product Name",
-    "version": "0.2.0"
+    "version": "0.1.0"
   },
   "build": {
     "beforeDevCommand": "yarn start",
