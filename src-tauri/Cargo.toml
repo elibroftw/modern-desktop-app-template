@@ -16,8 +16,9 @@ tauri-build = { version = "1.0", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.0", features = ["dialog-save", "fs-write-file", "path-all", "shell-open", "window-set-size"] }
+tauri = { version = "1.0", features = ["dialog-save", "fs-write-file", "path-all", "shell-open", "window-maximize", "window-set-focus", "window-set-size", "window-unminimize"] }
 tauri-plugin-window-state = { git = "https://github.com/tauri-apps/tauri-plugin-window-state/", branch = "dev" }
+tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/tauri-plugin-single-instance", branch = "dev" }
 
 [features]
 # by default Tauri runs in production mode

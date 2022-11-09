@@ -1,6 +1,10 @@
+import { currentMonitor, getCurrent } from '@tauri-apps/api/window';
+import Cookies from 'js-cookie';
 import localforage from 'localforage';
-import { useState, useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 export { localforage };
+
+export const RUNNING_IN_TAURI = window.__TAURI__ !== undefined;
 
 export function useCookie(key, defaultValue, { expires=365000, sameSite='lax', path='/'}={}) {
     // cookie expires in a millenia
@@ -12,6 +16,45 @@ export function useCookie(key, defaultValue, { expires=365000, sameSite='lax', p
         Cookies.set(key, state, { expires, sameSite, path });
     }, [state]);
     return [state, setState];
+}
+
+export function trueTypeOf(obj) {
+    return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
+    /*
+        []              -> array
+        {}              -> object
+        ''              -> string
+        new Date()      -> date
+        1               -> number
+        function () {}  -> function
+        /test/i         -> regexp
+        true            -> boolean
+        null            -> null
+        trueTypeOf()    -> undefined
+    */
+}
+
+export function useMinWidth(minWidth) {
+    if (RUNNING_IN_TAURI) {
+        useEffect(() => {
+            async function resizeWindow() {
+                // to set a size consistently accrosss devices,
+                //  one must use LogicalSize (Physical cannot be relied upon)
+                const physicalSize = await getCurrent().innerSize();
+                // Since innerSize returns Physical size, we need
+                //   to get the current monitor scale factor
+                //   to convert the physical size into a logical size
+                const monitor = await currentMonitor();
+                const scaleFactor = monitor.scaleFactor;
+                const logicalSize = physicalSize.toLogical(scaleFactor);
+                if (logicalSize.width < minWidth) {
+                    logicalSize.width = minWidth;
+                    await getCurrent().setSize(logicalSize);
+                }
+            }
+            resizeWindow().catch(console.error);
+        }, []); // [] to ensure on first render
+    }
 }
 
 // https://reactjs.org/docs/hooks-custom.html

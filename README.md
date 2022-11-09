@@ -35,3 +35,12 @@ I do not recommend pulling from my repo because you will need to edit the same f
 ![image](https://user-images.githubusercontent.com/21298211/160052266-9f9ea8ec-6964-4f76-bccb-2913998e5b23.png)
 
 ![image](https://user-images.githubusercontent.com/21298211/160052283-5ee37ed7-be8e-4713-bdb3-2d4279afc36f.png)
+
+## Future Resources
+
+### URL Schema (used with Single Instance)
+
+Use the instaled single instance plugin with the reading from below to get a Windows
+app URL protocol. This can be used for say Music Players, PDF Readers, etc.
+
+- [URL schema](https://gitlab.com/ioneyed/tauri-example-singleinstance)

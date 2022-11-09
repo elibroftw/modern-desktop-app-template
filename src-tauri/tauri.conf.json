@@ -8,7 +8,7 @@
     "beforeBuildCommand": "yarn build",
     "devPath": "http://localhost:1420",
     "distDir": "../build",
-    "withGlobalTauri": false
+    "withGlobalTauri": true
   },
   "tauri": {
     "bundle": {
@@ -116,7 +116,7 @@
         "close": false,
         "create": false,
         "hide": false,
-        "maximize": false,
+        "maximize": true,
         "minimize": false,
         "print": false,
         "requestUserAttention": false,
@@ -126,7 +126,7 @@
         "setCursorPosition": false,
         "setCursorVisible": false,
         "setDecorations": false,
-        "setFocus": false,
+        "setFocus": true,
         "setFullscreen": false,
         "setIcon": false,
         "setMaxSize": false,
@@ -139,7 +139,7 @@
         "show": false,
         "startDragging": false,
         "unmaximize": false,
-        "unminimize": false
+        "unminimize": true
       }
     },
     "windows": [

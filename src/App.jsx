@@ -1,4 +1,4 @@
-import { AppShell, Navbar, Header, Footer, Aside, Text, MediaQuery, Burger, ActionIcon, Group, Anchor, Button } from '@mantine/core';
+import { AppShell, Navbar, Header, Footer, Aside, Text, MediaQuery, Burger, ActionIcon, Group, Anchor, Button, Space } from '@mantine/core';
 import { useMantineColorScheme } from '@mantine/core';
 import { IoSunnySharp } from 'react-icons/io5';
 import { BsMoonStarsFill } from 'react-icons/bs';

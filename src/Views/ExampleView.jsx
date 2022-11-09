@@ -3,41 +3,20 @@ import { Text, Anchor, Space, Button, Title } from '@mantine/core';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { writeTextFile, BaseDirectory } from '@tauri-apps/api/fs';
-import { getCurrent, currentMonitor } from '@tauri-apps/api/window'
 import { downloadDir } from '@tauri-apps/api/path';
 import { open } from '@tauri-apps/api/shell';
 import { invoke } from '@tauri-apps/api/tauri'
+import { RUNNING_IN_TAURI, useMinWidth } from '../utils';
 
 export default function ExampleView() {
     const { t } = useTranslation();
 
-    // run only in desktop/tauri env
-    if (window.__TAURI__ !== undefined) {
-        useEffect(() => {
-            async function resizeWindow() {
-                // to set a size consistently accrosss devices,
-                //  one must use LogicalSize (Physical cannot be relied upon)
-                const physicalSize = await getCurrent().innerSize();
-                // Since innerSize returns Physical size, we need
-                //   to get the current monitor scale factor
-                //   to convert the physical size into a logical size
-                const monitor = await currentMonitor();
-                const scaleFactor = monitor.scaleFactor;
-                const logicalSize = physicalSize.toLogical(scaleFactor);
-                const minWidth = 1750;
-                if (logicalSize.width < minWidth) {
-                    logicalSize.width = minWidth;
-                    await getCurrent().setSize(logicalSize);
-                }
-            }
-            resizeWindow().catch(console.error);
-        }, []); // [] to ensure on first render
-    }
+    useMinWidth(1000);
 
     // fs example
     async function createFile() {
         // run only in desktop/tauri env
-        if (window.__TAURI__ !== undefined) {
+        if (RUNNING_IN_TAURI) {
             // https://tauri.app/v1/api/js/modules/fs
             const downloadDirPath = await downloadDir();
             const filePath = `${downloadDirPath}/example_file.txt`;

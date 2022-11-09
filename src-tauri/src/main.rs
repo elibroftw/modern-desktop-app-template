@@ -12,6 +12,12 @@ use std::thread::sleep;
 use std::time::Duration;
 use tauri_plugin_window_state;
 
+#[derive(Clone, serde::Serialize)]
+struct SingleInstancePayload {
+  args: Vec<String>,
+  cwd: String,
+}
+
 #[derive(Debug, Default, Serialize)]
 struct Example<'a> {
     #[serde(rename = "Attribute 1")]
@@ -31,7 +37,7 @@ fn main() {
   // main window should be invisible to allow either the setup delay or the plugin to show the window
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![custom_command, process_file])
-    // use the below if you don't want to save window positions
+    // UNCOMMENT if you don't want to save window positions
     // .setup(|app| {
     //     // Delay window open in order to avoid white flash described https://github.com/tauri-apps/tauri/issues/1564
     //     let main_window = app.get_window("main").unwrap();
@@ -41,6 +47,10 @@ fn main() {
     //     });
     //     Ok(())
     // })
+    // COMMENT IF YOU DO NOT WANT SINGLE INSTANCE
+    .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
+      app.emit_all("fromOtherInstance", SingleInstancePayload { args: argv, cwd }).unwrap();
+    }))
     .plugin(tauri_plugin_window_state::Builder::default().build())
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
