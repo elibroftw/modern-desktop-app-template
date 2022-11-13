@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "Product Name",
-    "version": "0.1.0"
+    "version": "../package.json"
   },
   "build": {
     "beforeDevCommand": "yarn start",
@@ -45,7 +45,8 @@
       }
     },
     "updater": {
-      "active": false
+      "active": false,
+      "dialog": false
     },
     "allowlist": {
       "all": false,
@@ -95,7 +96,7 @@
       "process": {
         "all": false,
         "exit": false,
-        "relaunch": false,
+        "relaunch": true,
         "relaunchDangerousAllowSymlinkMacos": false
       },
       "protocol": {
