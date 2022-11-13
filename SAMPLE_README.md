@@ -27,6 +27,10 @@ This project was bootstrapped with Create React App and converted to use Vite.
 - [Mantine Default Theme](https://github.com/mantinedev/mantine/blob/master/src/mantine-styles/src/theme/default-theme.ts)
 - [react-18next Trans Component](https://react.i18next.com/latest/trans-component)
 
+### Implementing Auto-Update
+
+[Watch Tauri Part 10](https://youtu.be/ZXjlZBisYPQ) and [read sample backend code](https://github.com/elibroftw/website/tree/master/blueprints/tauri_releases)
+
 ### Calling Rust from the Frontend
 
 ```rs

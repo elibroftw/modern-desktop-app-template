@@ -46,7 +46,11 @@
     },
     "updater": {
       "active": false,
-      "dialog": false
+      "dialog": false,
+      "endpoints": [
+        "https://youtu.be/ZXjlZBisYPQ"
+      ],
+      "pubkey": ""
     },
     "allowlist": {
       "all": false,
@@ -61,7 +65,7 @@
         "confirm": false,
         "message": false,
         "open": false,
-        "save": true
+        "save": false
       },
       "fs": {
         "all": false,

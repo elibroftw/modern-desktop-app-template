@@ -16,7 +16,11 @@ const resources = {
       Home: 'Accueil',
       contactUsMessage: "Si vous avez des questions ou des demandes, n'hésitez pas à envoyer un email à",
       'Monday to Saturday': 'Lundi à Samedi',
-      transExample: 'Ce modèle se trouve sur <0>github.com{{variable}}</0>'
+      transExample: 'Ce modèle se trouve sur <0>github.com{{variable}}</0>',
+      'Update v{{ v }} available': 'Mise à jour v{{ v }} disponible',
+      'Install update and relaunch': 'Installer la mise à jour et relancer',
+      'Installing update v{{ v }}': 'Installation de la mise à jour v{{ v }}',
+      'Will relaunch afterwards': 'Relancera ensuite'
     }
   }
 }

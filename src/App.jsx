@@ -1,4 +1,4 @@
-import { AppShell, Navbar, Header, Footer, Aside, Text, MediaQuery, Burger, ActionIcon, Group, Anchor, Button, Space } from '@mantine/core';
+import { AppShell, Navbar, Header, Footer, Text, MediaQuery, Burger, ActionIcon, Aside, Group, Anchor, Button, Space } from '@mantine/core';
 import { useMantineColorScheme } from '@mantine/core';
 import { IoSunnySharp } from 'react-icons/io5';
 import { BsMoonStarsFill } from 'react-icons/bs';
@@ -8,17 +8,20 @@ import { createStyles, useMantineTheme } from '@mantine/styles';
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useHotkeys } from '@mantine/hooks';
+import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
+import { relaunch } from '@tauri-apps/api/process'
 // talk to rust with
 // import { invoke } from '@tauri-apps/api/tauri'
 
 // local js files
-import { useLocalForage } from './utils';
+import { RUNNING_IN_TAURI, useLocalForage } from './utils';
 
 // fallback for React Suspense
 import Fallback from './Views/Fallback';
 
 // imported views need to be added to `views`
 import ExampleView from './Views/ExampleView';
+import { showNotification } from '@mantine/notifications';
 // import Home from './Views/Home';
 // import About from './Views/About';
 // import CIFInfo from './Views/CIFInfo';
@@ -34,10 +37,10 @@ function App() {
   const { t, i18n } = useTranslation();
   // left sidebar
   const views = [
-//     { component: () => <Home prop1={'stuff'} />, path: '/home', name: t('Home') },
-//     { component: CIFInfo, path: '/cif-info', name: 'CIF ' + t('Info') },
-//     { component: React.memo(About), path: '/about', name: t('About') }
-      { component: ExampleView, path: '/example-view', name: t('ExampleView') },
+    //     { component: () => <Home prop1={'stuff'} />, path: '/home', name: t('Home') },
+    //     { component: CIFInfo, path: '/cif-info', name: 'CIF ' + t('Info') },
+    //     { component: React.memo(About), path: '/about', name: t('About') }
+    { component: ExampleView, path: '/example-view', name: t('ExampleView') },
   ];
 
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -55,17 +58,55 @@ function App() {
     if (footerRef.current) setNavbarClearance(footerRef.current.clientHeight);
   }, [footersSeen]);
 
+  // Updater integration
+
+  function startInstall(newVersion) {
+    showNotification({ title: t('Installing update v{{ v }}', { v: newVersion }), message: t('Will relaunch afterwards'), autoClose: false });
+    installUpdate().then(relaunch);
+  }
+
+  useEffect(() => {
+    if (RUNNING_IN_TAURI) {
+      checkUpdate().then(({ shouldUpdate, manifest }) => {
+        if (shouldUpdate) {
+          const { version: newVersion, body: releaseNotes } = manifest;
+          const color = colorScheme === 'dark' ? 'teal' : 'teal.8';
+          showNotification({
+            title: t('Update v{{ v }} available', { v: newVersion }),
+            color,
+            message: <>
+              <Text>{releaseNotes}</Text>
+              <Button color={color} style={{ width: '100%' }} onClick={() => startInstall(newVersion)}>{t('Install update and relaunch')}</Button>
+            </>,
+            autoClose: false
+          });
+        }
+      });
+    }
+  }, []);
+
   function LanguageHeaders() {
-    const languages = i18n.options.resources;
-    return Object.keys(languages).map((supportedLang, index) =>
-      <Fragment key={index}>
+    const languages = Object.keys(i18n.options.resources);
+    let nextLangIdx = 0;
+
+    function cycleLang() {
+      if (nextLangIdx == languages.length) nextLangIdx = 0;
+      i18n.changeLanguage(languages[nextLangIdx])
+    }
+
+    const header = languages.map((supportedLang, index) => {
+      const selectedLang = lang === supportedLang;
+      if (selectedLang) nextLangIdx = index + 1;
+      return <Fragment key={index}>
         {/* language code is a link if not the current language */}
-        {lang === supportedLang ?
+        {selectedLang ?
           <Text>{supportedLang.toUpperCase()}</Text> :
           <Anchor onClick={() => i18n.changeLanguage(supportedLang)}>{supportedLang.toUpperCase()}</Anchor>}
-          <Text>{index < Object.keys(languages).length - 1 && '|'}</Text>
+        <Text>{index < languages.length - 1 && '|'}</Text>
       </Fragment>
-    );
+    });
+    useHotkeys([['mod+Shift+L', cycleLang]]);
+    return header;
   }
 
   function NavLinks() {
@@ -87,7 +128,7 @@ function App() {
     return t(FOOTER);
   }
 
-  return (
+  return <>
     <AppShell padding="md" navbarOffsetBreakpoint="sm"
       navbar={
         <Navbar height='100%' width={{ sm: 200 }} p="xs" hidden={!mobileNavOpened} hiddenBreakpoint="sm">
@@ -139,7 +180,7 @@ function App() {
           } />)}
       </Routes>
     </AppShell>
-  );
+  </>;
 }
 
 // this can exported in styles.js
