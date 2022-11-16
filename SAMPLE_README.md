@@ -71,9 +71,13 @@ An alias for `yarn tauri dev` which runs `yarn start` and opens a debug enabled 
 
 An alias for `yarn tauri build` which builds the frontend and bundles it into a Tauri release build
 
-### `yarn run upgrade`
+### `yarn update`
 
 Upgrades packages/crates in `./packages.json` and `./src-tauri/Cargo.toml`
+
+### `yarn clean`
+
+Installs `cargo-sweep` and cleans unused Rust build files by first **building both the debug and release versions** to test which files are outdated.
 
 ### `yarn build`
 
