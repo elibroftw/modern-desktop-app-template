@@ -1,52 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <link rel="icon" href="/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="index.html NAME" content="index.html CONTENT" />
-  <link rel="apple-touch-icon" href="/logo192.png" />
-  <!--
+<meta charset="utf-8" />
+<link rel="icon" href="/favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#1a1b1e" />
+<meta
+  name="description"
+  content="This awesome app was made with ReactJS"
+/>
+<link rel="apple-touch-icon" href="/logo192.png" />
+<!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="stylesheet" href="/index.css" />
-  <title>index.html title</title>
-</head>
-
-<body>
-  <noscript>This app is made with ReactJS so JavaScript is required to run this app.</noscript>
-  <div id="root"></div>
-  <!--
+<link rel="manifest" href="/manifest.json" />
+<link rel="stylesheet" href="/index.css" />
+<title>index.html title</title>
+<noscript>JavaScript is required to use this app because this app is made with ReactJS</noscript>
+<div id="root"></div>
+<!--
       You can add webfonts, meta tags, or analytics to this file.
       The build step will place the bundled scripts into the <body> tag.
     -->
-  <script type="module" src="/src/main.jsx"></script>
-  <!-- Handle additional app launches (url, etc.) -->
-  <script type="module">
-    import { listen } from '@tauri-apps/api/event';
-    import { appWindow } from '@tauri-apps/api/window';
-    if (window.__TAURI__ !== undefined) {
-      await listen('fromOtherInstance',
-        ({ payload, ...eventObj }) => {
-          appWindow.isMaximized().then(
-            isMaximized => {
-              // See https://github.com/tauri-apps/tauri/issues/5595
-              //  https://github.com/tauri-apps/tauri/issues/5596
-              const restoreWindow = isMaximized ? appWindow.maximize() : appWindow.unminimize();
-              restoreWindow.then(() => appWindow.setFocus(true));
-            }
-          )
-          let args = payload?.args;
-          let cwd = payload?.cwd;
-          if (args?.length > 1) { }
-        }
-      );
-    }
-  </script>
-</body>
-
-</html>
+<script type="module" src="/src/main.jsx"></script>
+<!-- Handle additional app launches (url, etc.) -->
+<script type="module">
+  import { listen } from '@tauri-apps/api/event';
+  import { appWindow } from '@tauri-apps/api/window';
+  if (window.__TAURI__ !== undefined) {
+    await listen('fromOtherInstance',
+      ({ payload, ...eventObj }) => {
+        // Know issue: does not restore to a maximized state. https://github.com/tauri-apps/tao/issues/622
+        appWindow.unminimize().then(() => appWindow.setFocus(true));
+        let args = payload?.args;
+        let cwd = payload?.cwd;
+        if (args?.length > 1) { }
+      }
+    );
+  }
+</script>
