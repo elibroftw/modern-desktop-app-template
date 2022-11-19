@@ -3,7 +3,6 @@ import { documentDir } from '@tauri-apps/api/path';
 import { currentMonitor, getCurrent } from '@tauri-apps/api/window';
 import Cookies from 'js-cookie';
 import localforage from 'localforage';
-import { parse as parsePath } from 'path';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { Store } from 'tauri-plugin-store-api';
 import packageJson from '../package.json';
@@ -98,7 +97,7 @@ export async function getUserAppFiles() {
             const appFolder = path.join(documents, app_name);
             for (const { path } of flattenFiles(entries)) {
                 const friendlyName = path.substring(appFolder.length + 1, path.length);
-                if (EXTS.has(parsePath(path).ext.toLowerCase())) saveFiles.push({path, name: friendlyName});
+                // if (EXTS.has(parsePath(path).ext.toLowerCase())) saveFiles.push({path, name: friendlyName});
             }
         }
         i++;
