@@ -8,7 +8,7 @@
     "beforeBuildCommand": "yarn build",
     "devPath": "http://localhost:1420",
     "distDir": "../build",
-    "withGlobalTauri": true
+    "withGlobalTauri": false
   },
   "tauri": {
     "bundle": {
@@ -71,14 +71,14 @@
       "fs": {
         "all": false,
         "copyFile": false,
-        "createDir": false,
+        "createDir": true,
         "exists": false,
-        "readDir": false,
+        "readDir": true,
         "readFile": false,
         "removeDir": false,
         "removeFile": false,
         "renameFile": false,
-        "scope": ["$APP/*", "$DOWNLOAD/*"],
+        "scope": ["$APP/*", "$DOCUMENT/*"],
         "writeFile": true
       },
       "globalShortcut": {
@@ -90,7 +90,7 @@
         "scope": []
       },
       "notification": {
-        "all": false
+        "all": true
       },
       "os": {
         "all": false

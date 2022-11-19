@@ -28,7 +28,8 @@
     "react-i18next": "^11.18.6",
     "react-icons": "^4.4.0",
     "react-router-dom": "^6.2.1",
-    "react-transition-group": "^4.4.2"
+    "react-transition-group": "^4.4.2",
+    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#9bd993a"
   },
   "scripts": {
     "dev": "tauri dev",
@@ -44,7 +45,7 @@
     "preview": "vite preview",
     "serve": "serve -s build",
     "py": "concurrently \"yarn cross-env BROWSER=none yarn start\" \"python main.py --devpath http://127.0.0.1:3000\"",
-    "preinstall": "yarn global add serve sloc",
+    "preinstall": "yarn global add serve sloc @tauri-apps/cli",
     "sloc": "sloc src src-tauri/src",
     "update": "concurrently \"yarn upgrade \" \"cd src-tauri && cargo update\""
   },

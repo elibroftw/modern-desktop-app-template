@@ -1,15 +1,16 @@
 // component example
-import { Text, Anchor, Space, Button, Title } from '@mantine/core';
+import { Text, Anchor, Space, Button, Title, TextInput } from '@mantine/core';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { writeTextFile, BaseDirectory } from '@tauri-apps/api/fs';
 import { downloadDir } from '@tauri-apps/api/path';
 import { open } from '@tauri-apps/api/shell';
 import { invoke } from '@tauri-apps/api/tauri'
-import { RUNNING_IN_TAURI, useMinWidth } from '../utils';
+import { notify, RUNNING_IN_TAURI, useMinWidth, useStorage } from '../utils';
 
 export default function ExampleView() {
     const { t } = useTranslation();
+    const [data, setData, loading] = useStorage('exampleKey', '');
 
     useMinWidth(1000);
 
@@ -23,7 +24,10 @@ export default function ExampleView() {
             await writeTextFile('example_file.txt', 'oh this is from TAURI! COOLIO.\n', { dir: BaseDirectory.Download });
             // NOTE: https://github.com/tauri-apps/tauri/issues/4062
             await open(downloadDirPath);
-            await invoke('process_file', {filepath: filePath}).then(msg => console.log(msg === "Hello from Rust!"));
+            await invoke('process_file', {filepath: filePath}).then(msg => {
+                console.log(msg === "Hello from Rust!")
+                notify('Message From Rust', msg);
+            });
         }
     }
 
@@ -39,6 +43,7 @@ export default function ExampleView() {
                 components={[<Anchor href="https://github.com/elibroftw/modern-desktop-app-template" />]}
                 // optional stuff:
                 default='FALLBACK if key does not exist. This template is located on <0>github.com{{variable}}</0>' t={t} />
+            <TextInput label={t('Persistent data')} value={data} onChange={e => setData(e.currentTarget.value)} />
         </>
         // TODO: FAQ search box
     );

@@ -684,6 +684,11 @@
   resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.110.0.tgz#0f1d9ba86191964fb316a393c3ae4fc5e01eb6f0"
   integrity sha512-F7PGsboF35YRnSSMpAdco0VTBi0XkFzTHaaCX/jvwZChyZKeohJ99xALlS+zn23/SIUlWCrVvezpDzoqMhT/vA==
 
+"@tauri-apps/api@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.1.0.tgz#2c5756f6aeecd36f7683183eaba021690711bedf"
+  integrity sha512-n13pIqdPd3KtaMmmAcrU7BTfdMtIlGNnfZD0dNX8L4p8dgmuNyikm6JAA+yCpl9gqq6I8x5cV2Y0muqdgD0cWw==
+
 "@tauri-apps/api@^1.0.2":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.2.0.tgz#1f196b3e012971227f41b98214c846430a4eb477"
@@ -1953,6 +1958,13 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
+"tauri-plugin-store-api@github:tauri-apps/tauri-plugin-store#9bd993a":
+  version "0.1.0"
+  resolved "https://codeload.github.com/tauri-apps/tauri-plugin-store/tar.gz/9bd993aa67766596638bbfd91e79a1bf8f632014"
+  dependencies:
+    "@tauri-apps/api" "1.1.0"
+    tslib "2.4.0"
+
 to-fast-properties@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-2.0.0.tgz#dc5e698cbd079265bc73e0377681a4e4e83f616e"
@@ -1962,6 +1974,11 @@ tree-kill@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/tree-kill/-/tree-kill-1.2.2.tgz#4ca09a9092c88b73a7cdc5e8a01b507b0790a0cc"
   integrity sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==
+
+tslib@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
+  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
 
 tslib@^2.0.0, tslib@^2.1.0, tslib@^2.4.0:
   version "2.4.1"

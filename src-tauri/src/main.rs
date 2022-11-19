@@ -10,6 +10,7 @@ use tauri;
 use tauri::Manager;  // used by .get_window
 use std::thread::sleep;
 use std::time::Duration;
+use tauri_plugin_store::PluginBuilder;
 use tauri_plugin_window_state;
 
 #[derive(Clone, serde::Serialize)]
@@ -52,6 +53,7 @@ fn main() {
       app.emit_all("fromOtherInstance", SingleInstancePayload { args: argv, cwd }).unwrap();
     }))
     .plugin(tauri_plugin_window_state::Builder::default().build())
+    .plugin(PluginBuilder::default().build())
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
