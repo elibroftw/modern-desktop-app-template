@@ -67,8 +67,42 @@ export function useMinWidth(minWidth) {
     }
 }
 
-// uselocalForage on web and tauri-plugin-store in Tauri
-export const useStorage = RUNNING_IN_TAURI ? useTauriStore : useLocalForage;
+function* flattenFiles (entries) {
+    for (const entry of entries) {
+        entry.children === null ? yield entry.path : yield* fileSaveFiles(entry.children);
+    }
+}
+
+// const getExtensionTests = ['/.test/.ext', './asdf.mz', '/asdf/qwer.maz', 'asdf.mm', 'sdf/qwer.ww', './.asdf.mz', '/asdf/.qwer.maz', '.asdf.mm', 'sdf/.qwer.ww', './asdf', '/adsf/qwer', 'asdf', 'sdf/qewr', './.asdf', '/adsf/.qwer', '.asdf', 'sdf/.qewr']
+
+function getExtension(path) {
+    // Modified from https://stackoverflow.com/a/12900504/7732434
+    // get filename from full path that uses '\\' or '/' for seperators
+    var basename = path.split(/[\\/]/).pop(),
+        pos = basename.lastIndexOf('.');
+    // if `.` is not in the basename
+    if (pos < 0) return '';
+    // extract extension including `.`
+    return basename.slice(pos);
+}
+
+export async function getUserAppFiles() {
+    // returns an array of files from $DOCUMENT/$APP_NAME/* with extension that is in EXTS
+    //  implying that the app (tauri-plugin-store) can parse the files
+    // returns [] if $DOCUMENT/$APP_NAME is a file
+    const documents = await documentDir();
+    const saveFiles = [];
+    await createDir(APP_NAME, { dir: BaseDirectory.Document, recursive: true });
+    const entries = await readDir(APP_NAME, { dir: BaseDirectory.AppData, recursive: true });
+    if (entries !== null) {
+        const appFolder = path.join(documents, APP_NAME);
+        for (const { path } of flattenFiles(entries)) {
+            const friendlyName = path.substring(appFolder.length + 1, path.length);
+            if (EXTS.has(getExtension(path).toLowerCase())) saveFiles.push({path, name: friendlyName});
+        }
+    }
+    return saveFiles;
+}
 
 const stores = {};
 
@@ -77,33 +111,8 @@ function getTauriStore(filename) {
     return stores[filename];
 }
 
-function* flattenFiles (entries) {
-    for (const entry of entries) {
-        entry.children === null ? yield entry.path : yield* fileSaveFiles(entry.children);
-    }
-}
-
-export async function getUserAppFiles() {
-    // get a list of user files from $DOCUMENT/$APP_NAME that the app (tauri-plugin-store) should be able to parse
-    const documents = await documentDir();
-    let entries = null;
-    const saveFiles = [];
-    let i = 0;
-    while (entries === null) {
-        const app_name = i === 0 ? APP_NAME : `${APP_NAME}(${i})`;
-        await createDir(app_name, { dir: BaseDirectory.Document, recursive: true });
-        entries = await readDir(app_name, { dir: BaseDirectory.AppData, recursive: true });
-        if (entries !== null) {
-            const appFolder = path.join(documents, app_name);
-            for (const { path } of flattenFiles(entries)) {
-                const friendlyName = path.substring(appFolder.length + 1, path.length);
-                // if (EXTS.has(parsePath(path).ext.toLowerCase())) saveFiles.push({path, name: friendlyName});
-            }
-        }
-        i++;
-    }
-    return saveFiles;
-}
+// uselocalForage on web and tauri-plugin-store in Tauri
+export const useStorage = RUNNING_IN_TAURI ? useTauriStore : useLocalForage;
 
 export function useTauriStore(key, defaultValue, storeName = 'data.dat') {
     /*
