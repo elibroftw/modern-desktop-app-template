@@ -78,7 +78,7 @@
         "removeDir": false,
         "removeFile": false,
         "renameFile": false,
-        "scope": ["$APP/*", "$DOCUMENT/*"],
+        "scope": ["$APP/*", "$DOCUMENT/*", "$DOWNLOAD/*"],
         "writeFile": true
       },
       "globalShortcut": {
@@ -93,7 +93,7 @@
         "all": true
       },
       "os": {
-        "all": false
+        "all": true
       },
       "path": {
         "all": true

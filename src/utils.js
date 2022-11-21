@@ -1,9 +1,11 @@
-import { BaseDirectory, createDir } from '@tauri-apps/api/fs';
-import { documentDir } from '@tauri-apps/api/path';
+import * as fs from '@tauri-apps/api/fs';
+import * as tauriPath from '@tauri-apps/api/path';
+import * as os from '@tauri-apps/api/os';
 import { currentMonitor, getCurrent } from '@tauri-apps/api/window';
 import Cookies from 'js-cookie';
 import localforage from 'localforage';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+// tauri-store docs: https://github.com/tauri-apps/tauri-plugin-store/blob/dev/webview-src/index.ts
 import { Store } from 'tauri-plugin-store-api';
 import packageJson from '../package.json';
 import tauriConfJson from '../src-tauri/tauri.conf.json';
@@ -67,7 +69,7 @@ export function useMinWidth(minWidth) {
     }
 }
 
-function* flattenFiles (entries) {
+function* flattenFiles(entries) {
     for (const entry of entries) {
         entry.children === null ? yield entry.path : yield* fileSaveFiles(entry.children);
     }
@@ -90,15 +92,17 @@ export async function getUserAppFiles() {
     // returns an array of files from $DOCUMENT/$APP_NAME/* with extension that is in EXTS
     //  implying that the app (tauri-plugin-store) can parse the files
     // returns [] if $DOCUMENT/$APP_NAME is a file
-    const documents = await documentDir();
+    const documents = await tauriPath.documentDir();
     const saveFiles = [];
-    await createDir(APP_NAME, { dir: BaseDirectory.Document, recursive: true });
-    const entries = await readDir(APP_NAME, { dir: BaseDirectory.AppData, recursive: true });
+    await fs.createDir(APP_NAME, { dir: fs.BaseDirectory.Document, recursive: true });
+    const entries = await fs.readDir(APP_NAME, { dir: fs.BaseDirectory.AppData, recursive: true });
     if (entries !== null) {
-        const appFolder = path.join(documents, APP_NAME);
+        const osType = await os.type();
+        const sep = osType === 'Windows_NT' ? '\\' : '/'
+        const appFolder = `${documents}${sep}${APP_NAME}`;
         for (const { path } of flattenFiles(entries)) {
             const friendlyName = path.substring(appFolder.length + 1, path.length);
-            if (EXTS.has(getExtension(path).toLowerCase())) saveFiles.push({path, name: friendlyName});
+            if (EXTS.has(getExtension(path).toLowerCase())) saveFiles.push({ path, name: friendlyName });
         }
     }
     return saveFiles;
@@ -115,9 +119,7 @@ function getTauriStore(filename) {
 export const useStorage = RUNNING_IN_TAURI ? useTauriStore : useLocalForage;
 
 export function useTauriStore(key, defaultValue, storeName = 'data.dat') {
-    /*
-        storeName is a path that is relative to AppData if not absolute
-    */
+    // storeName is a path that is relative to AppData if not absolute
     const [state, setState] = useState(defaultValue);
     const [loading, setLoading] = useState(true);
     const store = getTauriStore(storeName);
@@ -131,7 +133,6 @@ export function useTauriStore(key, defaultValue, storeName = 'data.dat') {
                 if (value === null) throw '';
                 if (allow) setState(value);
             }).catch(() => {
-                clearTimeout(timeoutRef.current);
                 store.set(key, defaultValue).then(() => {
                     timeoutRef.current = setTimeout(() => store.save(), SAVE_DELAY)
                 });

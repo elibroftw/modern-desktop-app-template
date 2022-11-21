@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Splashscreen from './Splashscreen';
 import { useState } from 'react';
 import { useCookie } from './utils';
+import { TauriProvider } from './TauriProvider';
 
 // I love boilerplate
 export default function ({ children }) {
@@ -29,12 +30,12 @@ export default function ({ children }) {
         loader: 'oval',
         fontFamily: 'Open Sans, sans serif',
         components: {
-            Checkbox: { styles: { input: { cursor: 'pointer' }, label: { cursor: 'pointer' }}},
-            TextInput: { styles: { label: { marginTop: '0.5rem' }}},
-            Select: { styles: { label: { marginTop: '0.5rem' }}},
-            Loader: { defaultProps: { size: 'xl' }},
-            Space: { defaultProps: {h: 'sm' }},
-            Anchor: { defaultProps: {target: '_blank' }}
+            Checkbox: { styles: { input: { cursor: 'pointer' }, label: { cursor: 'pointer' } } },
+            TextInput: { styles: { label: { marginTop: '0.5rem' } } },
+            Select: { styles: { label: { marginTop: '0.5rem' } } },
+            Loader: { defaultProps: { size: 'xl' } },
+            Space: { defaultProps: { h: 'sm' } },
+            Anchor: { defaultProps: { target: '_blank' } }
         }
     }
 
@@ -65,9 +66,11 @@ export default function ({ children }) {
                 <NotificationsProvider>
                     <ModalsProvider>
                         <BrowserRouter>
-                            <Global styles={styles} />
-                            {/* show splashscreen for inital data */}
-                            {isLoading ? <Splashscreen /> : children}
+                            <TauriProvider>
+                                <Global styles={styles} />
+                                {/* show splashscreen for inital data */}
+                                {isLoading ? <Splashscreen /> : children}
+                            </TauriProvider>
                         </BrowserRouter>
                     </ModalsProvider>
                 </NotificationsProvider>
