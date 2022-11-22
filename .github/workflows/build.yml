@@ -49,9 +49,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
 
-      - name: Install app dependencies and build web
+      - name: Install app dependencies from lockfile and build web
         # NOTE: comment out && yarn build if frontend does not have build script
-        run: yarn && yarn build
+        run: yarn install --frozen-lockfile && yarn build
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
