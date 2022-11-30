@@ -44,7 +44,6 @@
     "build": "cross-env INLINE_RUNTIME_CHUNK=false yarn vite build",
     "preview": "vite preview",
     "serve": "serve -s build",
-    "py": "concurrently \"yarn cross-env BROWSER=none yarn start\" \"python main.py --devpath http://127.0.0.1:3000\"",
     "preinstall": "yarn global add serve sloc @tauri-apps/cli",
     "sloc": "sloc src src-tauri/src",
     "update": "concurrently \"yarn upgrade \" \"cd src-tauri && cargo update\""

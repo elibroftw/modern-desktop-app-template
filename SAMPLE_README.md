@@ -100,7 +100,6 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 ## Tips and Trouble Shooting
 
 - Slow computer / low storage / Frontend edits only? `yarn start`
-  - To use webview however, `yarn py` can be used after a `pip install pywebview`
   - no Tauri API access of course
 - Publishing to the web? Edit `package.json`, `index.html`, `manifest.html`
 - More than 1 monitor? Set `alwaysOnTop` to `true` in `tauri.conf.json` to avoid alt-tabbing
