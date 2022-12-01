@@ -1,13 +1,13 @@
-import { AppShell, Navbar, Header, Footer, Text, MediaQuery, Burger, ActionIcon, Aside, Group, Anchor, Button, Space } from '@mantine/core';
+import { AppShell, Navbar, Header, Footer, Text, MediaQuery, Burger, ActionIcon, Aside, Group, Anchor, Button, Space, Affix, Transition } from '@mantine/core';
 import { useMantineColorScheme } from '@mantine/core';
-import { IoSunnySharp } from 'react-icons/io5';
+import { IoArrowUp, IoSunnySharp } from 'react-icons/io5';
 import { BsMoonStarsFill } from 'react-icons/bs';
 import { ImCross } from 'react-icons/im';
 import React, { useState, useEffect, Fragment, Suspense, useMemo, useRef } from 'react';
 import { createStyles, useMantineTheme } from '@mantine/styles';
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useHotkeys } from '@mantine/hooks';
+import { useHotkeys, useWindowScroll } from '@mantine/hooks';
 import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
 import { relaunch } from '@tauri-apps/api/process'
 // talk to rust with
@@ -175,10 +175,25 @@ function App() {
           } />)}
       </Routes>
       {/* prevent the footer from covering bottom text of a route view */}
-      {showFooter && <Space h={80} /> }
-
+      {showFooter && <Space h={80} />}
+      <ScrollToTop bottom={showFooter ? 70 : 20} />
     </AppShell>
   </>;
+}
+
+function ScrollToTop({ bottom = 20 }) {
+  const [scroll, scrollTo] = useWindowScroll();
+  return <Affix position={{ bottom, right: 15 }}>
+    <Transition transition='slide-up' mounted={scroll.y > 0}>
+      {transitionStyles =>
+        <div style={transitionStyles} >
+          <ActionIcon size='lg' color='primary' variant='filled' onClick={() => scrollTo({ y: 0 })} >
+            <IoArrowUp size={25} />
+          </ActionIcon>
+        </div>
+      }
+    </Transition>
+  </Affix>;
 }
 
 // this can exported in styles.js
