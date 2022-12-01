@@ -35,10 +35,14 @@ const FOOTER = 'FOOTER goes here';
 function App() {
   const { t, i18n } = useTranslation();
   // left sidebar
+
+  // if you lazy loaded a component, use the following
   const views = [
     //     { component: () => <Home prop1={'stuff'} />, path: '/home', name: t('Home') },
     //     { component: CIFInfo, path: '/cif-info', name: 'CIF ' + t('Info') },
-    //     { component: React.memo(About), path: '/about', name: t('About') }
+    //     { component: React.memo(About), path: '/about', name: t('About') },
+    // Suspense example
+    //     { component: () => <React.Suspense fallback={<Fallback />}><Setting /></React.Suspense>, path: '/settings', name: t('Settings') },
     { component: ExampleView, path: '/example-view', name: t('ExampleView') },
   ];
 
@@ -171,7 +175,7 @@ function App() {
         <Route exact path='/' element={<Navigate to={views[0].path} />} />
         {views.map((view, index) => <Route key={index} exact={view.exact}
           path={view.path} element={
-            <React.Suspense fallback={<Fallback />}><view.component /></React.Suspense>
+            <view.component />
           } />)}
       </Routes>
       {/* prevent the footer from covering bottom text of a route view */}
