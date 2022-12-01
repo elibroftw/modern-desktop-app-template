@@ -31,7 +31,6 @@ import { showNotification } from '@mantine/notifications';
 // constants
 const HEADER_TITLE = 'HEADER_TITLE goes here';
 const FOOTER = 'FOOTER goes here';
-const defualtFooterSeen = {};
 // TODO: footer fetched from online source
 function App() {
   const { t, i18n } = useTranslation();
@@ -47,7 +46,7 @@ function App() {
   // opened is for mobile nav
   const [mobileNavOpened, setMobileNavOpened] = useState(false);
   // load preferences using localForage
-  const [footersSeen, setFootersSeen, footersSeenLoading] = useLocalForage('footersSeen', defualtFooterSeen);
+  const [footersSeen, setFootersSeen, footersSeenLoading] = useLocalForage('footersSeen', {});
   const lang = i18n.resolvedLanguage;
 
   // getAppStyles defined below App()
@@ -120,7 +119,7 @@ function App() {
     );
   }
 
-  function shouldShowFooter() { return FOOTER && !footersSeenLoading && !(FOOTER in footersSeen); }
+  const showFooter = FOOTER && !footersSeenLoading && !(FOOTER in footersSeen);
 
   function FooterText() {
     // footer output logic goes here
@@ -137,8 +136,7 @@ function App() {
             {/* Bottom of Navbar Example: https://github.com/mantinedev/mantine/blob/master/src/mantine-demos/src/demos/core/AppShell/_user.tsx */}
             <Space h={navbarClearance} /> {/* Acount for footer */}
           </Navbar.Section>
-        </Navbar>
-      }
+        </Navbar>}
       header={
         <Header height={70} p="md" className={classes.header}>
           <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
@@ -153,25 +151,22 @@ function App() {
               {colorScheme === 'dark' ? <IoSunnySharp size={'1.5em'} /> : <BsMoonStarsFill />}
             </ActionIcon>
           </Group>
-        </Header>
-      }
-      // aside={
-      //   <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-      //     <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
-      //       <Text>Right Side. Use for help or support menu?</Text>
-      //     </Aside>
-      //   </MediaQuery>
-      // }
-      footer={
-        shouldShowFooter() &&
+        </Header>}
+      aside={
+        <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+          <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
+            <Text>Right Side. Use for help or support menu?</Text>
+          </Aside>
+        </MediaQuery>}
+      footer={showFooter &&
         <Footer height={'fit-content'} p="xs" className={classes.footer}>
           <FooterText />
           <Button variant="subtle" size="xs" onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER]: '' }))}>
             <ImCross />
           </Button>
-        </Footer>
-      }
+        </Footer>}
       className={classes.appShell}>
+
       <Routes>
         <Route exact path='/' element={<Navigate to={views[0].path} />} />
         {views.map((view, index) => <Route key={index} exact={view.exact}
@@ -179,6 +174,9 @@ function App() {
             <React.Suspense fallback={<Fallback />}><view.component /></React.Suspense>
           } />)}
       </Routes>
+      {/* prevent the footer from covering bottom text of a route view */}
+      {showFooter && <Space h={80} /> }
+
     </AppShell>
   </>;
 }
