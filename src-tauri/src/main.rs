@@ -4,7 +4,7 @@
   windows_subsystem = "windows"
 )]
 
-use serde:: Serialize;
+use serde::Serialize;
 use std::{collections::BTreeMap, fs};
 use tauri;
 use tauri::Manager;  // used by .get_window
@@ -12,6 +12,9 @@ use std::thread::sleep;
 use std::time::Duration;
 use tauri_plugin_store::PluginBuilder;
 use tauri_plugin_window_state;
+use std::fs::metadata;
+use std::path::PathBuf;
+use std::process::Command;
 
 #[derive(Clone, serde::Serialize)]
 struct SingleInstancePayload {
@@ -32,6 +35,51 @@ fn custom_command(window: tauri::Window) {}
 fn process_file(filepath: String) -> String {
     println!("Processing file: {}", filepath);
     "Hello from Rust!".into()
+}
+
+#[tauri::command]
+fn show_in_folder(path: String) {
+  #[cfg(target_os = "windows")]
+  {
+    Command::new("explorer")
+        .args(["/select,", &path]) // The comma after select is not a typo
+        .spawn()
+        .unwrap();
+  }
+
+  #[cfg(target_os = "linux")]
+  {
+    if path.contains(",") {
+      // see https://gitlab.freedesktop.org/dbus/dbus/-/issues/76
+      let new_path = match metadata(&path).unwrap().is_dir() {
+        true => path,
+        false => {
+          let mut path2 = PathBuf::from(path);
+          path2.pop();
+          path2.into_os_string().into_string().unwrap()
+        }
+      };
+      Command::new("xdg-open")
+          .arg(&new_path)
+          .spawn()
+          .unwrap();
+    } else {
+      Command::new("dbus-send")
+          .args(["--session", "--dest=org.freedesktop.FileManager1", "--type=method_call",
+                "/org/freedesktop/FileManager1", "org.freedesktop.FileManager1.ShowItems",
+                format!("array:string:\"file://{path}\"").as_str(), "string:\"\""])
+          .spawn()
+          .unwrap();
+    }
+  }
+
+  #[cfg(target_os = "macos")]
+  {
+    Command::new("open")
+        .args(["-R", &path])
+        .spawn()
+        .unwrap();
+  }
 }
 
 fn main() {

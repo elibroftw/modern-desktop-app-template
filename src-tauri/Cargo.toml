@@ -6,7 +6,7 @@ authors = ["you"]
 license = ""
 repository = ""
 edition = "2021"
-rust-version = "1.57"
+rust-version = "1.65"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -20,7 +20,6 @@ tauri = { version = "1.0", features = ["fs-create-dir", "fs-read-dir", "fs-write
 tauri-plugin-window-state = { git = "https://github.com/tauri-apps/tauri-plugin-window-state/", branch = "dev" }
 tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/tauri-plugin-single-instance", branch = "dev" }
 tauri-plugin-store = { git = "https://github.com/tauri-apps/tauri-plugin-store", rev = "9bd993a" }
-
 [features]
 # by default Tauri runs in production mode
 # when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL
@@ -28,6 +27,10 @@ default = [ "custom-protocol" ]
 # this feature is used used for production builds where `devPath` points to the filesystem
 # DO NOT remove this
 custom-protocol = [ "tauri/custom-protocol" ]
+
+# use this to override sub-dependencies
+# [patch.crates-io]
+# tao = { git = "https://github.com/tauri-apps/tao", branch = "dev" }
 
 [profile.release]
 panic = "abort" # Strip expensive panic clean-up logic

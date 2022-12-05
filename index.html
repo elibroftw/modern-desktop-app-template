@@ -28,7 +28,6 @@
     if (window.__TAURI__ !== undefined) {
       await listen('fromOtherInstance',
         ({ payload, ...eventObj }) => {
-          // Know issue: does not restore to a maximized state. https://github.com/tauri-apps/tao/issues/622
           appWindow.unminimize().then(() => appWindow.setFocus(true));
           let args = payload?.args;
           let cwd = payload?.cwd;

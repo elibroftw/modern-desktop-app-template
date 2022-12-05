@@ -68,6 +68,7 @@ function App() {
     installUpdate().then(relaunch);
   }
 
+  // Tauri event listeners (run on mount)
   useEffect(() => {
     if (RUNNING_IN_TAURI) {
       checkUpdate().then(({ shouldUpdate, manifest }) => {
