@@ -27,6 +27,26 @@ This project was bootstrapped with Create React App and converted to use Vite.
 - [Mantine Default Theme](https://github.com/mantinedev/mantine/blob/master/src/mantine-styles/src/theme/default-theme.ts)
 - [react-18next Trans Component](https://react.i18next.com/latest/trans-component)
 
+### App Icons
+
+```sh
+yarn tauri icon path\to\image.ext --output .\src-tauri\icons\
+```
+
+This will overwrite images in .\src-tauri\icons so ensure you are using `git`
+
+### System Tray Creating Ico Files
+
+This only applies when your source icon is not an ico.
+I suggest keeping source images in the `git` repo.
+
+```sh
+yarn tauri icon .\src-tauri\icons\SystemTray1.png --output .\src-tauri\icons\SystemTray1
+```
+
+After running this, simply rename the ico file in the new directory and move it one level up.
+All `.\src-tauri\icons\SystemTray*\` directories are ignored in [`.gitignore`](./.gitignore)
+
 ### Implementing Auto-Update
 
 [Watch Tauri Part 10](https://youtu.be/ZXjlZBisYPQ) and [read sample backend code](https://github.com/elibroftw/website/tree/master/blueprints/tauri_releases)

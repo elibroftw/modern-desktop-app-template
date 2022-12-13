@@ -26,7 +26,7 @@
     import { listen } from '@tauri-apps/api/event';
     import { appWindow } from '@tauri-apps/api/window';
     if (window.__TAURI__ !== undefined) {
-      await listen('fromOtherInstance',
+      await listen('new-instance',
         ({ payload, ...eventObj }) => {
           appWindow.unminimize().then(() => appWindow.setFocus(true));
           let args = payload?.args;

@@ -22,6 +22,7 @@ import Fallback from './Views/Fallback';
 // imported views need to be added to `views`
 import ExampleView from './Views/ExampleView';
 import { showNotification } from '@mantine/notifications';
+import * as tauri_event from '@tauri-apps/api/event';
 // import Home from './Views/Home';
 // import About from './Views/About';
 // import CIFInfo from './Views/CIFInfo';
@@ -68,8 +69,13 @@ function App() {
     installUpdate().then(relaunch);
   }
 
+  const mountID = useRef(null);
+  const unlistens = useRef({});
+
   // Tauri event listeners (run on mount)
   useEffect(() => {
+    const thisMountID = Math.random();
+    mountID.current = thisMountID;
     if (RUNNING_IN_TAURI) {
       checkUpdate().then(({ shouldUpdate, manifest }) => {
         if (shouldUpdate) {
@@ -86,7 +92,21 @@ function App() {
           });
         }
       });
+      // system tray
+      tauri_event.listen('system-tray', ({ payload, ...eventObj}) => {
+        if (mountID.current != thisMountID) {
+          unlistens.current[thisMountID]();
+        } else {
+          console.log(payload.message);
+          // for debugging purposes only
+          showNotification({
+            title: '[DEBUG] System Tray Event',
+            message: payload.message
+          });
+        }
+      }).then(new_unlisten => { unlistens.current[thisMountID] = new_unlisten; });
     }
+    return () => mountID.current = null;
   }, []);
 
   function LanguageHeaders() {

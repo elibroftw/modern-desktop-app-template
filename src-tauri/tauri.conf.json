@@ -11,6 +11,10 @@
     "withGlobalTauri": false
   },
   "tauri": {
+    "systemTray": {
+      "iconPath": "icons/SystemTray1.ico",
+      "iconAsTemplate": true
+    },
     "bundle": {
       "active": true,
       "targets": "all",

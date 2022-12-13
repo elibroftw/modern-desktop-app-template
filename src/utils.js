@@ -152,6 +152,7 @@ export function useTauriStore(key, defaultValue, storeName = 'data.dat') {
                 timeoutRef.current = setTimeout(() => store.save(), SAVE_DELAY)
             });
         }
+        // ensure data is saved by not clearing the timeout on unmount
     }, [state]);
     return [state, setState, loading];
 }

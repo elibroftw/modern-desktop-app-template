@@ -3,6 +3,7 @@ import * as tauriPath from '@tauri-apps/api/path';
 import * as fs from '@tauri-apps/api/fs';
 import * as os from '@tauri-apps/api/os';
 import { APP_NAME, RUNNING_IN_TAURI } from './utils';
+import { invoke } from '@tauri-apps/api';
 
 // NOTE: Add cacheable Tauri calls in this file
 //   that you want to use synchronously across components in your app
@@ -28,6 +29,7 @@ export function TauriProvider({ children }) {
     const [appDocuments, setAppDocuments] = useState();
 
     useEffect(() => {
+        // if you want to listen for event listeners, use mountID trick to call unlisten on old listeners
         if (RUNNING_IN_TAURI) {
             const callTauriAPIs = async () => {
                 setDownloadDir(await tauriPath.downloadDir());
@@ -40,6 +42,9 @@ export function TauriProvider({ children }) {
                 await fs.createDir(APP_NAME, { dir: fs.BaseDirectory.Document, recursive: true });
                 setAppDocuments(`${_documents}${APP_NAME}`);
                 setLoading(false);
+                // show window if not using the window state plugin
+                // https://github.com/tauri-apps/tauri/issues/1564
+                invoke('show_main_window');
             }
             callTauriAPIs().catch(console.error);
         }

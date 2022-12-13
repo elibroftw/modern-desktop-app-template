@@ -5,21 +5,33 @@
 )]
 
 use serde::Serialize;
-use std::{collections::BTreeMap, fs};
-use tauri;
-use tauri::Manager;  // used by .get_window
-use std::thread::sleep;
-use std::time::Duration;
-use tauri_plugin_store::PluginBuilder;
+use tauri_plugin_store;
 use tauri_plugin_window_state;
-use std::fs::metadata;
-use std::path::PathBuf;
-use std::process::Command;
 
-#[derive(Clone, serde::Serialize)]
+#[cfg(target_os = "linux")]
+use std::fs::metadata;
+#[cfg(target_os = "linux")]
+use std::path::PathBuf;
+
+use std::{process::Command, ops::Deref, sync::Mutex};
+// Manager is used by .get_window
+use tauri::{self, Manager, State, SystemTray, SystemTrayMenu, SystemTraySubmenu, CustomMenuItem, SystemTrayMenuItem, SystemTrayEvent};
+
+#[derive(Clone, Serialize)]
 struct SingleInstancePayload {
   args: Vec<String>,
   cwd: String,
+}
+
+#[derive(Clone, Serialize)]
+struct SystemTrayPayload {
+  message: String
+}
+
+enum TrayState {
+  NotPlaying,
+  Paused,
+  Playing
 }
 
 #[derive(Debug, Default, Serialize)]
@@ -28,8 +40,17 @@ struct Example<'a> {
     attribute_1: &'a str,
 }
 
+// useful if not saving the window state
 #[tauri::command]
-fn custom_command(window: tauri::Window) {}
+fn show_main_window(window: tauri::Window) {
+    window.get_window("main").unwrap().show().unwrap(); // replace "main" by the name of your window
+}
+
+#[tauri::command]
+fn update_tray_menu(app_handle: tauri::AppHandle) {
+  // TODO: an example of updating the tray menu
+  // let tray_handle = app_handle.tray_handle();
+}
 
 #[tauri::command]
 fn process_file(filepath: String) -> String {
@@ -37,6 +58,7 @@ fn process_file(filepath: String) -> String {
     "Hello from Rust!".into()
 }
 
+// TODO: organize better
 #[tauri::command]
 fn show_in_folder(path: String) {
   #[cfg(target_os = "windows")]
@@ -83,25 +105,90 @@ fn show_in_folder(path: String) {
 }
 
 fn main() {
+  // https://docs.rs/tauri/1.2.2/tauri/struct.SystemTrayMenu.html
+  let tray_menu_en = SystemTrayMenu::new()
+    // https://docs.rs/tauri/1.2.2/tauri/struct.SystemTraySubmenu.html
+    .add_submenu(
+      SystemTraySubmenu::new("Sub Menu!", SystemTrayMenu::new()
+          .add_item(CustomMenuItem::new("bf-sep".to_string(), "Before Separator"))
+          // https://docs.rs/tauri/1.2.2/tauri/enum.SystemTrayMenuItem.html
+          .add_native_item(SystemTrayMenuItem::Separator)
+          .add_item(CustomMenuItem::new("af-sep".to_string(), "After Separator"))
+      ))
+    // https://docs.rs/tauri/1.2.2/tauri/struct.CustomMenuItem.html#
+    .add_item(CustomMenuItem::new("quit".to_string(), "Quit"))
+    .add_item(CustomMenuItem::new("toggle-visibility".to_string(), "Hide Window"))
+    .add_item(CustomMenuItem::new("toggle-tray-icon".to_string(), "Toggle the tray icon"));
+  // https://docs.rs/tauri/1.2.2/tauri/struct.SystemTray.html
+  let system_tray = SystemTray::new().with_menu(tray_menu_en).with_id("main-tray");
+
   // main window should be invisible to allow either the setup delay or the plugin to show the window
   tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![custom_command, process_file])
-    // UNCOMMENT if you don't want to save window positions
-    // .setup(|app| {
-    //     // Delay window open in order to avoid white flash described https://github.com/tauri-apps/tauri/issues/1564
-    //     let main_window = app.get_window("main").unwrap();
-    //     tauri::async_runtime::spawn(async move {
-    //         sleep(Duration::from_millis(175));
-    //         main_window.show().unwrap();
-    //     });
-    //     Ok(())
-    // })
-    // COMMENT IF YOU DO NOT WANT SINGLE INSTANCE
-    .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
-      app.emit_all("fromOtherInstance", SingleInstancePayload { args: argv, cwd }).unwrap();
+    // system tray
+    .system_tray(system_tray)
+    .on_system_tray_event(|app, event| match event {
+      SystemTrayEvent::MenuItemClick { id, .. } => {
+        let main_window = app.get_window("main").unwrap();
+        main_window.emit("system-tray", SystemTrayPayload { message: id.clone() }).unwrap();
+        let item_handle = app.tray_handle().get_item(&id);
+        match id.as_str() {
+          "quit" => { std::process::exit(0); }
+          "toggle-tray-icon" => {
+              let tray_state_mutex = app.state::<Mutex<TrayState>>();
+              let mut tray_state = tray_state_mutex.lock().unwrap();
+              match *tray_state {
+                TrayState::NotPlaying => {
+                  app.tray_handle().set_icon(tauri::Icon::Raw(include_bytes!("../icons/SystemTray2.ico").to_vec())).unwrap();
+                  *tray_state = TrayState::Playing;
+                }
+                TrayState::Playing => {
+                  app.tray_handle().set_icon(tauri::Icon::Raw(include_bytes!("../icons/SystemTray1.ico").to_vec())).unwrap();
+                  *tray_state = TrayState::NotPlaying;
+                }
+                TrayState::Paused => {},
+              };
+          }
+          "toggle-visibility" => {
+            // update menu item example
+            if main_window.is_visible().unwrap() {
+                main_window.hide().unwrap();
+                item_handle.set_title("Show Window").unwrap();
+            } else {
+                main_window.show().unwrap();
+                item_handle.set_title("Hide Window").unwrap();
+            }
+          }
+          _ => {}
+        }
+      }
+      SystemTrayEvent::LeftClick { position: _, size: _, .. } => {
+        let main_window = app.get_window("main").unwrap();
+        main_window.emit("system-tray", SystemTrayPayload { message: "left-click".into() }).unwrap();
+        println!("system tray received a left click");
+      }
+      SystemTrayEvent::RightClick { position: _, size: _, .. } => {
+        println!("system tray received a right click");
+      }
+      SystemTrayEvent::DoubleClick { position: _, size: _, .. } => {
+        println!("system tray received a double click");
+      }
+      _ => {}
+    })
+    // custom commands
+    .invoke_handler(tauri::generate_handler![show_main_window, process_file, show_in_folder])
+    // allow only one instance and propagate args and cwd to existing instance
+    .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {
+      app.emit_all("new-instance", SingleInstancePayload { args, cwd }).unwrap();
     }))
+    // persistent storage with filesystem
+    .plugin(tauri_plugin_store::PluginBuilder::default().build())
+    // save window position and size between sessions
     .plugin(tauri_plugin_window_state::Builder::default().build())
-    .plugin(PluginBuilder::default().build())
+    // custom setup code
+    .setup(|app| {
+        app.manage(Mutex::new(TrayState::NotPlaying));
+        Ok(())
+    })
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
