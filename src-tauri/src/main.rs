@@ -46,10 +46,22 @@ fn show_main_window(window: tauri::Window) {
     window.get_window("main").unwrap().show().unwrap(); // replace "main" by the name of your window
 }
 
+fn create_tray_menu(lang: String) -> SystemTrayMenu {
+  // TODO: https://docs.rs/rust-i18n/latest/rust_i18n/
+  // untested, not sure if the macro accepts dynamic languages
+  // ENTER rust_i18n::set_locale(lang) IF LOCAL=lang DOES NOT COMPILE
+  SystemTrayMenu::new()
+    // .add_item("id".into(), t!("Label", locale = lang))
+    // .add_item("id".into(), t!("Label")
+    // .add_submenu("Submenu")
+    // .add_native_item(item)
+}
+
 #[tauri::command]
-fn update_tray_menu(app_handle: tauri::AppHandle) {
-  // TODO: an example of updating the tray menu
-  // let tray_handle = app_handle.tray_handle();
+#[allow(unused_must_use)]
+fn update_tray_lang(app_handle: tauri::AppHandle, lang: String) {
+  let tray_handle = app_handle.tray_handle();
+  tray_handle.set_menu(create_tray_menu(lang));
 }
 
 #[tauri::command]
@@ -175,7 +187,7 @@ fn main() {
       _ => {}
     })
     // custom commands
-    .invoke_handler(tauri::generate_handler![show_main_window, process_file, show_in_folder])
+    .invoke_handler(tauri::generate_handler![show_main_window, update_tray_lang, process_file, show_in_folder])
     // allow only one instance and propagate args and cwd to existing instance
     .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {
       app.emit_all("new-instance", SingleInstancePayload { args, cwd }).unwrap();
