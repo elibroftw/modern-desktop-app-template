@@ -49,7 +49,20 @@ All `.\src-tauri\icons\SystemTray*\` directories are ignored in [`.gitignore`](.
 
 ### Implementing Auto-Update
 
-[Watch Tauri Part 10](https://youtu.be/ZXjlZBisYPQ) and [read sample backend code](https://github.com/elibroftw/website/tree/master/blueprints/tauri_releases)
+[Watch Tauri Part 10](https://youtu.be/ZXjlZBisYPQ)
+
+These sample projects/code are licensed under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) so you
+do not need to worry about violating my copyright. The backends can convert a github releases API response
+into a Tauri-Updater friendly JSON response with a 5 minute cache and room for custom logic.
+
+If you are using private repositories, you will need an API key from GitHub otherwise you will get 403ed.
+
+- [Python Flask sample code](https://github.com/elibroftw/website/blob/master/blueprints/tauri_releases.py)
+- [Rust Rocket sample code](https://github.com/elibroftw/rust-backend-tutorials/blob/master/src/tauri_releases.rs)
+
+There are notes in the code for where to place custom version and platform checking logic. An example of custom logic is if you want to return the latest version only for certain app versions and another version for older app versions.
+
+To test if auto-update works, in your `tauri.conf.json` file, add a localhost url like "http://[::1]:5001/tauri-releases/google-keep-desktop/{{target}}/{{current_version}}" to the start of the endpoints array. Your app version MUST be lower than the latest available version since the Tauri updater will perform a version on any valid json response.
 
 ### Calling Rust from the Frontend
 
