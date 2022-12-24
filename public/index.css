@@ -1,7 +1,7 @@
 body {
-    /* show eye pleasing background color instead of white */
-    background-color: #141517;
-    margin: 0;
+  /* show eye pleasing background color instead of white */
+  background-color: #141517;
+  margin: 0;
 }
 
 code {
@@ -9,15 +9,14 @@ code {
     monospace;
 }
 
-/* scrollbar was inspired by Firefox's dark scrollbar
-   a dynamically themed scrollbar is not simple enough to justify spending any more time on it */
+/* fallback scrollbar is inspired by Firefox's dark scrollbar */
 
 ::-webkit-scrollbar {
   width: 15px
 }
 
 ::-webkit-scrollbar-track {
-  background: #121212
+  background: #121212;
 }
 
 ::-webkit-scrollbar-thumb {

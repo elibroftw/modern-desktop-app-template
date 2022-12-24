@@ -29,6 +29,7 @@
     "react-icons": "^4.4.0",
     "react-router-dom": "^6.2.1",
     "react-transition-group": "^4.4.2",
+    "simplebar-react": "^2.4.3",
     "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#9bd993a"
   },
   "scripts": {

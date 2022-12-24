@@ -1,20 +1,22 @@
-import { AppShell, Navbar, Header, Footer, Text, MediaQuery, Burger, ActionIcon, Aside, Group, Anchor, Button, Space, Affix, Transition } from '@mantine/core';
+import { AppShell, Navbar, Header, Footer, Text, MediaQuery, Burger, ActionIcon, Aside, Group, Anchor, Button, Space, Global } from '@mantine/core';
 import { useMantineColorScheme } from '@mantine/core';
-import { IoArrowUp, IoSunnySharp } from 'react-icons/io5';
+import { IoSunnySharp } from 'react-icons/io5';
 import { BsMoonStarsFill } from 'react-icons/bs';
 import { ImCross } from 'react-icons/im';
-import React, { useState, useEffect, Fragment, Suspense, useMemo, useRef } from 'react';
+import React, { useState, useEffect, Fragment, Suspense, useRef } from 'react';
 import { createStyles, useMantineTheme } from '@mantine/styles';
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useHotkeys, useWindowScroll } from '@mantine/hooks';
+import { useHotkeys } from '@mantine/hooks';
 import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
 import { relaunch } from '@tauri-apps/api/process'
+import SimpleBar from 'simplebar-react';
+import 'simplebar/dist/simplebar.min.css';
 // talk to rust with
 // import { invoke } from '@tauri-apps/api/tauri'
 
 // local js files
-import { RUNNING_IN_TAURI, useLocalForage } from './utils';
+import { FOOTER, HEADER_TITLE, RUNNING_IN_TAURI, useLocalForage, WIN32_CUSTOM_TITLEBAR } from './utils';
 
 // fallback for React Suspense
 import Fallback from './Views/Fallback';
@@ -26,17 +28,12 @@ import * as tauri_event from '@tauri-apps/api/event';
 import { Titlebar } from './Components/Titlebar';
 import { appWindow } from '@tauri-apps/api/window'
 import { useTauriContext } from './TauriProvider';
+import { ScrollToTop } from './Components/ScrollToTop';
 // import Home from './Views/Home';
 // import About from './Views/About';
 // import CIFInfo from './Views/CIFInfo';
 // if your views are large, you can use lazy loading to reduce the initial load time
 // const Settings = lazy(() => import('./Views/Settings'));
-
-const USE_DECORATIONS = false;
-// constants
-const HEADER_TITLE = 'HEADER_TITLE goes here';
-const FOOTER = 'FOOTER goes here';
-// TODO: footer fetched from online source
 
 export default function () {
   const { t, i18n } = useTranslation();
@@ -44,10 +41,10 @@ export default function () {
   // use the custom title bar only on Windows
   const { osType } = useTauriContext();
   useEffect(() => {
-    if (osType === 'Windows_NT') appWindow.setDecorations(USE_DECORATIONS);
+    if (osType === 'Windows_NT') appWindow.setDecorations(!WIN32_CUSTOM_TITLEBAR);
   }, [osType]);
   // osType defined implies RUNNING_IN_TAURI
-  const using_custom_titlebar = osType === 'Windows_NT' && !USE_DECORATIONS;
+  const using_custom_titlebar = osType === 'Windows_NT' && WIN32_CUSTOM_TITLEBAR;
 
   // left sidebar
   const views = [
@@ -164,80 +161,83 @@ export default function () {
     return t(FOOTER);
   }
 
+  const scrollbar = useRef();
+  const titlebarOverrides = theme => ({
+    '.simplebar-vertical': {
+      backgroundClip: 'padding-box',
+      marginTop: using_custom_titlebar ? 100 : 70,
+      marginBottom: showFooter ? 50 : 0,
+    },
+    body: {
+        overflowY: 'hidden'
+    }
+  });
+
   return <>
     {using_custom_titlebar && <Titlebar />}
-    <AppShell padding='md' navbarOffsetBreakpoint='sm'
-      navbar={
-        <Navbar className={using_custom_titlebar ? classes.titlebarMargin : ''} height='100%' width={{ sm: 200 }} p='xs' hidden={!mobileNavOpened} hiddenBreakpoint='sm'>
-          <Navbar.Section grow><NavLinks /></Navbar.Section>
-          <Navbar.Section>
-            {/* Bottom of Navbar Example: https://github.com/mantinedev/mantine/blob/master/src/mantine-demos/src/demos/core/AppShell/_user.tsx */}
-            <Space h={navbarClearance} /> {/* Account for footer */}
-          </Navbar.Section>
-        </Navbar>}
-      header={
-        <Header data-tauri-drag-region height={70} p='md' className={`${classes.header} ` + (using_custom_titlebar ? classes.headerOverrides : '')}>
-          <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
-            <Burger opened={mobileNavOpened} onClick={() => setMobileNavOpened(o => !o)}
-              size='sm' mr='xl' color={useMantineTheme().colors.gray[6]} />
-          </MediaQuery>
-          <Text>{HEADER_TITLE}</Text>
-          <Group className={classes.headerRightItems}>
-            <LanguageHeaders />
-            <ActionIcon title='Ctrl + J' className={classes.actionIcon} variant='default' onClick={() => toggleColorScheme()} size={30}>
-              {/* icon to show based on colorScheme */}
-              {colorScheme === 'dark' ? <IoSunnySharp size={'1.5em'} /> : <BsMoonStarsFill />}
-            </ActionIcon>
-          </Group>
-        </Header>}
-      aside={
-        <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
-          <Aside className={using_custom_titlebar ? classes.titlebarMargin : ''} p='md' hiddenBreakpoint='sm' width={{ sm: 200, lg: 300 }}>
-            <Text>Right Side. Use for help or support menu?</Text>
-          </Aside>
-        </MediaQuery>}
-      footer={showFooter &&
-        <Footer height={'fit-content'} p='xs' className={classes.footer}>
-          <FooterText />
-          <Button variant='subtle' size='xs' onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER]: '' }))}>
-            <ImCross />
-          </Button>
-        </Footer>
-      }
-      className={classes.appShell}>
-      {using_custom_titlebar && <Space h='2em' />}
-      <Routes>
-        <Route exact path='/' element={<Navigate to={views[0].path} />} />
-        {views.map((view, index) => <Route key={index} exact={view.exact}
-          path={view.path} element={
-            <view.component />
-          } />)}
-      </Routes>
+    <Global styles={titlebarOverrides} />
+    <SimpleBar scrollableNodeProps={{ ref: scrollbar }} autoHide={false} className={classes.simpleBar}>
+      <AppShell padding='md' navbarOffsetBreakpoint='sm'
+        navbar={
+          <Navbar className={using_custom_titlebar ? classes.titlebarMargin : ''} height='100%' width={{ sm: 200 }} p='xs' hidden={!mobileNavOpened} hiddenBreakpoint='sm'>
+            <Navbar.Section grow><NavLinks /></Navbar.Section>
+            <Navbar.Section>
+              {/* Bottom of Navbar Example: https://github.com/mantinedev/mantine/blob/master/src/mantine-demos/src/demos/core/AppShell/_user.tsx */}
+              <Space h={navbarClearance} /> {/* Account for footer */}
+            </Navbar.Section>
+          </Navbar>}
+        header={
+          <Header data-tauri-drag-region height={70} p='md' className={`${classes.header} ` + (using_custom_titlebar ? classes.headerOverrides : '')}>
+            <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
+              <Burger opened={mobileNavOpened} onClick={() => setMobileNavOpened(o => !o)}
+                size='sm' mr='xl' color={useMantineTheme().colors.gray[6]} />
+            </MediaQuery>
+            <Text>{HEADER_TITLE}</Text>
+            <Group className={classes.headerRightItems}>
+              <LanguageHeaders />
+              <ActionIcon title='Ctrl + J' className={classes.actionIcon} variant='default' onClick={() => toggleColorScheme()} size={30}>
+                {/* icon to show based on colorScheme */}
+                {colorScheme === 'dark' ? <IoSunnySharp size={'1.5em'} /> : <BsMoonStarsFill />}
+              </ActionIcon>
+            </Group>
+          </Header>}
+        aside={
+          <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
+            <Aside className={using_custom_titlebar ? classes.titlebarMargin : ''} p='md' hiddenBreakpoint='sm' width={{ sm: 200, lg: 300 }}>
+              <Text>Right Side. Use for help or support menu?</Text>
+            </Aside>
+          </MediaQuery>}
+        footer={showFooter &&
+          <Footer height={'fit-content'} p='xs' className={classes.footer}>
+            <FooterText />
+            <Button variant='subtle' size='xs' onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER]: '' }))}>
+              <ImCross />
+            </Button>
+          </Footer>
+        }
+        className={classes.appShell}>
+        {using_custom_titlebar && <Space h='2em' />}
+        <Routes>
+          <Route exact path='/' element={<Navigate to={views[0].path} />} />
+          {views.map((view, index) => <Route key={index} exact={view.exact}
+            path={view.path} element={
+              <view.component />
+            } />)}
+        </Routes>
 
-      {/* prevent the footer from covering bottom text of a route view */}
-      {showFooter && <Space h={80} />}
-      <ScrollToTop bottom={showFooter ? 70 : 20} />
-    </AppShell>
+        {/* prevent the footer from covering bottom text of a route view */}
+        {showFooter && <Space h={80} />}
+        <ScrollToTop scroller={scrollbar.current} bottom={showFooter ? 70 : 20} />
+      </AppShell>
+    </SimpleBar>
   </>;
-}
-
-function ScrollToTop({ bottom = 20 }) {
-  const [scroll, scrollTo] = useWindowScroll();
-  return <Affix position={{ bottom, right: 15 }}>
-    <Transition transition='slide-up' mounted={scroll.y > 0}>
-      {transitionStyles =>
-        <div style={transitionStyles} >
-          <ActionIcon size='lg' color='primary' variant='filled' onClick={() => scrollTo({ y: 0 })} >
-            <IoArrowUp size={25} />
-          </ActionIcon>
-        </div>
-      }
-    </Transition>
-  </Affix>;
 }
 
 // this can exported in styles.js
 const getAppStyles = createStyles(theme => ({
+  simpleBar: {
+    maxHeight: '100vh',
+  },
   navLink: {
     display: 'block',
     width: '100%',

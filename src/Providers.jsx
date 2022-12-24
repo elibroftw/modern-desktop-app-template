@@ -1,5 +1,5 @@
 // boilerplate components
-import { MantineProvider, ColorSchemeProvider, Global } from '@mantine/core';
+import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { ModalsProvider } from '@mantine/modals';
 import { useHotkeys, useColorScheme } from '@mantine/hooks';
@@ -36,29 +36,28 @@ export default function ({ children }) {
             Loader: { defaultProps: { size: 'xl' } },
             Space: { defaultProps: { h: 'sm' } },
             Anchor: { defaultProps: { target: '_blank' } }
-        }
+        },
+        globalStyles: theme => ({
+            '.row': {
+                display: 'flex',
+                alignItems: 'flex-end',
+                '& > div': {
+                    flexGrow: 1,
+                }
+            },
+            '.rowCenter': {
+                display: 'flex',
+                alignItems: 'center',
+                '& > div': {
+                    flexGrow: 1,
+                }
+            },
+            '.embeddedInput': {
+                display: 'inline-block',
+                margin: 'auto 5px',
+            }
+        })
     }
-
-    const styles = theme => ({
-        '.row': {
-            display: 'flex',
-            alignItems: 'flex-end',
-            '& > div': {
-                flexGrow: 1,
-            }
-        },
-        '.rowCenter': {
-            display: 'flex',
-            alignItems: 'center',
-            '& > div': {
-                flexGrow: 1,
-            }
-        },
-        '.embeddedInput': {
-            display: 'inline-block',
-            margin: 'auto 5px',
-        }
-    });
 
     return <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS withCSSVariables>
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
@@ -66,7 +65,6 @@ export default function ({ children }) {
                 <ModalsProvider>
                     <BrowserRouter>
                         <TauriProvider>
-                            <Global styles={styles} />
                             {/* show splashscreen for inital data */}
                             {isLoading ? <Splashscreen /> : children}
                         </TauriProvider>
