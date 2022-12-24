@@ -13,6 +13,10 @@ const resources = {
   },
   fr: {
     translations: {
+      'Minimize': 'Réduire',
+      'Maximize': 'Agrandir',
+      'Restore Down': 'Niveau inf.',
+      'Close': 'Fermer',
       Home: 'Accueil',
       contactUsMessage: "Si vous avez des questions ou des demandes, n'hésitez pas à envoyer un email à",
       'Monday to Saturday': 'Lundi à Samedi',
