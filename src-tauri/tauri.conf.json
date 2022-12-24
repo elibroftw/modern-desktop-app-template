@@ -123,11 +123,11 @@
       "window": {
         "all": false,
         "center": false,
-        "close": false,
+        "close": true,
         "create": false,
         "hide": false,
         "maximize": true,
-        "minimize": false,
+        "minimize": true,
         "print": false,
         "requestUserAttention": false,
         "setAlwaysOnTop": false,
@@ -135,7 +135,7 @@
         "setCursorIcon": false,
         "setCursorPosition": false,
         "setCursorVisible": false,
-        "setDecorations": false,
+        "setDecorations": true,
         "setFocus": true,
         "setFullscreen": false,
         "setIcon": false,
@@ -147,14 +147,14 @@
         "setSkipTaskbar": false,
         "setTitle": false,
         "show": false,
-        "startDragging": false,
-        "unmaximize": false,
+        "startDragging": true,
+        "unmaximize": true,
         "unminimize": true
       }
     },
     "windows": [
       {
-        "title": "tauri.conf.json Main Title",
+        "title": "tauri.conf.json > tauri > windows > title",
         "label": "main",
         "minWidth": 1000,
         "minHeight": 600,

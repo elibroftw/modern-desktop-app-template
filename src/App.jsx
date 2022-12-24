@@ -23,26 +23,38 @@ import Fallback from './Views/Fallback';
 import ExampleView from './Views/ExampleView';
 import { showNotification } from '@mantine/notifications';
 import * as tauri_event from '@tauri-apps/api/event';
+import { Titlebar } from './Components/Titlebar';
+import { appWindow } from '@tauri-apps/api/window'
+import { useTauriContext } from './TauriProvider';
 // import Home from './Views/Home';
 // import About from './Views/About';
 // import CIFInfo from './Views/CIFInfo';
 // if your views are large, you can use lazy loading to reduce the initial load time
 // const Settings = lazy(() => import('./Views/Settings'));
 
+const USE_DECORATIONS = false;
 // constants
 const HEADER_TITLE = 'HEADER_TITLE goes here';
 const FOOTER = 'FOOTER goes here';
 // TODO: footer fetched from online source
-function App() {
-  const { t, i18n } = useTranslation();
-  // left sidebar
 
-  // if you lazy loaded a component, use the following
+export default function () {
+  const { t, i18n } = useTranslation();
+
+  // use the custom title bar only on Windows
+  const { osType } = useTauriContext();
+  useEffect(() => {
+    if (osType === 'Windows_NT') appWindow.setDecorations(USE_DECORATIONS);
+  }, [osType]);
+  // osType defined implies RUNNING_IN_TAURI
+  const using_custom_titlebar = osType === 'Windows_NT' && !USE_DECORATIONS;
+
+  // left sidebar
   const views = [
     //     { component: () => <Home prop1={'stuff'} />, path: '/home', name: t('Home') },
     //     { component: CIFInfo, path: '/cif-info', name: 'CIF ' + t('Info') },
     //     { component: React.memo(About), path: '/about', name: t('About') },
-    // Suspense example
+    // Suspense example when a component was lazy loaded
     //     { component: () => <React.Suspense fallback={<Fallback />}><Setting /></React.Suspense>, path: '/settings', name: t('Settings') },
     { component: ExampleView, path: '/example-view', name: t('ExampleView') },
   ];
@@ -93,7 +105,7 @@ function App() {
         }
       });
       // system tray
-      tauri_event.listen('system-tray', ({ payload, ...eventObj}) => {
+      tauri_event.listen('system-tray', ({ payload, ...eventObj }) => {
         if (mountID.current != thisMountID) {
           unlistens.current[thisMountID]();
         } else {
@@ -153,45 +165,47 @@ function App() {
   }
 
   return <>
-    <AppShell padding="md" navbarOffsetBreakpoint="sm"
+    {using_custom_titlebar && <Titlebar />}
+    <AppShell padding='md' navbarOffsetBreakpoint='sm'
       navbar={
-        <Navbar height='100%' width={{ sm: 200 }} p="xs" hidden={!mobileNavOpened} hiddenBreakpoint="sm">
+        <Navbar className={using_custom_titlebar ? classes.titlebarMargin : ''} height='100%' width={{ sm: 200 }} p='xs' hidden={!mobileNavOpened} hiddenBreakpoint='sm'>
           <Navbar.Section grow><NavLinks /></Navbar.Section>
           <Navbar.Section>
             {/* Bottom of Navbar Example: https://github.com/mantinedev/mantine/blob/master/src/mantine-demos/src/demos/core/AppShell/_user.tsx */}
-            <Space h={navbarClearance} /> {/* Acount for footer */}
+            <Space h={navbarClearance} /> {/* Account for footer */}
           </Navbar.Section>
         </Navbar>}
       header={
-        <Header height={70} p="md" className={classes.header}>
-          <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+        <Header data-tauri-drag-region height={70} p='md' className={`${classes.header} ` + (using_custom_titlebar ? classes.headerOverrides : '')}>
+          <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
             <Burger opened={mobileNavOpened} onClick={() => setMobileNavOpened(o => !o)}
-              size="sm" mr="xl" color={useMantineTheme().colors.gray[6]} />
+              size='sm' mr='xl' color={useMantineTheme().colors.gray[6]} />
           </MediaQuery>
           <Text>{HEADER_TITLE}</Text>
           <Group className={classes.headerRightItems}>
             <LanguageHeaders />
-            <ActionIcon title='Ctrl + J' className={classes.actionIcon} variant="default" onClick={() => toggleColorScheme()} size={30}>
+            <ActionIcon title='Ctrl + J' className={classes.actionIcon} variant='default' onClick={() => toggleColorScheme()} size={30}>
               {/* icon to show based on colorScheme */}
               {colorScheme === 'dark' ? <IoSunnySharp size={'1.5em'} /> : <BsMoonStarsFill />}
             </ActionIcon>
           </Group>
         </Header>}
       aside={
-        <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-          <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
+        <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
+          <Aside className={using_custom_titlebar ? classes.titlebarMargin : ''} p='md' hiddenBreakpoint='sm' width={{ sm: 200, lg: 300 }}>
             <Text>Right Side. Use for help or support menu?</Text>
           </Aside>
         </MediaQuery>}
       footer={showFooter &&
-        <Footer height={'fit-content'} p="xs" className={classes.footer}>
+        <Footer height={'fit-content'} p='xs' className={classes.footer}>
           <FooterText />
-          <Button variant="subtle" size="xs" onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER]: '' }))}>
+          <Button variant='subtle' size='xs' onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER]: '' }))}>
             <ImCross />
           </Button>
-        </Footer>}
+        </Footer>
+      }
       className={classes.appShell}>
-
+      {using_custom_titlebar && <Space h='2em' />}
       <Routes>
         <Route exact path='/' element={<Navigate to={views[0].path} />} />
         {views.map((view, index) => <Route key={index} exact={view.exact}
@@ -199,6 +213,7 @@ function App() {
             <view.component />
           } />)}
       </Routes>
+
       {/* prevent the footer from covering bottom text of a route view */}
       {showFooter && <Space h={80} />}
       <ScrollToTop bottom={showFooter ? 70 : 20} />
@@ -244,16 +259,25 @@ const getAppStyles = createStyles(theme => ({
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1]
     },
   },
+  // overrides when using a custom titlebar
+  titlebarMargin: {
+    marginTop: '2em'
+  },
+  headerOverrides: {
+    maxHeight: 'calc(70px + 1em)',
+    paddingBottom: '0 !important',
+    marginTop: '1em',
+  },
   header: {
     display: 'flex',
     alignItems: 'center',
-    height: '100%'
+    height: '100%',
   },
   headerRightItems: {
     marginLeft: 'auto',
   },
   appShell: {
-    main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] }
+    main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
   },
   mediaQuery: {
     display: 'none'
@@ -264,5 +288,3 @@ const getAppStyles = createStyles(theme => ({
     alignItems: 'center',
   }
 }));
-
-export default App;

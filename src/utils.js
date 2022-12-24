@@ -4,7 +4,7 @@ import * as os from '@tauri-apps/api/os';
 import { currentMonitor, getCurrent } from '@tauri-apps/api/window';
 import Cookies from 'js-cookie';
 import localforage from 'localforage';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 // tauri-store docs: https://github.com/tauri-apps/tauri-plugin-store/blob/dev/webview-src/index.ts
 import { Store } from 'tauri-plugin-store-api';
 import packageJson from '../package.json';
@@ -14,8 +14,8 @@ export { localforage };
 export const VERSION = packageJson.version;
 export const APP_NAME = tauriConfJson.package.productName;
 const EXTS = new Set(['.json']);
-// save tauri store 1 second after last set
-const SAVE_DELAY = 1000;
+// save tauri store 500ms after last set
+const SAVE_DELAY = 500;
 export const RUNNING_IN_TAURI = window.__TAURI__ !== undefined;
 
 export function useCookie(key, defaultValue, { expires = 365000, sameSite = 'lax', path = '/' } = {}) {
@@ -45,6 +45,7 @@ export function trueTypeOf(obj) {
         trueTypeOf()    -> undefined
     */
 }
+
 
 export function useMinWidth(minWidth) {
     if (RUNNING_IN_TAURI) {
@@ -149,7 +150,10 @@ export function useTauriStore(key, defaultValue, storeName = 'data.dat') {
         if (!loading) {
             clearTimeout(timeoutRef.current);
             store.set(key, state).then(() => {
-                timeoutRef.current = setTimeout(() => store.save(), SAVE_DELAY)
+                timeoutRef.current = setTimeout(() => {
+                    store.save();
+                    console.log(state);
+                }, SAVE_DELAY)
             });
         }
         // ensure data is saved by not clearing the timeout on unmount

@@ -60,21 +60,19 @@ export default function ({ children }) {
         }
     });
 
-    return (
-        <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS withCSSVariables>
-            <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-                <NotificationsProvider>
-                    <ModalsProvider>
-                        <BrowserRouter>
-                            <TauriProvider>
-                                <Global styles={styles} />
-                                {/* show splashscreen for inital data */}
-                                {isLoading ? <Splashscreen /> : children}
-                            </TauriProvider>
-                        </BrowserRouter>
-                    </ModalsProvider>
-                </NotificationsProvider>
-            </ColorSchemeProvider>
-        </MantineProvider>
-    );
+    return <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS withCSSVariables>
+        <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+            <NotificationsProvider>
+                <ModalsProvider>
+                    <BrowserRouter>
+                        <TauriProvider>
+                            <Global styles={styles} />
+                            {/* show splashscreen for inital data */}
+                            {isLoading ? <Splashscreen /> : children}
+                        </TauriProvider>
+                    </BrowserRouter>
+                </ModalsProvider>
+            </NotificationsProvider>
+        </ColorSchemeProvider>
+    </MantineProvider>;
 }

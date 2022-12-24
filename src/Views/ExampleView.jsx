@@ -15,9 +15,9 @@ export default function ExampleView() {
     const { t } = useTranslation();
     const { fileSep, loading, documents, downloads } = useTauriContext();
     // store-plugin will create necessary directories
-    const storeName = `${documents}${fileSep}${APP_NAME}${fileSep}example_view.dat`;
+    const storeName = `${documents}${APP_NAME}${fileSep}example_view.dat`;
     // const storeName = 'data.dat';
-    const [data, setData, loadingStore] = useStorage('exampleKey', '', storeName);
+    const [data, setData, loadingData] = useStorage('exampleKey', '', storeName);
 
     useMinWidth(1000);
 
@@ -38,7 +38,7 @@ export default function ExampleView() {
         }
     }
     // <> is an alias for <React.Fragment>
-    return !loading && <>
+    return !loadingData && <>
         <Text>{t('Modern Desktop App Examples')}</Text>
         <Space h={'md'} />
         <Button onClick={createFile}>Do something with fs</Button>

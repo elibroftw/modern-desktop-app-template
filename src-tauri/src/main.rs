@@ -7,6 +7,7 @@
 use serde::Serialize;
 use tauri_plugin_store;
 use tauri_plugin_window_state;
+use window_shadows::set_shadow;
 
 #[cfg(target_os = "linux")]
 use std::fs::metadata;
@@ -199,6 +200,9 @@ fn main() {
     // custom setup code
     .setup(|app| {
         app.manage(Mutex::new(TrayState::NotPlaying));
+        if let Some(window) = app.get_window("main") {
+          set_shadow(&window, true).expect("Unsupported platform!");
+        }
         Ok(())
     })
     .run(tauri::generate_context!())
