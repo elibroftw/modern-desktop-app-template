@@ -34,8 +34,6 @@
   "scripts": {
     "dev": "tauri dev",
     "nvmrc": "node -v > .nvmrc",
-    "preclean": "cargo install cargo-sweep -q",
-    "clean": "cd src-tauri && cargo sweep -s && cargo build && cargo build --release && cargo sweep -f && cd ..",
     "postinstall": "yarn nvmrc",
     "predev": "yarn nvmrc",
     "tauri": "tauri",
@@ -46,7 +44,7 @@
     "serve": "serve -s build",
     "preinstall": "yarn global add serve sloc @tauri-apps/cli",
     "sloc": "sloc src src-tauri/src",
-    "update": "concurrently \"yarn upgrade \" \"cd src-tauri && cargo update\""
+    "update": "concurrently \"yarn upgrade \" \"cd src-tauri && cargo update && cargo clean\""
   },
   "eslintConfig": {
     "extends": [
