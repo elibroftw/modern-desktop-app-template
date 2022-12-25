@@ -7,7 +7,7 @@ import React, { useState, useEffect, Fragment, Suspense, useRef } from 'react';
 import { createStyles, useMantineTheme } from '@mantine/styles';
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useHotkeys } from '@mantine/hooks';
+import { useHotkeys, useInterval } from '@mantine/hooks';
 import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
 import { relaunch } from '@tauri-apps/api/process'
 import SimpleBar from 'simplebar-react';
@@ -39,12 +39,23 @@ export default function () {
   const { t, i18n } = useTranslation();
 
   // use the custom title bar only on Windows
+  // osType defined implies RUNNING_IN_TAURI
   const { osType } = useTauriContext();
   useEffect(() => {
     if (osType === 'Windows_NT') appWindow.setDecorations(!WIN32_CUSTOM_TITLEBAR);
   }, [osType]);
-  // osType defined implies RUNNING_IN_TAURI
-  const using_custom_titlebar = osType === 'Windows_NT' && WIN32_CUSTOM_TITLEBAR;
+
+  // hide titlebar in fullscreen
+  const [fullscreen, setFullscreen] = useState(false);
+  const tauriInterval = useInterval(() => {
+    appWindow.isFullscreen().then(setFullscreen);
+  }, 200);
+  useEffect(() => {
+    tauriInterval.start();
+    return tauriInterval.stop
+  }, []);
+
+  const using_custom_titlebar = !fullscreen && osType === 'Windows_NT' && WIN32_CUSTOM_TITLEBAR;
 
   // left sidebar
   const views = [

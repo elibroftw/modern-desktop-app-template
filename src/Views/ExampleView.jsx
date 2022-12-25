@@ -10,6 +10,11 @@ import { APP_NAME, notify, RUNNING_IN_TAURI, useMinWidth, useStorage } from '../
 import { showNotification } from '@mantine/notifications';
 import { useState } from 'react';
 import { useTauriContext } from '../TauriProvider';
+import { appWindow } from '@tauri-apps/api/window'
+
+function toggleFullscreen() {
+    appWindow.isFullscreen().then(x => appWindow.setFullscreen(!x));
+}
 
 export default function ExampleView() {
     const { t } = useTranslation();
@@ -42,6 +47,8 @@ export default function ExampleView() {
         <Text>{t('Modern Desktop App Examples')}</Text>
         <Space h={'md'} />
         <Button onClick={createFile}>Do something with fs</Button>
+        <Space />
+        <Button onClick={toggleFullscreen}>Toggle Fullscreen</Button>
         <Title order={4}>{t('Interpolating components in translations')} </Title>
         <Trans i18nKey='transExample'
             values={{ variable: '/elibroftw/modern-desktop-template' }}

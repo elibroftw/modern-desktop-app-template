@@ -10,11 +10,13 @@ export function Titlebar() {
     const { t } = useTranslation();
     const { classes } = getTitleBarStyles();
     const [maximized, setMaximized] = useState(false);
+    const [fullscreen, setFullscreen] = useState(false);
     const [windowTitle, setWindowTitle] = useState('TitleBar.jsx Title');
 
     const tauriInterval = useInterval(() => {
         appWindow.isMaximized().then(setMaximized);
         appWindow.title().then(setWindowTitle);
+        appWindow.isFullscreen().then(setFullscreen);
     }, 200);
 
     useEffect(() => {
@@ -22,7 +24,7 @@ export function Titlebar() {
         return tauriInterval.stop;
     }, []);
 
-    return <div data-tauri-drag-region className={classes.titlebar}>
+    return !fullscreen && <div data-tauri-drag-region className={classes.titlebar}>
         <div>
             {/* window icon */}
             <Menu shadow='md' width={200}>
