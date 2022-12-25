@@ -9,8 +9,8 @@ Tauri and React boilerplate for a modern desktop application. Not a project nor 
 3. Go into `new-app`
 4. Follow environment instructions in [`SAMPLE_README.md`](./SAMPLE_README.md)
 5. While `yarn` is installing dependencies,
-    - Edit `src-tauri/tauri.conf.json's productName, identifier, title`
-    - Edit `src/App.jsx's HEADER_TITLE, FOOTER`
+    - Modify `productName, identifier, title` found in `src-tauri/tauri.conf.json`
+    - Modify `HEADER_TITLE, FOOTER` found in `src/utils.js`
     - Remove the `.git` folder
     - Delete or replace `LICENSE.md` since this template is public domain
     - Edit `SAMPLE_README.md` and replace `README.md`
@@ -32,9 +32,9 @@ I do not recommend pulling from my repo because you will need to edit the same f
 - The four views not found in boilerplate were added by yours truly. My About is the ViewExample provided in `src`
 - `Home view` is purposely not translated since it's a filler
 
-![image](https://user-images.githubusercontent.com/21298211/160052266-9f9ea8ec-6964-4f76-bccb-2913998e5b23.png)
+![App screenshot with dark colorscheme](https://user-images.githubusercontent.com/21298211/209476561-5813ef56-21e6-4e64-91b5-53499ced1296.png "dark colorscheme")
 
-![image](https://user-images.githubusercontent.com/21298211/160052283-5ee37ed7-be8e-4713-bdb3-2d4279afc36f.png)
+![App screenshot with light colorscheme](https://user-images.githubusercontent.com/21298211/209476610-5599245b-59b1-4dcf-8dfa-a77fab0013b3.png "light colorscheme")
 
 ## Future Resources
 
