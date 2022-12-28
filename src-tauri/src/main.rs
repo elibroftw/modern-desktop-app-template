@@ -201,7 +201,7 @@ fn main() {
     .setup(|app| {
         app.manage(Mutex::new(TrayState::NotPlaying));
         if let Some(window) = app.get_window("main") {
-          set_shadow(&window, true).expect("Unsupported platform!");
+          set_shadow(&window, true).ok(); // don't care if platform is unsupported
         }
         Ok(())
     })
