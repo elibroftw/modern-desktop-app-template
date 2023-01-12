@@ -17,9 +17,9 @@ tauri-build = { version = "1.0", features = [] }
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.0", features = ["fs-create-dir", "fs-read-dir", "fs-write-file", "icon-ico", "notification-all", "os-all", "path-all", "process-relaunch", "shell-open", "system-tray", "window-close", "window-maximize", "window-minimize", "window-set-decorations", "window-set-focus", "window-set-fullscreen", "window-set-size", "window-start-dragging", "window-unmaximize", "window-unminimize"] }
-tauri-plugin-window-state = { git = "https://github.com/tauri-apps/tauri-plugin-window-state/", branch = "dev" }
+tauri-plugin-window-state = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "dev" }
+tauri-plugin-store = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "dev" }
 tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/tauri-plugin-single-instance", branch = "dev" }
-tauri-plugin-store = { git = "https://github.com/tauri-apps/tauri-plugin-store", rev = "9bd993a" }
 window-shadows = {git = "https://github.com/tauri-apps/window-shadows", branch = "dev" }
 
 [features]

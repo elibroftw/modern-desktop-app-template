@@ -2904,8 +2904,8 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-store"
-version = "0.0.0"
-source = "git+https://github.com/tauri-apps/tauri-plugin-store?rev=9bd993a#9bd993aa67766596638bbfd91e79a1bf8f632014"
+version = "0.1.0"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=dev#467bcb90afa8251fae14005b4c17e0ab75d04edb"
 dependencies = [
  "log",
  "serde",
@@ -2917,10 +2917,12 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-window-state"
 version = "0.1.0"
-source = "git+https://github.com/tauri-apps/tauri-plugin-window-state/?branch=dev#17f468062904e64bb3ebf5f1b7486883aaafa1cf"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=dev#467bcb90afa8251fae14005b4c17e0ab75d04edb"
 dependencies = [
  "bincode",
+ "log",
  "serde",
+ "serde_json",
  "tauri",
  "thiserror",
 ]
