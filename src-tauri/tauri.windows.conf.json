@@ -2,7 +2,7 @@
     "tauri": {
         "windows": [
             {
-                "title": "tauri.conf.json > tauri > windows > title",
+                "title": "tauri.windows.conf.json > tauri > windows > title",
                 "label": "main",
                 "minWidth": 1000,
                 "minHeight": 600,
