@@ -47,13 +47,15 @@ export default function () {
 
   // hide titlebar in fullscreen
   const [fullscreen, setFullscreen] = useState(false);
-  const tauriInterval = useInterval(() => {
-    appWindow.isFullscreen().then(setFullscreen);
-  }, 200);
-  useEffect(() => {
-    tauriInterval.start();
-    return tauriInterval.stop
-  }, []);
+  if (RUNNING_IN_TAURI) {
+    const tauriInterval = useInterval(() => {
+      appWindow.isFullscreen().then(setFullscreen);
+    }, 200);
+    useEffect(() => {
+      tauriInterval.start();
+      return tauriInterval.stop
+    }, []);
+  }
 
   const using_custom_titlebar = !fullscreen && osType === 'Windows_NT' && WIN32_CUSTOM_TITLEBAR;
 
