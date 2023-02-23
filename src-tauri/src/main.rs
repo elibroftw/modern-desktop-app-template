@@ -8,12 +8,8 @@ use serde::Serialize;
 use tauri_plugin_store;
 use tauri_plugin_window_state;
 use window_shadows::set_shadow;
-
 #[cfg(target_os = "linux")]
-use std::fs::metadata;
-#[cfg(target_os = "linux")]
-use std::path::PathBuf;
-
+use std::{fs::metadata, path::PathBuf};
 use std::{process::Command, ops::Deref, sync::Mutex};
 // Manager is used by .get_window
 use tauri::{self, Manager, State, SystemTray, SystemTrayMenu, SystemTraySubmenu, CustomMenuItem, SystemTrayMenuItem, SystemTrayEvent};
