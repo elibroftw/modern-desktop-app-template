@@ -194,7 +194,7 @@ fn main() {
       app.emit_all("new-instance", SingleInstancePayload { args, cwd }).unwrap();
     }))
     // persistent storage with filesystem
-    .plugin(tauri_plugin_store::PluginBuilder::default().build())
+    .plugin(tauri_plugin_store::Builder::default().build())
     // save window position and size between sessions
     .plugin(tauri_plugin_window_state::Builder::default().build())
     // custom setup code
