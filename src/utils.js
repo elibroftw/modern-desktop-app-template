@@ -11,11 +11,11 @@ import packageJson from '../package.json';
 import tauriConfJson from '../src-tauri/tauri.conf.json';
 export { localforage };
 
+export const HEADER_TITLE = 'HEADER_TITLE goes here';
+export const FOOTER = 'FOOTER goes here';
 export const APP_NAME = tauriConfJson.package.productName;
 export const VERSION = packageJson.version;
 export const WIN32_CUSTOM_TITLEBAR = true;
-export const HEADER_TITLE = 'HEADER_TITLE goes here';
-export const FOOTER = 'FOOTER goes here';
 const EXTS = new Set(['.json']);
 // save tauri store 500ms after last set
 const SAVE_DELAY = 500;

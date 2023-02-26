@@ -1,6 +1,7 @@
 {
   "name": "r2-t2",
   "version": "0.2.3",
+  "type": "module",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -40,12 +41,13 @@
     "tauri": "tauri",
     "start": "vite",
     "rls": "dotenv-load tauri build",
-    "build": "cross-env INLINE_RUNTIME_CHUNK=false yarn vite build",
+    "build": "vite build",
     "preview": "vite preview",
-    "serve": "serve -s build",
-    "preinstall": "yarn global add serve sloc @tauri-apps/cli",
+    "serve": "vite preview",
+    "preinstall": "yarn global add sloc @tauri-apps/cli",
     "sloc": "sloc src src-tauri/src",
-    "update": "concurrently \"yarn upgrade \" \"cd src-tauri && cargo update && cargo clean\""
+    "update": "concurrently \"yarn upgrade \" \"cd src-tauri && cargo update && cargo clean\"",
+    "test": "mocha"
   },
   "eslintConfig": {
     "extends": [
@@ -68,10 +70,13 @@
   "devDependencies": {
     "@tauri-apps/cli": "^1.0",
     "@vitejs/plugin-react": "^2.1.0",
+    "chai": "^4.3.7",
     "concurrently": "^7.0.0",
-    "cross-env": "^7.0.3",
     "dotenv-load": "^2.0.1",
+    "mocha": "^10.2.0",
     "rollup-plugin-visualizer": "^5.6.0",
+    "selenium-webdriver": "^4.8.1",
+    "toml": "^3.0.0",
     "vite": "^3.1.0",
     "vite-plugin-top-level-await": "^1.2.1"
   },

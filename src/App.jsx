@@ -208,7 +208,7 @@ export default function () {
             <Text>{HEADER_TITLE}</Text>
             <Group className={classes.headerRightItems}>
               <LanguageHeaders />
-              <ActionIcon title='Ctrl + J' className={classes.actionIcon} variant='default' onClick={() => toggleColorScheme()} size={30}>
+              <ActionIcon id='toggle-theme' title='Ctrl + J' className={classes.actionIcon} variant='default' onClick={() => toggleColorScheme()} size={30}>
                 {/* icon to show based on colorScheme */}
                 {colorScheme === 'dark' ? <IoSunnySharp size={'1.5em'} /> : <BsMoonStarsFill />}
               </ActionIcon>

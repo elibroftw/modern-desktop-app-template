@@ -18,7 +18,9 @@ export default defineConfig({
   // Tauri expects a fixed port, fail if that port is not available
   server: {
     port: 1420,
-    strictPort: true
+    strictPort: true,
+    // open in browser if not running with tauri
+    open: process.env.TAURI_ARCH === undefined
   },
   // to make use of `TAURI_PLATFORM`, `TAURI_ARCH`, `TAURI_FAMILY`,
   // `TAURI_PLATFORM_VERSION`, `TAURI_PLATFORM_TYPE` and `TAURI_DEBUG`

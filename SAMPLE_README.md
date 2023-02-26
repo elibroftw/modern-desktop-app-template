@@ -1,25 +1,35 @@
 # APP NAME
 
-Description goes here.
-This project was bootstrapped with Create React App and converted to use Vite.
+App description goes here.
 
 ## Environment
 
-- [Tauri Prerequisites](https://tauri.studio/docs/getting-started/prerequisites),
-- Install [NodeJS](https://nodejs.org/en/) via [nvm](#how-to-use-nvm)
+- [Tauri prerequisites](https://tauri.app/guides/getting-started/prerequisites),
+- Install [NodeJS](https://nodejs.org/en/) via `nvm`
+  1. Install [`nvm`](https://github.com/nvm-sh/nvm) or [`nvm-windows`](https://github.com/coreybutler/nvm-windows/releases)
+  2. Open up an elevated command prompt (Windows) or use `sudo` (POSIX) for the following commands
+  3. `nvm install latest` which will output a version (X.Y.Z) that was installed
+  4. `nvm use X`
 - Install `yarn` using `npm i -g yarn`
 - Run `yarn` to install frontend dependencies
-
-### How to use nvm
-
-1. Install [`nvm`](https://github.com/nvm-sh/nvm) or [`nvm-windows`](https://github.com/coreybutler/nvm-windows/releases)
-2. Open up an elevated command prompt (Windows) or use `sudo` (POSIX) for the below commands.
-3. `nvm install latest` which will output a version (X.Y.Z) that was installed
-4. `nvm use X.Y.Z`
+- For testing, you need to `cargo install tauri-driver`, [Install Selenium IDE](https://www.selenium.dev/selenium-ide/), and on Windows add [msedgedriver.exe x64](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) add to your Path environment variable.
+  - A good place to store `msedgedriver.exe` is `C:\Windows` if you have administrative privileges
+  - If tests are hanging on Windows, you will need to update `msedgedriver.exe` to the latest version
+  - Use the Selenium IDE to open and save to the test/app.side file
 
 ## Resources
 
+### Purpose Related
+
+Enter resources for contributors that is related to the applications purpose. For example, a cryptocurrency wallet,
+you would list some things related to understanding said cryptocurrency.
+
+### IDE
+
 - [VS Code](https://code.visualstudio.com/) + [Tauri Extension](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer Extension](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+
+### Libraries
+
 - [Tauri (JS)](https://tauri.studio/docs/api/js/)
 - [Tauri (Rust)](https://docs.rs/tauri/)
 - [React Icons](https://react-icons.github.io/react-icons)
@@ -68,7 +78,7 @@ To test if auto-update works, in your `tauri.conf.json` file, add a localhost ur
 
 ```rs
 #[tauri::command]
-fn command1() {
+fn command1(window: tauri::Window) {
   println!("I was invoked from JS!");
 }
 
@@ -98,7 +108,11 @@ await invoke('command2', {arg: 'two'}).then(msg => console.log(msg));
 
 ### `yarn dev`
 
-An alias for `yarn tauri dev` which runs `yarn start` and opens a debug enabled window app that renders the frontend.
+An alias for `yarn tauri dev` which runs `yarn start` and opens a debug enabled window app that renders the frontend
+
+### `yarn test`
+
+Run integrated tests using selenium-webdriver on a release build of the application
 
 ### `yarn rls`
 
@@ -106,7 +120,7 @@ An alias for `yarn tauri build` which builds the frontend and bundles it into a 
 
 ### `yarn update`
 
-Upgrades packages/crates in `./packages.json` and `./src-tauri/Cargo.toml`. This will also cleanup rust builds.
+Upgrades packages/crates in `./packages.json` and `./src-tauri/Cargo.toml`. This will also cleanup rust builds
 
 ### `yarn build`
 
@@ -115,7 +129,7 @@ A performance optimized build of the front-end intended for use in production. O
 ### `yarn start`
 
 Run the app in the development mode ~~and opens [http://localhost:3000](http://localhost:3000) in your browser~~.
-The page should reload when you make changes. You may also see lint errors in the console.
+The page should reload when you make changes. You may also see lint errors in the console
 
 ### `yarn serve`
 
@@ -131,9 +145,8 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 - Slow computer / low storage / Frontend edits only? `yarn start`
   - no Tauri API access of course
 - Publishing to the web? Edit `package.json`, `index.html`, `manifest.html`
-- More than 1 monitor? Set `alwaysOnTop` to `true` in `tauri.conf.json` to avoid alt-tabbing
-- Broken sub-dependency? Use `resolutions: {subDependency: version}`
+- Don't want to Alt-Tab? Set `alwaysOnTop` to `true` in `tauri.conf.json`
+- Broken npm sub-dependency? Use `resolutions: {subDependency: version}`
 - Add `"devtools"` to Tauri features in `Cargo.toml` to get devtools in a production build
-- If a cookie is not being set from cross-site, add `SameSite: 'lax'` when setting cookies.
+- If a cookie is not being set from cross-site, add `SameSite: 'lax'` when setting cookies
 - Use `cd src-tauri && cargo clean` to fix abnormal bugs or issues
-- Use `cd src-tauri && cargo update` to update Cargo packages

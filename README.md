@@ -4,13 +4,14 @@ Tauri and React boilerplate for a modern desktop application. Not a project nor 
 
 ## Template Instructions
 
-1. Install Tauri [prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites)
-2. Download or Clone this repository `git clone --depth=1 https://github.com/elibroftw/modern-desktop-app-template.git new-app`
+1. Have [`git`](https://git-scm.com/downloads) installed
+2. Download this repository or `git clone --depth=1 https://github.com/elibroftw/modern-desktop-app-template.git new-app`
 3. Go into `new-app`
 4. Follow environment instructions in [`SAMPLE_README.md`](./SAMPLE_README.md)
-5. While `yarn` is installing dependencies,
-    - Modify `productName, identifier, title` found in `src-tauri/tauri.conf.json`
-    - Modify `HEADER_TITLE, FOOTER` found in `src/utils.js`
+5. While you run `yarn` to install dependencies,
+    - Modify `productName, identifier, title` found in [`src-tauri/tauri.conf.json`](./src-tauri/tauri.conf.json)
+    - Modify `authors` in [`src-tauri/Cargo.toml`](./src-tauri/Cargo.toml)
+    - Modify `HEADER_TITLE, FOOTER` found in [`src/utils.js`](./src/utils.js)
     - Remove the `.git` folder
     - Delete or replace `LICENSE.md` since this template is public domain
     - Edit `SAMPLE_README.md` and replace `README.md`
@@ -40,7 +41,7 @@ I do not recommend pulling from my repo because you will need to edit the same f
 
 ### URL Schema (used with Single Instance)
 
-Use the instaled single instance plugin with the reading from below to get a Windows
+The single instance plugin is already included in this template. Combine this plugin with the reading from below to get a Windows
 app URL protocol. This can be used for say Music Players, PDF Readers, etc.
 
 - [URL schema](https://gitlab.com/ioneyed/tauri-example-singleinstance)
