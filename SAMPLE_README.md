@@ -12,7 +12,7 @@ App description goes here.
   4. `nvm use X`
 - Install `yarn` using `npm i -g yarn`
 - Run `yarn` to install frontend dependencies
-- For testing, you need to `cargo install tauri-driver`, [Install Selenium IDE](https://www.selenium.dev/selenium-ide/), and on Windows add [msedgedriver.exe x64](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) add to your Path environment variable.
+- For testing, you need to `cargo install tauri-driver`, [Install Selenium IDE](https://www.selenium.dev/selenium-ide/), and on Windows add [msedgedriver.exe x64](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) to your Path environment variable.
   - A good place to store `msedgedriver.exe` is `C:\Windows` if you have administrative privileges
   - If tests are hanging on Windows, you will need to update `msedgedriver.exe` to the latest version
   - Use the Selenium IDE to open and save to the test/app.side file
