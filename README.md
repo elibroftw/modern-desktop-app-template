@@ -5,8 +5,8 @@ Tauri and React boilerplate for a modern desktop application. Not a project nor 
 ## Template Instructions
 
 1. Have [`git`](https://git-scm.com/downloads) installed
-2. Download this repository or `git clone --depth=1 https://github.com/elibroftw/modern-desktop-app-template.git new-app`
-3. Go into `new-app`
+2. Download this repository and rename the folder to YOUR_APP or click "use this template" and clone your new repo that is referred to henceforth as YOUR_APP
+3. Open YOUR_APP in an IDE
 4. Follow environment instructions in [`SAMPLE_README.md`](./SAMPLE_README.md)
 5. While you run `yarn` to install dependencies,
     - Modify `productName, identifier, title` found in [`src-tauri/tauri.conf.json`](./src-tauri/tauri.conf.json)
