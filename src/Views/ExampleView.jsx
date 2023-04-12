@@ -7,8 +7,7 @@ import * as tauriPath from '@tauri-apps/api/path';
 import * as shell from '@tauri-apps/api/shell';
 import { invoke } from '@tauri-apps/api/tauri'
 import { APP_NAME, notify, RUNNING_IN_TAURI, useMinWidth, useStorage } from '../utils';
-import { showNotification } from '@mantine/notifications';
-import { useState } from 'react';
+import { notifications } from '@mantine/notifications';
 import { useTauriContext } from '../TauriProvider';
 import { appWindow } from '@tauri-apps/api/window'
 
@@ -38,7 +37,7 @@ export default function ExampleView() {
             await invoke('process_file', { filepath: filePath }).then(msg => {
                 console.log(msg === 'Hello from Rust!')
                 notify('Message from Rust', msg);
-                showNotification({ title: 'Message from Rust', message: msg });
+                notifications.show({ title: 'Message from Rust', message: msg });
             });
         }
     }
@@ -49,6 +48,9 @@ export default function ExampleView() {
         <Button onClick={createFile}>Do something with fs</Button>
         <Space />
         <Button onClick={toggleFullscreen}>Toggle Fullscreen</Button>
+        <Space />
+        <Button onClick={() => notifications.show({ title: 'Mantine Notification', message: 'test v6 breaking change'})}>Notification example</Button>
+
         <Title order={4}>{t('Interpolating components in translations')} </Title>
         <Trans i18nKey='transExample'
             values={{ variable: '/elibroftw/modern-desktop-template' }}

@@ -1,13 +1,13 @@
 // boilerplate components
-import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
-import { NotificationsProvider } from '@mantine/notifications';
+import { ColorSchemeProvider, MantineProvider } from '@mantine/core';
+import { useColorScheme, useHotkeys } from '@mantine/hooks';
 import { ModalsProvider } from '@mantine/modals';
-import { useHotkeys, useColorScheme } from '@mantine/hooks';
+import { Notifications } from '@mantine/notifications';
+import { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Splashscreen from './Splashscreen';
-import { useState } from 'react';
-import { useCookie } from './utils';
 import { TauriProvider } from './TauriProvider';
+import { useCookie } from './utils';
 
 // I love boilerplate
 export default function ({ children }) {
@@ -61,16 +61,15 @@ export default function ({ children }) {
 
     return <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS withCSSVariables>
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-            <NotificationsProvider>
-                <ModalsProvider>
-                    <BrowserRouter>
-                        <TauriProvider>
-                            {/* show splashscreen for inital data */}
-                            {isLoading ? <Splashscreen /> : children}
-                        </TauriProvider>
-                    </BrowserRouter>
-                </ModalsProvider>
-            </NotificationsProvider>
+            <ModalsProvider>
+                <BrowserRouter>
+                    <TauriProvider>
+                        <Notifications />
+                        {/* show splashscreen for inital data */}
+                        {isLoading ? <Splashscreen /> : children}
+                    </TauriProvider>
+                </BrowserRouter>
+            </ModalsProvider>
         </ColorSchemeProvider>
     </MantineProvider>;
 }

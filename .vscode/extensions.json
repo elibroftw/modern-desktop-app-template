@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "bungcip.better-toml",
+        "oliversturm.fix-json",
+        "tauri-apps.tauri-vscode"
+    ]
+}

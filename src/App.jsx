@@ -1,5 +1,6 @@
-import { AppShell, Navbar, Header, Footer, Text, MediaQuery, Burger, ActionIcon, Aside, Group, Anchor, Button, Space, Global } from '@mantine/core';
+import { AppShell, Navbar, Header, Footer, Text, MediaQuery, Burger, ActionIcon, Aside, Group, Anchor, Button, Space, Global} from '@mantine/core';
 import { useMantineColorScheme } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { IoSunnySharp } from 'react-icons/io5';
 import { BsMoonStarsFill } from 'react-icons/bs';
 import { ImCross } from 'react-icons/im';
@@ -12,18 +13,14 @@ import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
 import { relaunch } from '@tauri-apps/api/process'
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
-// talk to rust with
-// import { invoke } from '@tauri-apps/api/tauri'
-
+// talk to rust
+// import { invoke } from '@tauri-apps/api/tauri';
 // local js files
 import { FOOTER, HEADER_TITLE, RUNNING_IN_TAURI, useLocalForage, WIN32_CUSTOM_TITLEBAR } from './utils';
-
 // fallback for React Suspense
 import Fallback from './Views/Fallback';
-
 // imported views need to be added to `views`
 import ExampleView from './Views/ExampleView';
-import { showNotification } from '@mantine/notifications';
 import * as tauri_event from '@tauri-apps/api/event';
 import { Titlebar } from './Components/Titlebar';
 import { appWindow } from '@tauri-apps/api/window'
@@ -87,7 +84,7 @@ export default function () {
   // Updater integration
 
   function startInstall(newVersion) {
-    showNotification({ title: t('Installing update v{{ v }}', { v: newVersion }), message: t('Will relaunch afterwards'), autoClose: false });
+    notifications.show({ title: t('Installing update v{{ v }}', { v: newVersion }), message: t('Will relaunch afterwards'), autoClose: false });
     installUpdate().then(relaunch);
   }
 
@@ -103,7 +100,7 @@ export default function () {
         if (shouldUpdate) {
           const { version: newVersion, body: releaseNotes } = manifest;
           const color = colorScheme === 'dark' ? 'teal' : 'teal.8';
-          showNotification({
+          notifications.show({
             title: t('Update v{{ v }} available', { v: newVersion }),
             color,
             message: <>
@@ -121,7 +118,7 @@ export default function () {
         } else {
           console.log(payload.message);
           // for debugging purposes only
-          showNotification({
+          notifications.show({
             title: '[DEBUG] System Tray Event',
             message: payload.message
           });
