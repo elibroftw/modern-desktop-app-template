@@ -4,6 +4,8 @@ import * as fs from '@tauri-apps/api/fs';
 import * as os from '@tauri-apps/api/os';
 import { APP_NAME, RUNNING_IN_TAURI } from './utils';
 import { invoke } from '@tauri-apps/api';
+import { listen } from '@tauri-apps/api/event';
+import { appWindow } from '@tauri-apps/api/window';
 
 // NOTE: Add cacheable Tauri calls in this file
 //   that you want to use synchronously across components in your app
@@ -32,6 +34,15 @@ export function TauriProvider({ children }) {
         // if you want to listen for event listeners, use mountID trick to call unlisten on old listeners
         if (RUNNING_IN_TAURI) {
             const callTauriAPIs = async () => {
+                // Handle additional app launches (url, etc.)
+                await listen('new-instance',
+                    ({ payload, ...eventObj }) => {
+                        appWindow.unminimize().then(() => appWindow.setFocus(true));
+                        let args = payload?.args;
+                        let cwd = payload?.cwd;
+                        if (args?.length > 1) { }
+                    }
+                );
                 setDownloadDir(await tauriPath.downloadDir());
                 const _documents = await tauriPath.documentDir();
                 setDocumentDir(_documents);

@@ -21,19 +21,4 @@
       The build step will place the bundled scripts into the <body> tag.
     -->
   <script type="module" src="/src/main.jsx"></script>
-  <!-- Handle additional app launches (url, etc.) -->
-  <script type="module">
-    import { listen } from '@tauri-apps/api/event';
-    import { appWindow } from '@tauri-apps/api/window';
-    if (window.__TAURI__ !== undefined) {
-      await listen('new-instance',
-        ({ payload, ...eventObj }) => {
-          appWindow.unminimize().then(() => appWindow.setFocus(true));
-          let args = payload?.args;
-          let cwd = payload?.cwd;
-          if (args?.length > 1) { }
-        }
-      );
-    }
-  </script>
 </body>
