@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { VscChromeClose, VscChromeMaximize, VscChromeMinimize, VscChromeRestore } from 'react-icons/vsc';
 import AppIcon from '../../src-tauri/icons/32x32.png';
+import { trueTypeOf } from '../utils';
 
 export function Titlebar() {
     const { t } = useTranslation();
@@ -15,8 +16,11 @@ export function Titlebar() {
 
     const tauriInterval = useInterval(() => {
         appWindow.isMaximized().then(setMaximized);
-        appWindow.title().then(setWindowTitle);
         appWindow.isFullscreen().then(setFullscreen);
+        if (trueTypeOf(appWindow.title) === 'function') {
+            console.info('Titlebar.jsx does not require appWindow.title checker anymore');
+            appWindow.title().then(setWindowTitle);
+        }
     }, 200);
 
     useEffect(() => {
