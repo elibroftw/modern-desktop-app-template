@@ -20,6 +20,8 @@ const EXTS = new Set(['.json']);
 // save tauri store 500ms after last set
 const SAVE_DELAY = 500;
 export const RUNNING_IN_TAURI = window.__TAURI__ !== undefined;
+export const IS_DEVELOPMENT = import.meta.env.MODE === 'development';
+export const IS_PRODUCTION = !IS_DEVELOPMENT;
 
 export function useCookie(key, defaultValue, { expires = 365000, sameSite = 'lax', path = '/' } = {}) {
     // cookie expires in a millenia
@@ -192,7 +194,39 @@ export function useLocalForage(key, defaultValue) {
     return [state, setState, loading];
 }
 
-// notification example (different from mantine notification)
+// show browser / native notification
 export function notify(title, body) {
     new Notification(title, { body: body || "", });
+}
+
+export function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function downloadFile(filename, content, contentType='text/plain') {
+    const element = document.createElement('a');
+    const file = new Blob([content], { type: contentType });
+    element.href = URL.createObjectURL(file);
+    element.download = filename;
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+}
+
+Math.clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+
+
+export function arraysEqual(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+
+    // If you don't care about the order of the elements inside
+    // the array, you should sort both arrays here.
+    // Please note that calling sort on an array will modify that array.
+    // you might want to clone your array first.
+
+    for (var i = 0; i < a.length; ++i) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
 }

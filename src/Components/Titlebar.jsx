@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { VscChromeClose, VscChromeMaximize, VscChromeMinimize, VscChromeRestore } from 'react-icons/vsc';
 import AppIcon from '../../src-tauri/icons/32x32.png';
-import { trueTypeOf } from '../utils';
+import { IS_DEVELOPMENT, trueTypeOf } from '../utils';
 
 export function Titlebar() {
     const { t } = useTranslation();
@@ -18,7 +18,11 @@ export function Titlebar() {
         appWindow.isMaximized().then(setMaximized);
         appWindow.isFullscreen().then(setFullscreen);
         if (trueTypeOf(appWindow.title) === 'function') {
-            console.info('Titlebar.jsx does not require appWindow.title checker anymore');
+            const errorMsg = 'Titlebar.jsx no longer requires appWindow.title validator';
+            if (IS_DEVELOPMENT) {
+                alert(errorMsg);
+                throw errorMsg;
+            }
             appWindow.title().then(setWindowTitle);
         }
     }, 200);

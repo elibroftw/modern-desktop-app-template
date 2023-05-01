@@ -68,7 +68,7 @@
         "all": false,
         "ask": false,
         "confirm": false,
-        "message": false,
+        "message": true,
         "open": false,
         "save": false
       },
