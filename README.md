@@ -12,7 +12,7 @@ Tauri and React boilerplate for a modern desktop application. Not a project nor 
     - Modify `productName, identifier, title` found in [`src-tauri/tauri.conf.json`](./src-tauri/tauri.conf.json)
     - Modify `authors` in [`src-tauri/Cargo.toml`](./src-tauri/Cargo.toml)
     - Modify `HEADER_TITLE, FOOTER` found in [`src/utils.js`](./src/utils.js)
-    - Remove the `.git` folder
+    - If you didn't click "use this template", remove the `.git` folder and reinitialize your own git repo
     - Delete or replace `LICENSE.md` since this template is public domain
     - Edit `SAMPLE_README.md` and replace `README.md`
 6. Run `yarn dev` to start developing
