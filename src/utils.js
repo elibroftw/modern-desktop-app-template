@@ -16,6 +16,7 @@ export const FOOTER = 'FOOTER goes here';
 export const APP_NAME = tauriConfJson.package.productName;
 export const VERSION = packageJson.version;
 export const WIN32_CUSTOM_TITLEBAR = true;
+export const WINDOW_TITLE = 'WINDOW_TITLE set in utils.js';
 const EXTS = new Set(['.json']);
 // save tauri store 500ms after last set
 const SAVE_DELAY = 500;
@@ -44,6 +45,7 @@ export function trueTypeOf(obj) {
         new Date()      -> date
         1               -> number
         function () {}  -> function
+        async function () {}  -> asyncfunction
         /test/i         -> regexp
         true            -> boolean
         null            -> null
