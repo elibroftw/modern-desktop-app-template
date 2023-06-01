@@ -247,6 +247,7 @@ export default function () {
 const getAppStyles = createStyles(theme => ({
   simpleBar: {
     maxHeight: '100vh',
+    marginRight: 6
   },
   navLink: {
     display: 'block',
