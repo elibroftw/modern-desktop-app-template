@@ -37,11 +37,14 @@ struct Example<'a> {
     attribute_1: &'a str,
 }
 
+/*
 // useful if not saving the window state
 #[tauri::command]
 fn show_main_window(window: tauri::Window) {
-    window.get_window("main").unwrap().show().unwrap(); // replace "main" by the name of your window
+    // replace "main" by the name of your window
+    window.get_window("main").unwrap().show().unwrap();
 }
+*/
 
 fn create_tray_menu(lang: String) -> SystemTrayMenu {
   // TODO: https://docs.rs/rust-i18n/latest/rust_i18n/
@@ -138,7 +141,7 @@ fn main() {
     .on_system_tray_event(|app, event| match event {
       SystemTrayEvent::MenuItemClick { id, .. } => {
         let main_window = app.get_window("main").unwrap();
-        main_window.emit("system-tray", SystemTrayPayload { message: id.clone() }).unwrap();
+        main_window.emit("systemTray", SystemTrayPayload { message: id.clone() }).unwrap();
         let item_handle = app.tray_handle().get_item(&id);
         match id.as_str() {
           "quit" => { std::process::exit(0); }
@@ -184,14 +187,16 @@ fn main() {
       _ => {}
     })
     // custom commands
-    .invoke_handler(tauri::generate_handler![show_main_window, update_tray_lang, process_file, show_in_folder])
+    .invoke_handler(tauri::generate_handler![/* show_main_window, */update_tray_lang, process_file, show_in_folder])
     // allow only one instance and propagate args and cwd to existing instance
     .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {
-      app.emit_all("new-instance", SingleInstancePayload { args, cwd }).unwrap();
+      app.emit_all("newInstance", SingleInstancePayload { args, cwd }).unwrap();
     }))
     // persistent storage with filesystem
     .plugin(tauri_plugin_store::Builder::default().build())
     // save window position and size between sessions
+    // if you remove this, make sure to uncomment the show_main_window code
+    //  in this file and TauriProvider.jsx
     .plugin(tauri_plugin_window_state::Builder::default().build())
     // custom setup code
     .setup(|app| {

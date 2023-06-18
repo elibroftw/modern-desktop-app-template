@@ -1,31 +1,26 @@
-import { AppShell, Navbar, Header, Footer, Text, MediaQuery, Burger, ActionIcon, Aside, Group, Anchor, Button, Space, Global} from '@mantine/core';
-import { useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, AppShell, Aside, Burger, Button, Footer, Global, Group, Header, MediaQuery, Navbar, Space, Text, useMantineColorScheme } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { IoSunnySharp } from 'react-icons/io5';
+import { createStyles, useMantineTheme } from '@mantine/styles';
+import * as tauriEvent from '@tauri-apps/api/event';
+import { relaunch } from '@tauri-apps/api/process';
+import { checkUpdate, installUpdate } from '@tauri-apps/api/updater';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BsMoonStarsFill } from 'react-icons/bs';
 import { ImCross } from 'react-icons/im';
-import React, { useState, useEffect, Fragment, Suspense, useRef } from 'react';
-import { createStyles, useMantineTheme } from '@mantine/styles';
-import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useHotkeys, useInterval } from '@mantine/hooks';
-import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
-import { relaunch } from '@tauri-apps/api/process'
+import { IoSunnySharp } from 'react-icons/io5';
+import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
-import 'simplebar/dist/simplebar.min.css';
-// talk to rust
-// import { invoke } from '@tauri-apps/api/tauri';
-// local js files
-import { FOOTER, HEADER_TITLE, RUNNING_IN_TAURI, useLocalForage, WIN32_CUSTOM_TITLEBAR } from './utils';
+import 'simplebar-react/dist/simplebar.min.css';
+// src imports
+import LanguageHeaders from './Components/LanguageHeaders';
+import { ScrollToTop } from './Components/ScrollToTop';
+import { useTauriContext } from './TauriProvider';
+import { FOOTER, HEADER_TITLE, RUNNING_IN_TAURI, useLocalForage } from './utils';
+// imported views need to be added to the `views` list variable
+import ExampleView from './Views/ExampleView';
 // fallback for React Suspense
 import Fallback from './Views/Fallback';
-// imported views need to be added to `views`
-import ExampleView from './Views/ExampleView';
-import * as tauri_event from '@tauri-apps/api/event';
-import { Titlebar } from './Components/Titlebar';
-import { appWindow } from '@tauri-apps/api/window'
-import { useTauriContext } from './TauriProvider';
-import { ScrollToTop } from './Components/ScrollToTop';
 // import Home from './Views/Home';
 // import About from './Views/About';
 // import CIFInfo from './Views/CIFInfo';
@@ -34,27 +29,8 @@ import { ScrollToTop } from './Components/ScrollToTop';
 
 export default function () {
   const { t, i18n } = useTranslation();
-
-  // use the custom title bar only on Windows
-  // osType defined implies RUNNING_IN_TAURI
-  const { osType } = useTauriContext();
-  useEffect(() => {
-    if (osType === 'Windows_NT') appWindow.setDecorations(!WIN32_CUSTOM_TITLEBAR);
-  }, [osType]);
-
-  // hide titlebar in fullscreen
-  const [fullscreen, setFullscreen] = useState(false);
-  if (RUNNING_IN_TAURI) {
-    const tauriInterval = useInterval(() => {
-      appWindow.isFullscreen().then(setFullscreen);
-    }, 200);
-    useEffect(() => {
-      tauriInterval.start();
-      return tauriInterval.stop
-    }, []);
-  }
-
-  const using_custom_titlebar = !fullscreen && osType === 'Windows_NT' && WIN32_CUSTOM_TITLEBAR;
+  // check if using custom titlebar to adjust other components
+  const { usingCustomTitlebar } = useTauriContext();
 
   // left sidebar
   const views = [
@@ -71,7 +47,6 @@ export default function () {
   const [mobileNavOpened, setMobileNavOpened] = useState(false);
   // load preferences using localForage
   const [footersSeen, setFootersSeen, footersSeenLoading] = useLocalForage('footersSeen', {});
-  const lang = i18n.resolvedLanguage;
 
   // getAppStyles defined below App()
   const { classes } = getAppStyles();
@@ -92,10 +67,10 @@ export default function () {
   const unlistens = useRef({});
 
   // Tauri event listeners (run on mount)
-  useEffect(() => {
-    const thisMountID = Math.random();
-    mountID.current = thisMountID;
-    if (RUNNING_IN_TAURI) {
+  if (RUNNING_IN_TAURI) {
+    useEffect(() => {
+      const thisMountID = Math.random();
+      mountID.current = thisMountID;
       checkUpdate().then(({ shouldUpdate, manifest }) => {
         if (shouldUpdate) {
           const { version: newVersion, body: releaseNotes } = manifest;
@@ -112,7 +87,7 @@ export default function () {
         }
       });
       // system tray
-      tauri_event.listen('system-tray', ({ payload, ...eventObj }) => {
+      tauriEvent.listen('systemTray', ({ payload, ...eventObj }) => {
         if (mountID.current != thisMountID) {
           unlistens.current[thisMountID]();
         } else {
@@ -123,33 +98,9 @@ export default function () {
             message: payload.message
           });
         }
-      }).then(new_unlisten => { unlistens.current[thisMountID] = new_unlisten; });
-    }
-    return () => mountID.current = null;
-  }, []);
-
-  function LanguageHeaders() {
-    const languages = Object.keys(i18n.options.resources);
-    let nextLangIdx = 0;
-
-    function cycleLang() {
-      if (nextLangIdx == languages.length) nextLangIdx = 0;
-      i18n.changeLanguage(languages[nextLangIdx])
-    }
-
-    const header = languages.map((supportedLang, index) => {
-      const selectedLang = lang === supportedLang;
-      if (selectedLang) nextLangIdx = index + 1;
-      return <Fragment key={index}>
-        {/* language code is a link if not the current language */}
-        {selectedLang ?
-          <Text>{supportedLang.toUpperCase()}</Text> :
-          <Anchor onClick={() => i18n.changeLanguage(supportedLang)}>{supportedLang.toUpperCase()}</Anchor>}
-        <Text>{index < languages.length - 1 && '|'}</Text>
-      </Fragment>
-    });
-    useHotkeys([['mod+Shift+L', cycleLang]]);
-    return header;
+      }).then(newUnlisten => { unlistens.current[thisMountID] = newUnlisten; });
+      return () => mountID.current = null;
+    }, []);
   }
 
   function NavLinks() {
@@ -175,21 +126,20 @@ export default function () {
   const titlebarOverrides = theme => ({
     '.simplebar-vertical': {
       backgroundClip: 'padding-box',
-      marginTop: using_custom_titlebar ? 100 : 70,
+      marginTop: usingCustomTitlebar ? 100 : 70,
       marginBottom: showFooter ? 50 : 0,
     },
     body: {
-        overflowY: 'hidden'
+      overflowY: 'hidden'
     }
   });
 
   return <>
-    {using_custom_titlebar && <Titlebar />}
     <Global styles={titlebarOverrides} />
     <SimpleBar scrollableNodeProps={{ ref: scrollbar }} autoHide={false} className={classes.simpleBar}>
       <AppShell padding='md' navbarOffsetBreakpoint='sm'
         navbar={
-          <Navbar className={using_custom_titlebar ? classes.titlebarMargin : ''} height='100%' width={{ sm: 200 }} p='xs' hidden={!mobileNavOpened} hiddenBreakpoint='sm'>
+          <Navbar className={usingCustomTitlebar ? classes.titlebarMargin : ''} height='100%' width={{ sm: 200 }} p='xs' hidden={!mobileNavOpened} hiddenBreakpoint='sm'>
             <Navbar.Section grow><NavLinks /></Navbar.Section>
             <Navbar.Section>
               {/* Bottom of Navbar Example: https://github.com/mantinedev/mantine/blob/master/src/mantine-demos/src/demos/core/AppShell/_user.tsx */}
@@ -197,14 +147,14 @@ export default function () {
             </Navbar.Section>
           </Navbar>}
         header={
-          <Header data-tauri-drag-region height={70} p='md' className={`${classes.header} ` + (using_custom_titlebar ? classes.headerOverrides : '')}>
+          <Header data-tauri-drag-region height={70} p='md' className={`${classes.header} ` + (usingCustomTitlebar ? classes.headerOverrides : '')}>
             <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
               <Burger opened={mobileNavOpened} onClick={() => setMobileNavOpened(o => !o)}
                 size='sm' mr='xl' color={useMantineTheme().colors.gray[6]} />
             </MediaQuery>
             <Text>{HEADER_TITLE}</Text>
             <Group className={classes.headerRightItems}>
-              <LanguageHeaders />
+              <LanguageHeaders i18n={i18n} />
               <ActionIcon id='toggle-theme' title='Ctrl + J' className={classes.actionIcon} variant='default' onClick={() => toggleColorScheme()} size={30}>
                 {/* icon to show based on colorScheme */}
                 {colorScheme === 'dark' ? <IoSunnySharp size={'1.5em'} /> : <BsMoonStarsFill />}
@@ -213,7 +163,7 @@ export default function () {
           </Header>}
         aside={
           <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
-            <Aside className={using_custom_titlebar ? classes.titlebarMargin : ''} p='md' hiddenBreakpoint='sm' width={{ sm: 200, lg: 300 }}>
+            <Aside className={usingCustomTitlebar ? classes.titlebarMargin : ''} p='md' hiddenBreakpoint='sm' width={{ sm: 200, lg: 300 }}>
               <Text>Right Side. Use for help or support menu?</Text>
             </Aside>
           </MediaQuery>}
@@ -226,7 +176,7 @@ export default function () {
           </Footer>
         }
         className={classes.appShell}>
-        {using_custom_titlebar && <Space h='2em' />}
+        {usingCustomTitlebar && <Space h='2em' />}
         <Routes>
           <Route exact path='/' element={<Navigate to={views[0].path} />} />
           {views.map((view, index) => <Route key={index} exact={view.exact}
@@ -278,6 +228,7 @@ const getAppStyles = createStyles(theme => ({
     maxHeight: 'calc(70px + 1em)',
     paddingBottom: '0 !important',
     marginTop: '1em',
+
   },
   header: {
     display: 'flex',

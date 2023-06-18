@@ -1,12 +1,11 @@
 import * as fs from '@tauri-apps/api/fs';
-import * as tauriPath from '@tauri-apps/api/path';
 import * as os from '@tauri-apps/api/os';
+import * as tauriPath from '@tauri-apps/api/path';
 import { currentMonitor, getCurrent } from '@tauri-apps/api/window';
 import Cookies from 'js-cookie';
 import localforage from 'localforage';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-// tauri-store docs: https://github.com/tauri-apps/tauri-plugin-store/blob/dev/webview-src/index.ts
-import { Store } from 'tauri-plugin-store-api';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Store } from 'tauri-plugin-store-api'; // tauri-store docs: https://github.com/tauri-apps/tauri-plugin-store/blob/dev/webview-src/index.ts
 import packageJson from '../package.json';
 import tauriConfJson from '../src-tauri/tauri.conf.json';
 export { localforage };
@@ -15,7 +14,6 @@ export const HEADER_TITLE = 'HEADER_TITLE goes here';
 export const FOOTER = 'FOOTER goes here';
 export const APP_NAME = tauriConfJson.package.productName;
 export const VERSION = packageJson.version;
-export const WIN32_CUSTOM_TITLEBAR = true;
 export const WINDOW_TITLE = 'WINDOW_TITLE set in utils.js';
 const EXTS = new Set(['.json']);
 // save tauri store 500ms after last set

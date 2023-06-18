@@ -5,14 +5,13 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { VscChromeClose, VscChromeMaximize, VscChromeMinimize, VscChromeRestore } from 'react-icons/vsc';
 import AppIcon from '../../src-tauri/icons/32x32.png';
-import { WINDOW_TITLE } from '../utils';
 
-export function Titlebar({ window_title }) {
+export function Titlebar() {
   const { t } = useTranslation();
   const { classes } = getTitleBarStyles();
   const [maximized, setMaximized] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
-  const [windowTitle, setWindowTitle] = useState(window_title || WINDOW_TITLE);
+  const [windowTitle, setWindowTitle] = useState('');
 
   const tauriInterval = useInterval(() => {
     appWindow.isMaximized().then(setMaximized);
