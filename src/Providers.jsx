@@ -1,21 +1,36 @@
 // boilerplate components
 import { ColorSchemeProvider, MantineProvider } from '@mantine/core';
-import { useColorScheme, useHotkeys } from '@mantine/hooks';
+import { useHotkeys, useInterval } from '@mantine/hooks';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Splashscreen from './Splashscreen';
 import { TauriProvider } from './TauriProvider';
 import { useCookie } from './utils';
 
-// I love boilerplate
+
+// synchronous hook (for SSR, use mantine's)
+function usingDarkTheme(fallback = true) {
+    const [systemIsDark, setSystemIsDark] = useState(window.matchMedia === undefined ? fallback : window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const colorSchemeInterval = useInterval(() => {
+      const prefersDarkTheme = window.matchMedia === undefined ? fallback : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if(prefersDarkTheme != prefersDarkTheme) setSystemIsDark(prefersDarkTheme);
+    }, 200);
+    useEffect(() => {
+      colorSchemeInterval.stop();
+      return colorSchemeInterval.stop;
+    }, []);
+    return systemIsDark;
+}
+
 export default function ({ children }) {
-    const preferredColorScheme = useColorScheme();
-    const [colorScheme, setColorScheme] = useCookie('colorScheme', preferredColorScheme);
+    const systemColorScheme = usingDarkTheme() ? 'dark' : 'light';
+    const [savedColorScheme, saveColorScheme] = useCookie('colorScheme');
+    const colorScheme = savedColorScheme || systemColorScheme;
 
     function toggleColorScheme(value) {
-        setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+      saveColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
     }
 
     useHotkeys([['mod+J', () => toggleColorScheme()]]);
