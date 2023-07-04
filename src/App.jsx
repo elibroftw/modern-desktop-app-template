@@ -30,7 +30,7 @@ import Fallback from './Views/Fallback';
 export default function () {
   const { t, i18n } = useTranslation();
   // check if using custom titlebar to adjust other components
-  const { usingCustomTitlebar } = useTauriContext();
+  const { usingCustomTitleBar } = useTauriContext();
 
   // left sidebar
   const views = [
@@ -126,7 +126,7 @@ export default function () {
   const titlebarOverrides = theme => ({
     '.simplebar-vertical': {
       backgroundClip: 'padding-box',
-      marginTop: usingCustomTitlebar ? 100 : 70,
+      marginTop: usingCustomTitleBar ? 100 : 70,
       marginBottom: showFooter ? 50 : 0,
     },
     body: {
@@ -139,7 +139,7 @@ export default function () {
     <SimpleBar scrollableNodeProps={{ ref: scrollbar }} autoHide={false} className={classes.simpleBar}>
       <AppShell padding='md' navbarOffsetBreakpoint='sm'
         navbar={
-          <Navbar className={usingCustomTitlebar ? classes.titlebarMargin : ''} height='100%' width={{ sm: 200 }} p='xs' hidden={!mobileNavOpened} hiddenBreakpoint='sm'>
+          <Navbar className={usingCustomTitleBar ? classes.titlebarMargin : ''} height='100%' width={{ sm: 200 }} p='xs' hidden={!mobileNavOpened} hiddenBreakpoint='sm'>
             <Navbar.Section grow><NavLinks /></Navbar.Section>
             <Navbar.Section>
               {/* Bottom of Navbar Example: https://github.com/mantinedev/mantine/blob/master/src/mantine-demos/src/demos/core/AppShell/_user.tsx */}
@@ -147,7 +147,7 @@ export default function () {
             </Navbar.Section>
           </Navbar>}
         header={
-          <Header data-tauri-drag-region height={70} p='md' className={`${classes.header} ` + (usingCustomTitlebar ? classes.headerOverrides : '')}>
+          <Header data-tauri-drag-region height={70} p='md' className={`${classes.header} ` + (usingCustomTitleBar ? classes.headerOverrides : '')}>
             <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
               <Burger opened={mobileNavOpened} onClick={() => setMobileNavOpened(o => !o)}
                 size='sm' mr='xl' color={useMantineTheme().colors.gray[6]} />
@@ -163,7 +163,7 @@ export default function () {
           </Header>}
         aside={
           <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
-            <Aside className={usingCustomTitlebar ? classes.titlebarMargin : ''} p='md' hiddenBreakpoint='sm' width={{ sm: 200, lg: 300 }}>
+            <Aside className={usingCustomTitleBar ? classes.titlebarMargin : ''} p='md' hiddenBreakpoint='sm' width={{ sm: 200, lg: 300 }}>
               <Text>Right Side. Use for help or support menu?</Text>
             </Aside>
           </MediaQuery>}
@@ -176,7 +176,7 @@ export default function () {
           </Footer>
         }
         className={classes.appShell}>
-        {usingCustomTitlebar && <Space h='2em' />}
+        {usingCustomTitleBar && <Space h='2em' />}
         <Routes>
           <Route exact path='/' element={<Navigate to={views[0].path} />} />
           {views.map((view, index) => <Route key={index} exact={view.exact}

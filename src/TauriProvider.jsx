@@ -5,7 +5,7 @@ import * as os from '@tauri-apps/api/os';
 import * as tauriPath from '@tauri-apps/api/path';
 import { appWindow } from '@tauri-apps/api/window';
 import React, { useContext, useEffect, useState } from 'react';
-import { Titlebar } from './Components/Titlebar';
+import { TitleBar } from './Components/TitleBar';
 import { APP_NAME, RUNNING_IN_TAURI } from './utils';
 
 const WIN32_CUSTOM_TITLEBAR = true;
@@ -21,7 +21,7 @@ const TauriContext = React.createContext({
   osType: undefined,
   fileSep: '/',
   isFullScreen: false,
-  usingCustomTitlebar: false,
+  usingCustomTitleBar: false,
 });
 
 export const useTauriContext = () => useContext(TauriContext);
@@ -35,7 +35,7 @@ export function TauriProvider({ children }) {
   const [appDocuments, setAppDocuments] = useState();
   const [isFullScreen, setFullscreen] = useState(false);
   // false because might be running in web
-  const [usingCustomTitlebar, setUsingCustomTitlebar] = useState(false);
+  const [usingCustomTitleBar, setUsingCustomTitleBar] = useState(false);
 
   if (RUNNING_IN_TAURI) {
     const tauriInterval = useInterval(() => {
@@ -53,7 +53,7 @@ export function TauriProvider({ children }) {
 
     useEffect(() => {
       // hide titlebar when: in fullscreen, not on Windows, and explicitly allowing custom titlebar
-      setUsingCustomTitlebar(!isFullScreen && osType === 'Windows_NT' && WIN32_CUSTOM_TITLEBAR);
+      setUsingCustomTitleBar(!isFullScreen && osType === 'Windows_NT' && WIN32_CUSTOM_TITLEBAR);
     }, [isFullScreen, osType]);
 
     useEffect(() => {
@@ -88,8 +88,8 @@ export function TauriProvider({ children }) {
     }, []);
   }
 
-  return <TauriContext.Provider value={{ loading, fileSep, downloads, documents, osType, appDocuments, isFullScreen, usingCustomTitlebar }}>
-    {usingCustomTitlebar && <Titlebar />}
+  return <TauriContext.Provider value={{ loading, fileSep, downloads, documents, osType, appDocuments, isFullScreen, usingCustomTitleBar }}>
+    {usingCustomTitleBar && <TitleBar />}
     {children}
   </TauriContext.Provider>;
 }
