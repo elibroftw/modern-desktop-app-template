@@ -14,6 +14,7 @@ rust-version = "1.65"
 tauri-build = { version = "1.0", features = [] }
 
 [dependencies]
+fork = "0.1"
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.3", features = ["dialog-message", "fs-create-dir", "fs-read-dir", "fs-write-file", "icon-ico", "notification-all", "os-all", "path-all", "process-relaunch", "shell-open", "system-tray", "window-close", "window-maximize", "window-minimize", "window-set-decorations", "window-set-focus", "window-set-fullscreen", "window-set-size", "window-start-dragging", "window-unmaximize", "window-unminimize"] }

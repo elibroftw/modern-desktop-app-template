@@ -9,6 +9,8 @@ use tauri_plugin_store;
 use tauri_plugin_window_state;
 use window_shadows::set_shadow;
 #[cfg(target_os = "linux")]
+use fork::{daemon, Fork};
+#[cfg(target_os = "linux")]
 use std::{fs::metadata, path::PathBuf};
 use std::{process::Command, ops::Deref, sync::Mutex};
 // Manager is used by .get_window
@@ -98,12 +100,14 @@ fn show_in_folder(path: String) {
           .spawn()
           .unwrap();
     } else {
-      Command::new("dbus-send")
-          .args(["--session", "--dest=org.freedesktop.FileManager1", "--type=method_call",
-                "/org/freedesktop/FileManager1", "org.freedesktop.FileManager1.ShowItems",
-                format!("array:string:\"file://{path}\"").as_str(), "string:\"\""])
-          .spawn()
-          .unwrap();
+      if let Ok(Fork::Child) = daemon(false, false) {
+        Command::new("dbus-send")
+            .args(["--session", "--dest=org.freedesktop.FileManager1", "--type=method_call",
+                  "/org/freedesktop/FileManager1", "org.freedesktop.FileManager1.ShowItems",
+                  format!("array:string:\"file://{path}\"").as_str(), "string:\"\""])
+            .spawn()
+            .unwrap();
+      }
     }
   }
 
