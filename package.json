@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",
+    "@fontsource/open-sans": "^5.0.5",
     "@mantine/carousel": "6.0.10",
     "@mantine/core": "6.0.10",
     "@mantine/dates": "6.0.10",

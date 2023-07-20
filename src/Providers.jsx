@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Splashscreen from './Splashscreen';
 import { TauriProvider } from './TauriProvider';
 import { useCookie } from './utils';
+import '@fontsource/open-sans';
 
 
 // synchronous hook (for SSR, use mantine's)
@@ -43,7 +44,7 @@ export default function ({ children }) {
     const theme = {
         colorScheme,
         loader: 'oval',
-        fontFamily: 'Open Sans, sans serif',
+        fontFamily: 'Open Sans, sans-serif',
         components: {
             Checkbox: { styles: { input: { cursor: 'pointer' }, label: { cursor: 'pointer' } } },
             TextInput: { styles: { label: { marginTop: '0.5rem' } } },
