@@ -8,8 +8,8 @@ App description goes here.
 - Install [NodeJS](https://nodejs.org/en/) via `nvm`
   1. Install [`nvm`](https://github.com/nvm-sh/nvm) or [`nvm-windows`](https://github.com/coreybutler/nvm-windows/releases)
   2. Open up an elevated command prompt (Windows) or use `sudo` (POSIX) for the following commands
-  3. `nvm install latest` which will output a version (X.Y.Z) that was installed
-  4. `nvm use X`
+  3. `nvm install lts` which will output a version (X.Y.Z) that was installed
+  4. `nvm use lts`
 - Install `yarn` using `npm i -g yarn`
 - Run `yarn` to install frontend dependencies
 - For testing, you need to `cargo install tauri-driver`, [Install Selenium IDE](https://www.selenium.dev/selenium-ide/), and on Windows add [msedgedriver.exe x64](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) to your Path environment variable.
