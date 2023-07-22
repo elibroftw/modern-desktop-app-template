@@ -2,6 +2,7 @@
     "recommendations": [
         "bungcip.better-toml",
         "oliversturm.fix-json",
-        "tauri-apps.tauri-vscode"
+        "tauri-apps.tauri-vscode",
+        "vadimcn.vscode-lldb"
     ]
 }
