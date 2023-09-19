@@ -1,0 +1,54 @@
+name: App Builder
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  release:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [windows-latest]
+        include:
+          - os: windows-latest
+            rust_target: x86_64-pc-windows-msvc
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build Changelog
+        id: build_changelog
+        run: echo "changelog=- ADD CHANGELOG" >> $GITHUB_OUTPUT
+
+      - name: Node.js setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+
+      - name: Install Rust (Stable)
+        run:
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+
+      - name: Install app dependencies from lockfile and build web
+        # NOTE: comment out && yarn build if frontend does not have build script
+        run: npm install --force
+
+      - name: Build the app
+        uses: tauri-apps/tauri-action@v0
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+        with:
+          # tauri-action replaces \_\_VERSION\_\_ with the app version
+          tagName: ${{ github.ref_name }}
+          releaseName: "Sample Release for Modern Desktop App v__VERSION__"
+          releaseBody: |
+            ${{steps.build_changelog.outputs.changelog}}
+            See the assets to download this version and install.
+          releaseDraft: true
+          prerelease: false
