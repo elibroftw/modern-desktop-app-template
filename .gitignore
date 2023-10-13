@@ -12,6 +12,8 @@
 /build
 /build-pyi
 /dist
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
 
 # misc
 .DS_Store
