@@ -151,4 +151,4 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 - If a cookie is not being set from cross-site, add `SameSite: 'lax'` when setting cookies
 - Use `cd src-tauri && cargo clean` to fix abnormal bugs or issues
 - Windows VSCode `yarn` package installation issues: **close** not reload all VS Code windows and retry
-- Use `npx npm-check-updates` to check which packages to upgrade, check their changelogs, and then perform updates
+- Use `npx --yes npm-check-updates` to check which packages to upgrade, check their changelogs, and then perform updates
