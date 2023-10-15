@@ -1,6 +1,5 @@
-import { ActionIcon, AppShell, Aside, Burger, Button, Footer, Global, Group, Header, MediaQuery, Navbar, Space, Text, useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, AppShell, AppShellAside, AppShellFooter, AppShellHeader, AppShellMain, AppShellNavbar, AppShellSection, Burger, Button, Group, Space, Text, useMantineColorScheme } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { createStyles, useMantineTheme } from '@mantine/styles';
 import * as tauriEvent from '@tauri-apps/api/event';
 import { relaunch } from '@tauri-apps/api/process';
 import { checkUpdate, installUpdate } from '@tauri-apps/api/updater';
@@ -12,15 +11,16 @@ import { IoSunnySharp } from 'react-icons/io5';
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 import 'simplebar-react/dist/simplebar.min.css';
+import classes from './App.module.css';
 // src imports
 import LanguageHeaders from './Components/LanguageHeaders';
 import { ScrollToTop } from './Components/ScrollToTop';
 import { useTauriContext } from './TauriProvider';
-import { FOOTER, HEADER_TITLE, RUNNING_IN_TAURI, useLocalForage } from './utils';
+import { FOOTER, HEADER_TITLE, RUNNING_IN_TAURI, useCookie, useLocalForage } from './utils';
 // imported views need to be added to the `views` list variable
 import ExampleView from './Views/ExampleView';
 // fallback for React Suspense
-import Fallback from './Views/Fallback';
+import { useDisclosure, useHotkeys } from '@mantine/hooks';
 // import Home from './Views/Home';
 // import About from './Views/About';
 // import CIFInfo from './Views/CIFInfo';
@@ -43,13 +43,15 @@ export default function () {
   ];
 
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  useHotkeys([['ctrl+J', toggleColorScheme]]);
+
   // opened is for mobile nav
-  const [mobileNavOpened, setMobileNavOpened] = useState(false);
+  const [mobileNavOpened, { toggle: toggleMobileNav }] = useDisclosure();
+  const [desktopNavOpened, setDesktopNavOpened] = useCookie('desktop-nav-opened', true);
+  const toggleDesktopNav = () => setDesktopNavOpened(o => !o);
   // load preferences using localForage
   const [footersSeen, setFootersSeen, footersSeenLoading] = useLocalForage('footersSeen', {});
 
-  // getAppStyles defined below App()
-  const { classes } = getAppStyles();
   const [navbarClearance, setNavbarClearance] = useState(0);
   const footerRef = useRef(null);
   useEffect(() => {
@@ -106,7 +108,7 @@ export default function () {
   function NavLinks() {
     // TODO: useHotkeys and abstract this
     return views.map((view, index) =>
-      <NavLink align='left' to={view.path} key={index} end={view.exact} onClick={() => setMobileNavOpened(false)}
+      <NavLink align='left' to={view.path} key={index} end={view.exact} onClick={() => toggleMobileNav(false)}
         className={({ isActive }) => classes.navLink + ' ' + (isActive ? classes.navLinkActive : classes.navLinkInactive)}>
         {/* TODO: Icons */}
         <Group><Text>{view.name ? view.name : view.name}</Text></Group>
@@ -115,138 +117,77 @@ export default function () {
   }
 
   const showFooter = FOOTER && !footersSeenLoading && !(FOOTER in footersSeen);
+  const footerText = t(FOOTER);
 
-  function FooterText() {
-    // footer output logic goes here
-    // example: parse JSON output from online source
-    return t(FOOTER);
-  }
+  const scrollbarRef = useRef();
 
-  const scrollbar = useRef();
-  const titlebarOverrides = theme => ({
-    '.simplebar-vertical': {
-      backgroundClip: 'padding-box',
-      marginTop: usingCustomTitleBar ? 100 : 70,
-      marginBottom: showFooter ? 50 : 0,
-    },
-    body: {
-      overflowY: 'hidden'
+  // hack for global styling the vertical simplebar based on state
+  useEffect(() => {
+    const el = document.getElementsByClassName('simplebar-vertical')[0];
+    if (el !== undefined) {
+      el.style.marginTop = usingCustomTitleBar ? '100px' : '70px';
+      el.style.marginBottom = showFooter ? '50px' : 0;
     }
-  });
+  }, [usingCustomTitleBar, showFooter]);
 
   return <>
-    <Global styles={titlebarOverrides} />
-    <SimpleBar scrollableNodeProps={{ ref: scrollbar }} autoHide={false} className={classes.simpleBar}>
-      <AppShell padding='md' navbarOffsetBreakpoint='sm'
-        navbar={
-          <Navbar className={usingCustomTitleBar ? classes.titlebarMargin : ''} height='100%' width={{ sm: 200 }} p='xs' hidden={!mobileNavOpened} hiddenBreakpoint='sm'>
-            <Navbar.Section grow><NavLinks /></Navbar.Section>
-            <Navbar.Section>
-              {/* Bottom of Navbar Example: https://github.com/mantinedev/mantine/blob/master/src/mantine-demos/src/demos/core/AppShell/_user.tsx */}
-              <Space h={navbarClearance} /> {/* Account for footer */}
-            </Navbar.Section>
-          </Navbar>}
-        header={
-          <Header data-tauri-drag-region height={70} p='md' className={`${classes.header} ` + (usingCustomTitleBar ? classes.headerOverrides : '')}>
-            <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
-              <Burger opened={mobileNavOpened} onClick={() => setMobileNavOpened(o => !o)}
-                size='sm' mr='xl' color={useMantineTheme().colors.gray[6]} />
-            </MediaQuery>
+    <SimpleBar scrollableNodeProps={{ ref: scrollbarRef }} autoHide={false} className={classes.simpleBar}>
+      <AppShell padding='md'
+        header={{ height: 60 }}
+        footer={{ height: 60 }}
+        navbar={{ width: 200, breakpoint: 'sm', collapsed: { mobile: !mobileNavOpened, desktop: !desktopNavOpened } }}
+        aside={{ width: 200, breakpoint: 'sm', collapsed: { desktop: false, mobile: true } }}
+        className={classes.appShell}>
+        <AppShellMain>
+          {usingCustomTitleBar && <Space h='xl' />}
+          <Routes>
+            <Route exact path='/' element={<Navigate to={views[0].path} />} />
+            {views.map((view, index) => <Route key={index} exact={view.exact}
+              path={view.path} element={
+                <view.component />
+              } />)}
+          </Routes>
+          {/* prevent the footer from covering bottom text of a route view */}
+          {showFooter && <Space h={80} />}
+          <ScrollToTop scroller={scrollbarRef.current} bottom={showFooter ? 70 : 20} />
+        </AppShellMain>
+
+        <AppShellHeader data-tauri-drag-region p='md' className={classes.header}>
+          <Group h='100%'>
+            <Burger hiddenFrom='sm' opened={mobileNavOpened} onClick={toggleMobileNav} size='sm' />
+            <Burger visibleFrom='sm' opened={desktopNavOpened} onClick={toggleDesktopNav} size='sm' />
             <Text>{HEADER_TITLE}</Text>
-            <Group className={classes.headerRightItems}>
-              <LanguageHeaders i18n={i18n} />
-              <ActionIcon id='toggle-theme' title='Ctrl + J' className={classes.actionIcon} variant='default' onClick={() => toggleColorScheme()} size={30}>
-                {/* icon to show based on colorScheme */}
-                {colorScheme === 'dark' ? <IoSunnySharp size={'1.5em'} /> : <BsMoonStarsFill />}
-              </ActionIcon>
-            </Group>
-          </Header>}
-        aside={
-          <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
-            <Aside className={usingCustomTitleBar ? classes.titlebarMargin : ''} p='md' hiddenBreakpoint='sm' width={{ sm: 200, lg: 300 }}>
-              <Text>Right Side. Use for help or support menu?</Text>
-            </Aside>
-          </MediaQuery>}
-        footer={showFooter &&
-          <Footer height={'fit-content'} p='xs' className={classes.footer}>
-            <FooterText />
+          </Group>
+          <Group className={classes.headerRightItems} h='110%'>
+            <LanguageHeaders i18n={i18n} />
+            <ActionIcon id='toggle-theme' title='Ctrl + J' variant='default' onClick={() => toggleColorScheme()} size={30}>
+              {/* icon to show based on colorScheme */}
+              {colorScheme === 'dark' ? <IoSunnySharp size={'1.5em'} /> : <BsMoonStarsFill />}
+            </ActionIcon>
+          </Group>
+        </AppShellHeader>
+
+        <AppShellNavbar className={classes.titleBarAdjustedHeight} height='100%' width={{ sm: 200 }} p='xs' hidden={!mobileNavOpened}>
+          <AppShellSection grow><NavLinks /></AppShellSection>
+          <AppShellSection>
+            {/* Bottom of Navbar Example: https://github.com/mantinedev/mantine/blob/master/src/mantine-demos/src/demos/core/AppShell/_user.tsx */}
+            <Space h={navbarClearance} /> {/* Account for footer */}
+          </AppShellSection>
+        </AppShellNavbar>
+
+        <AppShellAside className={classes.titleBarAdjustedHeight} p='md' width={{ sm: 200, lg: 300 }}>
+          <Text>Right Side. Use for help, support, quick action menu? For example, if we were building a trading app, we could use the aside for the trade parameters while leaving the main UI with the data</Text>
+        </AppShellAside>
+
+        {showFooter &&
+          <AppShellFooter p='md' className={classes.footer}>
+            {footerText}
             <Button variant='subtle' size='xs' onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER]: '' }))}>
               <ImCross />
             </Button>
-          </Footer>
+          </AppShellFooter>
         }
-        className={classes.appShell}>
-        {usingCustomTitleBar && <Space h='2em' />}
-        <Routes>
-          <Route exact path='/' element={<Navigate to={views[0].path} />} />
-          {views.map((view, index) => <Route key={index} exact={view.exact}
-            path={view.path} element={
-              <view.component />
-            } />)}
-        </Routes>
-
-        {/* prevent the footer from covering bottom text of a route view */}
-        {showFooter && <Space h={80} />}
-        <ScrollToTop scroller={scrollbar.current} bottom={showFooter ? 70 : 20} />
       </AppShell>
     </SimpleBar>
   </>;
 }
-
-// this can exported in styles.js
-const getAppStyles = createStyles(theme => ({
-  simpleBar: {
-    maxHeight: '100vh',
-    marginRight: 6
-  },
-  navLink: {
-    display: 'block',
-    width: '100%',
-    padding: theme.spacing.xs,
-    borderRadius: theme.radius.md,
-    color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-    textDecoration: 'none',
-    willChange: 'transform',
-
-    '&:hover:active': {
-      transform: 'translateY(2px)',
-    },
-  },
-  navLinkActive: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2],
-  },
-  navLinkInactive: {
-    '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1]
-    },
-  },
-  // overrides when using a custom titlebar
-  titlebarMargin: {
-    marginTop: '2em'
-  },
-  headerOverrides: {
-    maxHeight: 'calc(70px + 1em)',
-    paddingBottom: '0 !important',
-    marginTop: '1em',
-
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    height: '100%',
-  },
-  headerRightItems: {
-    marginLeft: 'auto',
-  },
-  appShell: {
-    main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
-  },
-  mediaQuery: {
-    display: 'none'
-  },
-  footer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  }
-}));

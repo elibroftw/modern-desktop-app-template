@@ -2,11 +2,7 @@ body {
   /* show eye pleasing background color instead of white */
   background-color: #141517;
   margin: 0;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  overflow-y: hidden;
 }
 
 /* fallback scrollbar is inspired by Firefox's dark scrollbar */
@@ -25,4 +21,29 @@ code {
 
 ::-webkit-scrollbar-thumb:hover {
   background: grey
+}
+
+.simplebar-vertical {
+  background-clip: 'padding-box';
+}
+
+.row {
+  display: flex;
+  align-items: flex-end;
+  & > div {
+    flex-grow: 1;
+  }
+}
+
+.rowCenter {
+  display: flex;
+  align-items: center;
+  & > div {
+    flex-grow: 1;
+  }
+}
+
+.emebeddedInput {
+  display: inline-block;
+  margin: auto 5px;
 }

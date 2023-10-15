@@ -56,7 +56,7 @@ export function useMinWidth(minWidth) {
     if (RUNNING_IN_TAURI) {
         useEffect(() => {
             async function resizeWindow() {
-                // to set a size consistently accrosss devices,
+                // to set a size consistently across devices,
                 //  one must use LogicalSize (Physical cannot be relied upon)
                 const physicalSize = await getCurrent().innerSize();
                 // Since innerSize returns Physical size, we need

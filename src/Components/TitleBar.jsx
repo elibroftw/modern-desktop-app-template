@@ -1,14 +1,14 @@
-import { createStyles, Menu, Text, UnstyledButton } from '@mantine/core';
+import { Menu, Text, UnstyledButton } from '@mantine/core';
 import { useInterval } from '@mantine/hooks';
 import { appWindow } from '@tauri-apps/api/window';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { VscChromeClose, VscChromeMaximize, VscChromeMinimize, VscChromeRestore } from 'react-icons/vsc';
 import AppIcon from '../../src-tauri/icons/32x32.png';
+import classes from './TitleBar.module.css';
 
 export function TitleBar() {
   const { t } = useTranslation();
-  const { classes } = getTitleBarStyles();
   const [maximized, setMaximized] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [windowTitle, setWindowTitle] = useState('');
@@ -67,65 +67,3 @@ export function TitleBar() {
     </div>
   </div>;
 }
-
-const getTitleBarStyles = createStyles(theme => ({
-  titlebarIcon: {
-    marginLeft: 5,
-    verticalAlign: 'bottom',
-    filter: theme.colorScheme === 'dark' ? '' : 'grayscale(100%) contrast(0)'
-  },
-  verticalAlign: {
-    verticalAlign: 'middle'
-  },
-  titlebarLabel: {
-    display: 'inline',
-    marginLeft: 5,
-    // marginLeft: 46 * 3 - 16 - 7.5  // for center labels
-    lineHeight: '30px'
-  },
-  titlebar: {
-    height: 30,
-    background: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[1],
-    // background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : 'white',
-    display: 'flex',
-    justifyContent: 'space-between',
-    position: 'fixed',
-    userSelect: 'none',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1000,
-    '>div:nth-of-type(2)': {
-      display: 'flex',
-      justifyContent: 'flex-end',
-    }
-  },
-  titlebarDefaultHover: {
-    '&:hover': {
-      background: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[3],
-      '&:active': {
-        background: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[4],
-      }
-    }
-  },
-  titlebarCloseHover: {
-    '&:hover': {
-      background: '#e81123',
-      '>svg': { fill: 'white' },
-      '&:active': {
-        background: theme.colorScheme === 'dark' ? '#8b0a14' : '#f1707a',
-      }
-    }
-  },
-  titlebarButton: {
-    transitionDuration: '200ms',
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    '>svg': {
-      fill: theme.colorScheme === 'dark' ? 'white' : 'black',
-    },
-    width: 47,
-    height: 30
-  },
-}));

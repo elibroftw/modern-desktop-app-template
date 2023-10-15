@@ -3,7 +3,6 @@ import { Text, Anchor, Space, Button, Title, TextInput } from '@mantine/core';
 import { Trans, useTranslation } from 'react-i18next';
 
 import * as fs from '@tauri-apps/api/fs';
-import * as tauriPath from '@tauri-apps/api/path';
 import * as shell from '@tauri-apps/api/shell';
 import { invoke } from '@tauri-apps/api/tauri'
 import { APP_NAME, notify, RUNNING_IN_TAURI, useMinWidth, useStorage } from '../utils';
@@ -44,7 +43,7 @@ export default function ExampleView() {
     // <> is an alias for <React.Fragment>
     return !loadingData && <>
         <Text>{t('Modern Desktop App Examples')}</Text>
-        <Space h={'md'} />
+        <Space h='lg' />
         <Button onClick={createFile}>Do something with fs</Button>
         <Space />
         <Button onClick={toggleFullscreen}>Toggle Fullscreen</Button>
