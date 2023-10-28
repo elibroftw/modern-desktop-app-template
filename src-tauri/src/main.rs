@@ -143,6 +143,7 @@ fn main() {
     // system tray
     .system_tray(system_tray)
     .on_system_tray_event(|app, event| match event {
+      // https://tauri.app/v1/guides/features/system-tray/#preventing-the-app-from-closing
       SystemTrayEvent::MenuItemClick { id, .. } => {
         let main_window = app.get_window("main").unwrap();
         main_window.emit("systemTray", SystemTrayPayload { message: id.clone() }).unwrap();

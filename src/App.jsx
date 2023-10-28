@@ -1,4 +1,5 @@
 import { ActionIcon, AppShell, AppShellAside, AppShellFooter, AppShellHeader, AppShellMain, AppShellNavbar, AppShellSection, Burger, Button, Group, Space, Text, useMantineColorScheme } from '@mantine/core';
+import { useDisclosure, useHotkeys } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import * as tauriEvent from '@tauri-apps/api/event';
 import { relaunch } from '@tauri-apps/api/process';
@@ -20,7 +21,6 @@ import { FOOTER, HEADER_TITLE, RUNNING_IN_TAURI, useCookie, useLocalForage } fro
 // imported views need to be added to the `views` list variable
 import ExampleView from './Views/ExampleView';
 // fallback for React Suspense
-import { useDisclosure, useHotkeys } from '@mantine/hooks';
 // import Home from './Views/Home';
 // import About from './Views/About';
 // import CIFInfo from './Views/CIFInfo';

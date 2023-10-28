@@ -5,6 +5,7 @@ import { Fragment } from "react";
 // when many languages are supported, a dropdown (Select) may be optimal
 export default function LanguageHeaders({ i18n }) {
     const languages = Object.keys(i18n.options.resources);
+    if (languages.length == 1) return <></>;
     const lang = i18n.resolvedLanguage;
     let nextLangIdx = 0;
 

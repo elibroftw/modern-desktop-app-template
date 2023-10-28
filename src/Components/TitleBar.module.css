@@ -1,5 +1,6 @@
 :root {
-    --titlebar-height: 28px;
+    /* TauriProvider.jsx sets to 28px */
+    --titlebar-height: 0px;
 }
 
 .titlebar {

@@ -48,7 +48,12 @@ export function TauriProvider({ children }) {
     }, []);
 
     useEffect(() => {
-      if (osType === 'Windows_NT') appWindow.setDecorations(!WIN32_CUSTOM_TITLEBAR);
+      if (osType === 'Windows_NT') {
+        appWindow.setDecorations(!WIN32_CUSTOM_TITLEBAR);
+        if (WIN32_CUSTOM_TITLEBAR) {
+          root.style.setProperty('--titlebar-height', '28px');
+        }
+      }
     }, [osType]);
 
     useEffect(() => {
