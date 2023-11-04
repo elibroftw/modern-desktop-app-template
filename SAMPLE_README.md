@@ -4,7 +4,8 @@ App description goes here.
 
 ## Environment
 
-- [Tauri prerequisites](https://tauri.app/guides/getting-started/prerequisites),
+- [Tauri prerequisites](https://tauri.app/guides/getting-started/prerequisites)
+  - Apt package manager: `sudo apt update && xargs sudo apt install -y < environment/apt_packages.txt`
 - Install [NodeJS](https://nodejs.org/en/) via `nvm`
   1. Install [`nvm`](https://github.com/nvm-sh/nvm) or [`nvm-windows`](https://github.com/coreybutler/nvm-windows/releases)
   2. Open up an elevated command prompt (Windows) or a normal terminal on non-Windows OS. Note on non-Windows OS, use `--lts` instead of `lts`

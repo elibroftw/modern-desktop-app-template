@@ -23,7 +23,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # for projects that use labels and PRs,
       # try https://github.com/mikepenz/release-changelog-builder-action instead
@@ -33,21 +33,21 @@ jobs:
         run: echo "changelog=- ADD CHANGELOG" >> $GITHUB_OUTPUT
 
       - name: Node.js setup
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         # NOTE: enterprise developers may hard code a version
         with:
           node-version: latest
           # node-version-file: '.nvmrc'
 
-      - name: Install Rust (Stable)
-        run:
-          curl https://sh.rustup.rs -sSf | sh -s -- -y
+      - name: Install Rust toolchain
+        run: |
+          rustup update --no-self-update
 
       - name: Install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-latest'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
+          sudo apt update
+          xargs sudo apt install -y < environment/apt_packages.txt
 
       - name: Install app dependencies from lockfile and build web
         # NOTE: comment out && yarn build if frontend does not have build script
