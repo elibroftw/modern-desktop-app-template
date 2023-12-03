@@ -65,14 +65,24 @@ export default function () {
     installUpdate().then(relaunch);
   }
 
-  const mountID = useRef(null);
-  const unlistens = useRef({});
-
   // Tauri event listeners (run on mount)
   if (RUNNING_IN_TAURI) {
+    // system tray events
     useEffect(() => {
-      const thisMountID = Math.random();
-      mountID.current = thisMountID;
+      const promise = tauriEvent.listen('systemTray', ({ payload, ...eventObj }) => {
+        console.log(payload.message);
+        // for debugging purposes only
+        notifications.show({
+          title: '[DEBUG] System Tray Event',
+          message: payload.message
+        });
+      }
+      );
+      return () => promise.then(unlisten => unlisten());
+    }, []);
+
+    // update checker
+    useEffect(() => {
       checkUpdate().then(({ shouldUpdate, manifest }) => {
         if (shouldUpdate) {
           const { version: newVersion, body: releaseNotes } = manifest;
@@ -88,20 +98,6 @@ export default function () {
           });
         }
       });
-      // system tray
-      tauriEvent.listen('systemTray', ({ payload, ...eventObj }) => {
-        if (mountID.current != thisMountID) {
-          unlistens.current[thisMountID]();
-        } else {
-          console.log(payload.message);
-          // for debugging purposes only
-          notifications.show({
-            title: '[DEBUG] System Tray Event',
-            message: payload.message
-          });
-        }
-      }).then(newUnlisten => { unlistens.current[thisMountID] = newUnlisten; });
-      return () => mountID.current = null;
     }, []);
   }
 
