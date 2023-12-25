@@ -6,11 +6,11 @@ App description goes here.
 
 - [Tauri prerequisites](https://tauri.app/guides/getting-started/prerequisites)
   - Apt package manager: `sudo apt update && xargs sudo apt install -y < environment/apt_packages.txt`
-- Install [NodeJS](https://nodejs.org/en/) via `nvm`
+- Install NodeJS via `nvm` (Windows with no-admin should install NodeJS from [nodejs.org](https://nodejs.org))
   1. Install [`nvm`](https://github.com/nvm-sh/nvm) or [`nvm-windows`](https://github.com/coreybutler/nvm-windows/releases)
   2. Open up an elevated command prompt (Windows) or a normal terminal on non-Windows OS
-  3. `nvm install lts` (or `lts/*` on non-Windows) which will output a version (X.Y.Z) that was installed
-  4. `nvm use lts` (`lts/*` on non-Windows)
+  3. Run `nvm install --lts`
+  4. Run `nvm use lts` (`--lts` on non-Windows)
 - Install `yarn` using `corepack enable`
 - Run `yarn` to install frontend dependencies
 - For testing, you need to `cargo install tauri-driver`, [Install Selenium IDE](https://www.selenium.dev/selenium-ide/), and on Windows add [msedgedriver.exe x64](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) to your Path environment variable.
