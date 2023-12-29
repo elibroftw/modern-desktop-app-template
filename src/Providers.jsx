@@ -51,7 +51,7 @@ export default function ({ children }) {
 
     return <>
         <ColorSchemeScript defaultColorScheme='auto' />
-        <MantineProvider defaultColorScheme='auto' theme={theme} withNormalizeCSS withCSSVariables>
+        <MantineProvider defaultColorScheme='auto' theme={theme}>
             <ModalsProvider>
                 <BrowserRouter>
                     <TauriProvider>
