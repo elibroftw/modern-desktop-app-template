@@ -130,7 +130,7 @@ export default function () {
     <SimpleBar scrollableNodeProps={{ ref: scrollbarRef }} autoHide={false} className={classes.simpleBar}>
       <AppShell padding='md'
         header={{ height: 60 }}
-        footer={{ height: 60 }}
+        footer={{ height: showFooter ? 60 : undefined }}
         navbar={{ width: 200, breakpoint: 'sm', collapsed: { mobile: !mobileNavOpened, desktop: !desktopNavOpened } }}
         aside={{ width: 200, breakpoint: 'sm', collapsed: { desktop: false, mobile: true } }}
         className={classes.appShell}>
@@ -156,7 +156,7 @@ export default function () {
           </Group>
           <Group className={classes.headerRightItems} h='110%'>
             <LanguageHeaders i18n={i18n} />
-            <ActionIcon id='toggle-theme' title='Ctrl + J' variant='default' onClick={() => toggleColorScheme()} size={30}>
+            <ActionIcon id='toggle-theme' title='Ctrl + J' variant='default' onClick={toggleColorScheme} size={30}>
               {/* icon to show based on colorScheme */}
               {colorScheme === 'dark' ? <IoSunnySharp size={'1.5em'} /> : <BsMoonStarsFill />}
             </ActionIcon>

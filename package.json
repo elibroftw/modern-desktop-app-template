@@ -19,7 +19,7 @@
     "@mantine/spotlight": "^7.3.2",
     "@mantine/tiptap": "^7.3.2",
     "@tabler/icons-react": "^2.44.0",
-    "@tauri-apps/api": "^1.4",
+    "@tauri-apps/api": "^1.4.0",
     "@tiptap/core": "^2.0.3",
     "@tiptap/extension-link": "^2.1.13",
     "@tiptap/pm": "^2.0.3",
@@ -63,7 +63,7 @@
     ]
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.4",
+    "@tauri-apps/cli": "^1.4.0",
     "@vitejs/plugin-legacy": "^4.0.4",
     "@vitejs/plugin-react": "^4.0.0",
     "chai": "^4.3.7",
