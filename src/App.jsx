@@ -14,11 +14,11 @@ import SimpleBar from 'simplebar-react';
 import 'simplebar-react/dist/simplebar.min.css';
 import classes from './App.module.css';
 // src imports
-import LanguageHeaders from './Components/LanguageHeaders';
-import { ScrollToTop } from './Components/ScrollToTop';
+import LanguageHeaders from './components0/LanguageHeaders';
+import { ScrollToTop } from './components0/ScrollToTop';
 import { FOOTER, HEADER_TITLE, useCookie, useLocalForage } from './common/utils';
 // imported views need to be added to the `views` list variable
-import ExampleView from './Views/ExampleView';
+import ExampleView from './views0/ExampleView';
 import { RUNNING_IN_TAURI, useTauriContext } from './tauri/TauriProvider';
 // fallback for React Suspense
 // import Home from './Views/Home';
