@@ -7,7 +7,7 @@ import { VscChromeClose, VscChromeMaximize, VscChromeMinimize, VscChromeRestore 
 import AppIcon from '../../src-tauri/icons/32x32.png';
 import classes from './TitleBar.module.css';
 
-export function TitleBar() {
+export function WindowsTitleBar() {
   const { t } = useTranslation();
   const [maximized, setMaximized] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);

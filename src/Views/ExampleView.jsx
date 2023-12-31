@@ -5,10 +5,13 @@ import { Trans, useTranslation } from 'react-i18next';
 import * as fs from '@tauri-apps/api/fs';
 import * as shell from '@tauri-apps/api/shell';
 import { invoke } from '@tauri-apps/api/tauri'
-import { APP_NAME, notify, RUNNING_IN_TAURI, useMinWidth, useStorage } from '../utils';
+
 import { notifications } from '@mantine/notifications';
-import { useTauriContext } from '../TauriProvider';
+import { APP_NAME, RUNNING_IN_TAURI, useMinWidth, useTauriContext } from '../tauri/TauriProvider';
 import { appWindow } from '@tauri-apps/api/window'
+import { createStorage } from '../tauri/storage';
+import { notify } from '../common/utils';
+
 
 function toggleFullscreen() {
     appWindow.isFullscreen().then(x => appWindow.setFullscreen(!x));
@@ -20,7 +23,8 @@ export default function ExampleView() {
     // store-plugin will create necessary directories
     const storeName = `${documents}${APP_NAME}${fileSep}example_view.dat`;
     // const storeName = 'data.dat';
-    const [data, setData, loadingData] = useStorage('exampleKey', '', storeName);
+    const { use: useKVP, loading: loadingData } = createStorage(storeName);
+    const [exampleData, setExampleData] = useKVP('exampleKey', '');
 
     useMinWidth(1000);
 
@@ -48,7 +52,7 @@ export default function ExampleView() {
         <Space />
         <Button onClick={toggleFullscreen}>Toggle Fullscreen</Button>
         <Space />
-        <Button onClick={() => notifications.show({ title: 'Mantine Notification', message: 'test v6 breaking change'})}>Notification example</Button>
+        <Button onClick={() => notifications.show({ title: 'Mantine Notification', message: 'test v6 breaking change' })}>Notification example</Button>
 
         <Title order={4}>{t('Interpolating components in translations')} </Title>
         <Trans i18nKey='transExample'
@@ -56,6 +60,6 @@ export default function ExampleView() {
             components={[<Anchor href="https://github.com/elibroftw/modern-desktop-app-template" />]}
             // optional stuff:
             default='FALLBACK if key does not exist. This template is located on <0>github.com{{variable}}</0>' t={t} />
-        <TextInput label={t('Persistent data')} value={data} onChange={e => setData(e.currentTarget.value)} />
+        <TextInput label={t('Persistent data')} value={exampleData} onChange={e => setExampleData(e.currentTarget.value)} />
     </>
 }

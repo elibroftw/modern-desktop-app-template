@@ -14,8 +14,8 @@ import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import Splashscreen from './Splashscreen';
-import { TauriProvider } from './TauriProvider';
+import Splashscreen from './views/Splashscreen';
+import { TauriProvider } from './tauri/TauriProvider';
 import classes from './Providers.module.css'
 
 export default function ({ children }) {

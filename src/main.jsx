@@ -4,7 +4,7 @@ import App from './App';
 // boilerplate components
 import Providers from './Providers';
 // for internationalization (translations)
-import './i18n';
+import './translations/i18n.js'
 
 
 const root = createRoot(document.getElementById('root'));

@@ -2,6 +2,7 @@
 import localforage from 'localforage';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Store } from 'tauri-plugin-store-api';
+// docs: https://github.com/tauri-apps/tauri-plugin-store/blob/dev/webview-src/index.ts
 
 const RUNNING_IN_TAURI = window.__TAURI__ !== undefined;
 export const USE_STORE = false && RUNNING_IN_TAURI;

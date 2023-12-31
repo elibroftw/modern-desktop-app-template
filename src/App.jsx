@@ -16,10 +16,10 @@ import classes from './App.module.css';
 // src imports
 import LanguageHeaders from './Components/LanguageHeaders';
 import { ScrollToTop } from './Components/ScrollToTop';
-import { useTauriContext } from './TauriProvider';
-import { FOOTER, HEADER_TITLE, RUNNING_IN_TAURI, useCookie, useLocalForage } from './utils';
+import { FOOTER, HEADER_TITLE, useCookie, useLocalForage } from './common/utils';
 // imported views need to be added to the `views` list variable
 import ExampleView from './Views/ExampleView';
+import { RUNNING_IN_TAURI, useTauriContext } from './tauri/TauriProvider';
 // fallback for React Suspense
 // import Home from './Views/Home';
 // import About from './Views/About';
