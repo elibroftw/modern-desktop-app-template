@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Splashscreen from './Splashscreen';
 import { TauriProvider } from './TauriProvider';
+import classes from './Providers.module.css'
 
 export default function ({ children }) {
     // long tasks should use useState(true)
@@ -38,6 +39,7 @@ export default function ({ children }) {
             Space: { defaultProps: { h: 'sm' } },
             Anchor: { defaultProps: { target: '_blank' } },
             Burger: { styles: { burger: { color: '--mantine-color-grey-6' } } },
+            SegmentedControl: { classNames: { root: classes.segmentedControlRoot } },
         },
         // Mantine v7 has ugly dark colors. Therefore, use colors from v6 (https://v6.mantine.dev/theming/colors/#default-colors)
         colors: {
