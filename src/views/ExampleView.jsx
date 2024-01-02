@@ -19,13 +19,13 @@ function toggleFullscreen() {
 
 export default function ExampleView() {
     const { t } = useTranslation();
-    const { fileSep, loading, documents, downloads } = useTauriContext();
+    const { fileSep, documents, downloads } = useTauriContext();
     // store-plugin will create necessary directories
     const storeName = `${documents}${APP_NAME}${fileSep}example_view.dat`;
     // const storeName = 'data.dat';
-    const { use: useKVP, loading: loadingData } = createStorage(storeName);
+    const { use: useKVP, loading, data } = createStorage(storeName);
     const [exampleData, setExampleData] = useKVP('exampleKey', '');
-
+    console.log(exampleData, data, loading, storeName);
     useMinWidth(1000);
 
     // fs example
@@ -45,7 +45,7 @@ export default function ExampleView() {
         }
     }
     // <> is an alias for <React.Fragment>
-    return !loadingData && <>
+    return !loading && <>
         <Text>{t('Modern Desktop App Examples')}</Text>
         <Space h='lg' />
         <Button onClick={createFile}>Do something with fs</Button>

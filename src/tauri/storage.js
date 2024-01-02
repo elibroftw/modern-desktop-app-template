@@ -2,6 +2,7 @@
 import localforage from 'localforage';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Store } from 'tauri-plugin-store-api';
+import { useTauriContext } from './TauriProvider';
 // docs: https://github.com/tauri-apps/tauri-plugin-store/blob/dev/webview-src/index.ts
 
 const RUNNING_IN_TAURI = window.__TAURI__ !== undefined;
@@ -31,13 +32,19 @@ export async function testStore() {
 // returns an API to get a item, set an item from a specific category of data
 // why? we don't to have loading variable for multiple values
 export function createStorage(storeName) {
-    const localDataRef = useRef();
+    let loading = useTauriContext().loading;
     const [data, setData] = useState(undefined);
-    const loading = data === undefined;
+    loading = loading || storeName === undefined || data === undefined;
+
+    const localDataRef = useRef();
     const fileStoreRef = useRef();
     const timeoutRef = useRef();
+
     // load data
     useEffect(() => {
+        if (storeName === undefined)
+            return;
+
         if (RUNNING_IN_TAURI) {
             fileStoreRef.current = getTauriStore(storeName);
             fileStoreRef.current.get('data').then(
@@ -67,7 +74,7 @@ export function createStorage(storeName) {
                 }
             });
         }
-    }, []);
+    }, [storeName]);
 
     const setItem = useCallback((key, newValueOrHandler) => {
         if (loading) return;
@@ -95,7 +102,7 @@ export function createStorage(storeName) {
             }
             return newData;
         });
-    }, [loading, fileStoreRef, localDataRef, timeoutRef]);
+    }, [storeName, loading, fileStoreRef, localDataRef, timeoutRef]);
 
     const getItem = useCallback((key, defaultValue) => {
         if (loading) return defaultValue;
