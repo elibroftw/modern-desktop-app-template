@@ -22,7 +22,7 @@
 }
 
 .navLinkInactive:hover {
-    background-color: light-dark(var(--mantine-color-dark-6), var(--mantine-color-gray-1));
+    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
 }
 
 .titleBarAdjustedHeight {
@@ -57,4 +57,3 @@
 }
 
 /* add custom App CSS here */
-
