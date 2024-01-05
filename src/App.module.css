@@ -3,6 +3,10 @@
     margin-right: 6px;
 }
 
+.simpleBar :global(.simplebar-scrollbar)::before {
+    background-color: light-dark(black, white) !important;
+}
+
 .navLink {
     display: block;
     width: 100%;
