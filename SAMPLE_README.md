@@ -105,6 +105,12 @@ await invoke('command2', {arg: 'two'}).then(msg => console.log(msg));
 // ...
 ```
 
+### How to Upgrade Mantine?
+
+```sh
+yarn upgrade --pattern *mantine*
+```
+
 ## Scripts in `package.json`
 
 ### `yarn dev`
