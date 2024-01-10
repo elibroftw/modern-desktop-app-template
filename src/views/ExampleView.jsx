@@ -25,7 +25,7 @@ export default function ExampleView() {
     // const storeName = 'data.dat';
     const { use: useKVP, loading, data } = createStorage(storeName);
     const [exampleData, setExampleData] = useKVP('exampleKey', '');
-    console.log(exampleData, data, loading, storeName);
+
     useMinWidth(1000);
 
     // fs example
