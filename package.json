@@ -64,7 +64,6 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.4.0",
-    "@vitejs/plugin-legacy": "^4.0.4",
     "@vitejs/plugin-react": "^4.0.0",
     "chai": "^4.3.7",
     "concurrently": "^8.2.0",
