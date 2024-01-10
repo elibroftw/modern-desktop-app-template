@@ -145,7 +145,7 @@ export default function () {
               } />)}
           </Routes>
           {/* prevent the footer from covering bottom text of a route view */}
-          {showFooter && <Space h={80} />}
+          <Space h={showFooter ? 80 : 50} />
           <ScrollToTop scroller={scrollbarRef.current} bottom={showFooter ? 70 : 20} />
         </AppShellMain>
 
