@@ -1,5 +1,4 @@
 import { useInterval } from '@mantine/hooks';
-import { listen } from '@tauri-apps/api/event';
 import * as fs from '@tauri-apps/api/fs';
 import * as os from '@tauri-apps/api/os';
 import * as tauriPath from '@tauri-apps/api/path';
@@ -69,13 +68,6 @@ export function TauriProvider({ children }) {
     useEffect(() => {
       // if you want to listen for event listeners, use mountID trick to call unlisten on old listeners
       const callTauriAPIs = async () => {
-        // Handle additional app launches (url, etc.)
-        await listen('newInstance', ({ payload, ...eventObj }) => {
-          appWindow.unminimize().then(() => appWindow.setFocus(true));
-          let args = payload?.args;
-          let cwd = payload?.cwd;
-          if (args?.length > 1) { }
-        });
         setDownloadDir(await tauriPath.downloadDir());
         const _documents = await tauriPath.documentDir();
         setDocumentDir(_documents);

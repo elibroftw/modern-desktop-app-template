@@ -4,6 +4,7 @@ import { notifications } from '@mantine/notifications';
 import * as tauriEvent from '@tauri-apps/api/event';
 import { relaunch } from '@tauri-apps/api/process';
 import { checkUpdate, installUpdate } from '@tauri-apps/api/updater';
+import { appWindow } from '@tauri-apps/api/window';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsMoonStarsFill } from 'react-icons/bs';
@@ -14,12 +15,12 @@ import SimpleBar from 'simplebar-react';
 import 'simplebar-react/dist/simplebar.min.css';
 import classes from './App.module.css';
 // src imports
+import { FOOTER, HEADER_TITLE, useCookie, useLocalForage } from './common/utils';
 import LanguageHeaders from './components/LanguageHeaders';
 import { ScrollToTop } from './components/ScrollToTop';
-import { FOOTER, HEADER_TITLE, useCookie, useLocalForage } from './common/utils';
+import { RUNNING_IN_TAURI, useTauriContext } from './tauri/TauriProvider';
 // imported views need to be added to the `views` list variable
 import ExampleView from './views/ExampleView';
-import { RUNNING_IN_TAURI, useTauriContext } from './tauri/TauriProvider';
 // fallback for React Suspense
 // import Home from './Views/Home';
 // import About from './Views/About';
@@ -77,8 +78,7 @@ export default function () {
           title: '[DEBUG] System Tray Event',
           message: payload.message
         });
-      }
-      );
+      });
       return () => promise.then(unlisten => unlisten());
     }, []);
 
@@ -99,6 +99,25 @@ export default function () {
           });
         }
       });
+    }, []);
+
+    // Handle additional app launches (url, etc.)
+    useEffect(() => {
+      const promise = tauriEvent.listen('newInstance', async ({ payload, ...eventObj }) => {
+        if (!(await appWindow.isVisible())) await appWindow.show();
+
+        if (await appWindow.isMinimized()) {
+          await appWindow.unminimize();
+          await appWindow.setFocus(true);
+        }
+
+        let args = payload?.args;
+        let cwd = payload?.cwd;
+        if (args?.length > 1) {
+
+        }
+      });
+      return () => promise.then(unlisten => unlisten());
     }, []);
   }
 
