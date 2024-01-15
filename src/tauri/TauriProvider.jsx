@@ -5,7 +5,6 @@ import * as tauriPath from '@tauri-apps/api/path';
 import { appWindow, currentMonitor, getCurrent } from '@tauri-apps/api/window';
 import React, { useContext, useEffect, useState } from 'react';
 import tauriConfJson from '../../src-tauri/tauri.conf.json';
-import { WindowsTitleBar } from './TitleBar';
 
 const WIN32_CUSTOM_TITLEBAR = true;
 export const APP_NAME = tauriConfJson.package.productName;
@@ -91,7 +90,6 @@ export function TauriProvider({ children }) {
   }
 
   return <TauriContext.Provider value={{ loading, fileSep, downloads, documents, osType, appDocuments, isFullScreen, usingCustomTitleBar }}>
-    {usingCustomTitleBar && <WindowsTitleBar />}
     {children}
   </TauriContext.Provider>;
 }

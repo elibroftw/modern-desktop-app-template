@@ -6,8 +6,11 @@ import { useTranslation } from 'react-i18next';
 import { VscChromeClose, VscChromeMaximize, VscChromeMinimize, VscChromeRestore } from 'react-icons/vsc';
 import AppIcon from '../../src-tauri/icons/32x32.png';
 import classes from './TitleBar.module.css';
+import { useTauriContext } from './TauriProvider';
 
-export function WindowsTitleBar() {
+export function TitleBar() {
+  const { usingCustomTitlebar } = useTauriContext();
+  if (!usingCustomTitlebar) return <></>;
   const { t } = useTranslation();
   const [maximized, setMaximized] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
