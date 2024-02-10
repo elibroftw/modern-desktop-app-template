@@ -1,9 +1,12 @@
-name: App Builder
+name: Publish Release
 on:
   push:
     tags:
       - "v*"
   workflow_dispatch:
+
+env:
+  APP_NAME: "Sample Desktop App"
 
 jobs:
   release:
@@ -16,35 +19,39 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # for projects that use labels and PRs,
-      # try https://github.com/mikepenz/release-changelog-builder-action instead
-      # TODO: use API to collect commit messages
-      - name: Build Changelog
+      # build the changelog based on the commit messages between the versioned tags
+      - name: Build changelog
         id: build_changelog
-        run: echo "changelog=- ADD CHANGELOG" >> $GITHUB_OUTPUT
+        run: |
+          # NOTE: if commits subjects are standardized, you can filter the git log based on feat: and fix:
+          # and then replace "feat:" with "New: " and "fix:" with "Fixed "
+          # when AI gets good, we can also summarized commits into a bullet point list
+          PREV_TAG=$(git tag --list v* | tail -n2 | head -n1)
+          echo "changelog=$(git log $PREV_TAG...${{ github.ref_name }} --pretty=format:"- %s")" >> $GITHUB_OUTPUT
 
-      - name: Node.js setup
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         # NOTE: enterprise developers may hard code a version
         with:
           node-version: latest
           # node-version-file: '.nvmrc'
 
-      - name: Install Rust toolchain
+      - name: Setup Rust
         run: |
           rustup update --no-self-update
 
-      - name: Install dependencies (ubuntu only)
+      - name: Install Ubuntu dependencies
         if: matrix.platform == 'ubuntu-latest'
         run: |
           sudo apt update
           xargs sudo apt install -y < environment/apt_packages.txt
 
-      - name: Install app dependencies from lockfile and build web
-        # NOTE: comment out && yarn build if frontend does not have build script
-        run: yarn install --frozen-lockfile && yarn build
+      - name: Build frontend
+        run: |
+          yarn --frozen-lockfile
+          yarn build
 
-      - name: Build the app
+      - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
         # if u get Error: Resource not accessible by integration
         # go to repository Settings => Action => General => Workflow permissions => Switch to Read and Write permisions
@@ -55,7 +62,7 @@ jobs:
         with:
           # tauri-action replaces \_\_VERSION\_\_ with the app version
           tagName: ${{ github.ref_name }}
-          releaseName: "Sample Release for Modern Desktop App v__VERSION__"
+          releaseName: "${{ env.APP_NAME }} v__VERSION__"
           releaseBody: |
             ${{steps.build_changelog.outputs.changelog}}
             See the assets to download this version and install.
