@@ -1,6 +1,6 @@
 {
   "name": "r2-t2",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "type": "module",
   "private": true,
   "dependencies": {
