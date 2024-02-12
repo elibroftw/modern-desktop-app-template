@@ -9,17 +9,12 @@ env:
   APP_NAME: "Sample Desktop App"
 
 jobs:
-  release:
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [macos-latest, ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.platform }}
+  changelog:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # build the changelog based on the commit messages between the versioned tags
       - name: Build changelog
         id: build_changelog
         run: |
@@ -28,6 +23,20 @@ jobs:
           # when AI gets good, we can also summarized commits into a bullet point list
           PREV_TAG=$(git tag --list v* | tail -n2 | head -n1)
           echo "changelog=$(git log $PREV_TAG...${{ github.ref_name }} --pretty=format:"- %s")" >> $GITHUB_OUTPUT
+    outputs:
+      changelog: ${{ steps.build_changelog.outputs.changelog }}
+  release:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.platform }}
+    needs: changelog
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # build the changelog based on the commit messages between the versioned tags
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -56,6 +65,7 @@ jobs:
         # if u get Error: Resource not accessible by integration
         # go to repository Settings => Action => General => Workflow permissions => Switch to Read and Write permisions
         env:
+          CI: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
@@ -64,7 +74,7 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: "${{ env.APP_NAME }} v__VERSION__"
           releaseBody: |
-            ${{steps.build_changelog.outputs.changelog}}
+            ${{needs.changelog.outputs.changelog}}
             See the assets to download this version and install.
           releaseDraft: true
           prerelease: false
