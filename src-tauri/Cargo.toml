@@ -21,6 +21,7 @@ tauri-plugin-window-state = { git = "https://github.com/tauri-apps/plugins-works
 tauri-plugin-store = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 window-shadows = {git = "https://github.com/tauri-apps/window-shadows", branch = "dev" }
+tokio = { version = "1.36.0", features = ["time"] }
 
 [target.'cfg(target_os = "linux")'.dependencies]
 dbus = "0.9"
@@ -28,10 +29,10 @@ dbus = "0.9"
 [features]
 # by default Tauri runs in production mode
 # when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL
-default = [ "custom-protocol" ]
+default = ["custom-protocol"]
 # this feature is used used for production builds where `devPath` points to the filesystem
 # DO NOT remove this
-custom-protocol = [ "tauri/custom-protocol" ]
+custom-protocol = ["tauri/custom-protocol"]
 
 # use this to override sub-dependencies
 # [patch.crates-io]

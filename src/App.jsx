@@ -69,6 +69,12 @@ export default function () {
 
   // Tauri event listeners (run on mount)
   if (RUNNING_IN_TAURI) {
+    useEffect(() => {
+      const promise = tauriEvent.listen('longRunningThread', ({payload}) => {
+        console.log(payload.message);
+      });
+      return () => promise.then(unlisten => unlisten());
+    }, []);
     // system tray events
     useEffect(() => {
       const promise = tauriEvent.listen('systemTray', ({ payload, ...eventObj }) => {

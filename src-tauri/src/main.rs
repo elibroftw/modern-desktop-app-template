@@ -8,9 +8,7 @@ use serde::Serialize;
 use std::sync::Mutex;
 use tauri::{
   // state is used in Linux
-  self,
-  Manager,
-  State
+  self, Manager, State
 };
 use tauri_plugin_store;
 use tauri_plugin_window_state;
@@ -22,7 +20,7 @@ mod utils;
 use sys_tray::{
   create_system_tray, tray_event_handler, tray_update_lang, TrayState,
 };
-use utils::{show_item_in_folder, show_main_window};
+use utils::{show_item_in_folder, show_main_window, long_running_thread};
 
 #[derive(Clone, Serialize)]
 struct SingleInstancePayload {
@@ -91,6 +89,8 @@ fn main() {
       app.manage(DbusState(Mutex::new(
         dbus::blocking::SyncConnection::new_session().ok(),
       )));
+      let app_handle = app.handle();
+      tauri::async_runtime::spawn(async move { long_running_thread(&app_handle).await });
 
       Ok(())
     })

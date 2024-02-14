@@ -1,4 +1,6 @@
+use serde::Serialize;
 use std::process::Command;
+use std::time::Duration;
 // State is used by linux
 use tauri::{Manager, State};
 
@@ -82,4 +84,25 @@ pub fn show_item_in_folder(path: String) -> Result<(), String> {
 pub fn show_main_window(window: tauri::Window) {
   // replace "main" by the name of your window
   window.get_window("main").unwrap().show().unwrap();
+}
+
+#[derive(Clone, Serialize)]
+struct LongRunningThreadStruct {
+  message: String,
+}
+
+pub async fn long_running_thread(app: &tauri::AppHandle) {
+  loop {
+    // sleep
+    tokio::time::sleep(Duration::from_secs(2)).await;
+    let _ = app.get_window("main").and_then(|w| {
+      w.emit(
+        "longRunningThread",
+        LongRunningThreadStruct {
+          message: "LRT Message".into(),
+        },
+      )
+      .ok()
+    });
+  }
 }
