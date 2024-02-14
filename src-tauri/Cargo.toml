@@ -23,7 +23,7 @@ tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/plugins-wo
 window-shadows = {git = "https://github.com/tauri-apps/window-shadows", branch = "dev" }
 
 [target.'cfg(target_os = "linux")'.dependencies]
-fork = "0.1"
+dbus = "0.9"
 
 [features]
 # by default Tauri runs in production mode
