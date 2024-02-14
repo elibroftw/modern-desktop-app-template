@@ -6,11 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { VscChromeClose, VscChromeMaximize, VscChromeMinimize, VscChromeRestore } from 'react-icons/vsc';
 import AppIcon from '../../src-tauri/icons/32x32.png';
 import classes from './TitleBar.module.css';
-import { useTauriContext } from './TauriProvider';
 
 export function TitleBar() {
-  const { usingCustomTitlebar } = useTauriContext();
-  if (!usingCustomTitlebar) return <></>;
   const { t } = useTranslation();
   const [maximized, setMaximized] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
@@ -43,7 +40,7 @@ export function TitleBar() {
             <Menu.Item onClick={() => appWindow.toggleMaximize()} icon={<VscChromeMaximize size={14} />}>{t('Maximize')}</Menu.Item>}
           <Menu.Divider />
           <Menu.Item onClick={() => appWindow.close()} icon={<VscChromeClose size={14} />} rightSection={
-            <Text weight='bold' size='xs'>Alt + F4</Text>}>{t('Close')}</Menu.Item>
+            <Text fw='bold' size='xs'>Alt + F4</Text>}>{t('Close')}</Menu.Item>
         </Menu.Dropdown>
       </Menu>
       {/* left window title */}
