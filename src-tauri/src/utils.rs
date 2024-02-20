@@ -46,8 +46,8 @@ pub fn show_item_in_folder(path: String, dbus_state: State<DbusState>) -> Result
         (vec![path], ""),
       )
       .map_err(|e| e.to_string())?;
-    return Ok(());
   }
+  Ok(())
 }
 
 #[cfg(not(target_os = "linux"))]
