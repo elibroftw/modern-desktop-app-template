@@ -27,39 +27,34 @@ jobs:
     outputs:
       changelog: ${{ steps.build_changelog.outputs.changelog }}
   build-arm:
-    if: false
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
     - name: Setup ARM build environment
-      uses: pguyot/arm-runner-action@v2
-      with:
-        base_image: dietpi:rpi_armv8_bullseye
-        cpu: cortex-a53
-        bind_mount_repository: true
-        image_additional_mb: 10240
-        optimize_image: false
-        commands: |
-          export HOME=/root
-          export CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
-          apt update -y --allow-releaseinfo-change
-          apt upgrade -y
-          apt autoremove -y
-          # install Tauri dependencies
-          xargs apt install -y < environment/apt_packages.txt
-          # install rust and cargo
-          curl https://sh.rustup.rs -sSf | sh -s -- -y
-          . "$HOME/.cargo/env"
-          # install nodejs
-          curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash
-          apt install -y nodejs
-          # enable yearn
-          corepack enable
-          cargo install tauri-cli
+      run: |
+          rustup target add aarch64-unknown-linux-gnu
+          sudo apt install gcc-aarch64-linux-gnu
+          sudo dpkg --add-architecture arm64
+          . /etc/os-release
+          echo "using Ubuntu with codename $VERSION_CODENAME"
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports $VERSION_CODENAME main restricted" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports $VERSION_CODENAME-updates main restricted" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports $VERSION_CODENAME universe" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports $VERSION_CODENAME-updates universe" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports $VERSION_CODENAME multiverse" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports $VERSION_CODENAME-updates multiverse" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports $VERSION_CODENAME-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports $VERSION_CODENAME-security main restricted" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports $VERSION_CODENAME-security universe" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports $VERSION_CODENAME-security multiverse" | sudo tee -a /etc/apt/sources.list
+          sudo apt update
+          sudo apt upgrade -y
+          sudo apt install libwebkit2gtk-4.0-dev:arm64 -y
+          sudo apt install libssl-dev:arm64 -y
+          export PKG_CONFIG_SYSROOT_DIR=/usr/aarch64-linux-gnu/
           yarn
-          # --bundles deb
-          yarn rls
+          yarn rls --target aarch64-unknown-linux-gnu
     - name: Upload deb bundle
       uses: actions/upload-artifact@v4
       with:
