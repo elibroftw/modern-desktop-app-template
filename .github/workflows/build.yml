@@ -8,7 +8,6 @@ on:
 
 env:
   APP_NAME: "Sample Desktop App"
-  TAG_NAME: ${{ github.event_name == 'workflow_dispatch' }}
 
 jobs:
   changelog:
@@ -28,6 +27,7 @@ jobs:
     outputs:
       changelog: ${{ steps.build_changelog.outputs.changelog }}
   build-arm:
+    if: false
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -71,7 +71,7 @@ jobs:
       matrix:
         platform: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.platform }}
-    needs: [changelog, build-arm]
+    needs: [changelog]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

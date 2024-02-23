@@ -1,0 +1,47 @@
+name: Build for Linux ARM
+on:
+  workflow_dispatch:
+
+env:
+  APP_NAME: "Sample Desktop App"
+
+jobs:
+  build-arm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup ARM build environment
+        uses: pguyot/arm-runner-action@v2
+        with:
+          base_image: dietpi:rpi_armv8_bullseye
+          cpu: cortex-a53
+          bind_mount_repository: true
+          image_additional_mb: 10240
+          optimize_image: false
+          commands: |
+            export HOME=/root
+            export CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
+            apt update -y --allow-releaseinfo-change
+            apt upgrade -y
+            apt autoremove -y
+            # install Tauri dependencies
+            xargs apt install -y < environment/apt_packages.txt
+            # install rust and cargo
+            curl https://sh.rustup.rs -sSf | sh -s -- -y
+            . "$HOME/.cargo/env"
+            # install nodejs
+            curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash
+            apt install -y nodejs
+            # enable yearn
+            corepack enable
+            cargo install tauri-cli
+            yarn
+            # --bundles deb
+            yarn rls
+      - name: Upload deb bundle
+        uses: actions/upload-artifact@v4
+        with:
+            name: ARM Debian File
+            path: src-tauri/target/release/bundle/deb/*arm64.deb
