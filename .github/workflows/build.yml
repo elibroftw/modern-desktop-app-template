@@ -2,11 +2,13 @@ name: Publish Release
 on:
   push:
     tags:
-      - "v*"
+      - 'v*'
+    branches: '*'
   workflow_dispatch:
 
 env:
   APP_NAME: "Sample Desktop App"
+  TAG_NAME: ${{ github.event_name == 'workflow_dispatch' }}
 
 jobs:
   changelog:
@@ -25,13 +27,51 @@ jobs:
           echo "changelog=$(git log $PREV_TAG...${{ github.ref_name }} --pretty=format:"- %s")" >> $GITHUB_OUTPUT
     outputs:
       changelog: ${{ steps.build_changelog.outputs.changelog }}
+  build-arm:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Setup ARM build environment
+      uses: pguyot/arm-runner-action@v2
+      with:
+        base_image: dietpi:rpi_armv8_bullseye
+        cpu: cortex-a53
+        bind_mount_repository: true
+        image_additional_mb: 10240
+        optimize_image: false
+        commands: |
+          export HOME=/root
+          export CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
+          apt update -y --allow-releaseinfo-change
+          apt upgrade -y
+          apt autoremove -y
+          # install Tauri dependencies
+          xargs apt install -y < environment/apt_packages.txt
+          # install rust and cargo
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+          . "$HOME/.cargo/env"
+          # install nodejs
+          curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash
+          apt install -y nodejs
+          # enable yearn
+          corepack enable
+          cargo install tauri-cli
+          yarn
+          # --bundles deb
+          yarn rls
+    - name: Upload deb bundle
+      uses: actions/upload-artifact@v4
+      with:
+        name: ARM Debian File
+        path: src-tauri/target/release/bundle/deb/*arm64.deb
   release:
     strategy:
       fail-fast: false
       matrix:
         platform: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.platform }}
-    needs: changelog
+    needs: [changelog, build-arm]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -42,12 +82,18 @@ jobs:
         uses: actions/setup-node@v4
         # NOTE: enterprise developers may hard code a version
         with:
-          node-version: latest
+          node-version: 'lts/*'
+          cache: yarn
           # node-version-file: '.nvmrc'
 
       - name: Setup Rust
         run: |
           rustup update --no-self-update
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
 
       - name: Install Ubuntu dependencies
         if: matrix.platform == 'ubuntu-latest'
@@ -55,13 +101,45 @@ jobs:
           sudo apt update
           xargs sudo apt install -y < environment/apt_packages.txt
 
-      - name: Build frontend
+      - name: Install frontend
         run: |
           yarn --frozen-lockfile
-          yarn build
 
+      - name: CI Build
+        if: ${{ github.ref_type == 'branch' }}
+        run: |
+          yarn rls
+
+      - name: CI Upload Windows
+        if: ${{ github.ref_type == 'branch' && matrix.platform == 'windows-latest' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'Windows Installers'
+          path: |
+            src-tauri/release/bundle/msi/*.msi
+            src-tauri/release/bundle/nsis/*.exe
+
+      - name: CI Upload macOS
+        if: ${{ github.ref_type == 'branch' && matrix.platform == 'macos-latest' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'macOS Installer'
+          path: |
+            src-tauri/release/bundle/dmg/*.dmg
+
+      - name: CI Upload Linux
+        if: ${{ github.ref_type == 'branch' && matrix.platform == 'ubuntu-latest' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'Linux Distributions'
+          path: |
+            src-tauri/target/release/bundle/deb/*.deb
+            src-tauri/target/release/bundle/AppImage/*.AppImage
+
+      # TODO: https://tauri.app/v1/guides/building/linux#cross-compiling-tauri-applications-for-arm-based-devices
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
+        if: ${{ github.ref_type == 'tag' }}
         # if u get Error: Resource not accessible by integration
         # go to repository Settings => Action => General => Workflow permissions => Switch to Read and Write permisions
         env:
