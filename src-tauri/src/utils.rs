@@ -43,7 +43,7 @@ pub fn show_item_in_folder(path: String, dbus_state: State<DbusState>) -> Result
       .method_call(
         "org.freedesktop.FileManager1",
         "ShowItems",
-        (vec![path], ""),
+        (vec![format!("file://{path}")], ""),
       )
       .map_err(|e| e.to_string())?;
   }
