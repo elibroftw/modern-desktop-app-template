@@ -34,12 +34,12 @@ jobs:
             # install nodejs
             curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash
             apt install -y nodejs
-            # enable yearn
+            # enable pnpm
             corepack enable
             cargo install tauri-cli
-            yarn
+            pnpm install --frozen-lockfile
             # --bundles deb
-            yarn rls
+            pnpm rls
       - name: Upload deb bundle
         uses: actions/upload-artifact@v4
         with:

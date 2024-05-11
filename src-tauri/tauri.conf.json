@@ -4,8 +4,8 @@
     "version": "../package.json"
   },
   "build": {
-    "beforeDevCommand": "yarn start",
-    "beforeBuildCommand": "yarn build",
+    "beforeDevCommand": "pnpm start",
+    "beforeBuildCommand": "pnpm build",
     "devPath": "http://localhost:1420",
     "distDir": "../build",
     "withGlobalTauri": false

@@ -12,7 +12,7 @@
             // see https://code.visualstudio.com/docs/editor/tasks#_can-a-background-task-be-used-as-a-prelaunchtask-in-launchjson
             "isBackground": true,
             // change this to your `beforeDevCommand`:
-            "command": "yarn",
+            "command": "pnpm",
             "args": [
                 "start"
             ]
@@ -22,7 +22,7 @@
             "type": "shell",
             "problemMatcher": [], // TODO
             // change this to your `beforeBuildCommand`:
-            "command": "yarn",
+            "command": "pnpm",
             "args": [
                 "build"
             ]

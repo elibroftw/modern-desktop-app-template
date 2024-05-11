@@ -71,8 +71,8 @@ before(async function () {
   } catch (error) { }
 
   console.log('INFO: building frontend');
-  const yarnCMD = onWindows ? 'yarn.cmd' : 'yarn';
-  const frontend_build_result = spawnSync(yarnCMD, ['build'], { cwd: projectRoot, stdio: 'pipe', encoding: 'utf-8' });
+  const pnpmCMD = onWindows ? 'pnpm.cmd' : 'pnpm';
+  const frontend_build_result = spawnSync(pnpmCMD, ['build'], { cwd: projectRoot, stdio: 'pipe', encoding: 'utf-8' });
   console.log(frontend_build_result.stderr);
   if (frontend_build_result.error !== undefined) {
     console.log(frontend_build_result.error);

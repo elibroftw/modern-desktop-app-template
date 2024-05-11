@@ -8,14 +8,14 @@ Tauri and React boilerplate for a modern desktop application. Not a project nor 
 2. Download this repository and rename the folder to YOUR_APP or click "use this template" and clone your new repo that is referred to henceforth as YOUR_APP
 3. Open YOUR_APP in an IDE
 4. Follow environment instructions in [`SAMPLE_README.md`](./SAMPLE_README.md)
-5. While you run `yarn` to install dependencies,
+5. While you run `pnpm install` to install dependencies,
     - Modify `productName, identifier, title` found in [`src-tauri/tauri.conf.json`](./src-tauri/tauri.conf.json)
     - Modify `authors` in [`src-tauri/Cargo.toml`](./src-tauri/Cargo.toml)
     - Modify `HEADER_TITLE, FOOTER` found in [`src/utils.js`](./src/utils.js)
     - If you didn't click "use this template", remove the `.git` folder and reinitialize your own git repo
     - Delete or replace `LICENSE.md` since this template is public domain
     - Edit `SAMPLE_README.md` and replace `README.md`
-6. Run `yarn dev` to start developing
+6. Run `pnpm dev` to start developing
 7. Read [Tips and Trouble Shooting](#tips) section of the new `README.md`
 8. If any problems arise, open an issue or contact me
 

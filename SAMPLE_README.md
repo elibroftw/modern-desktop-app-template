@@ -13,8 +13,8 @@ App description goes here.
   2. Open up an elevated command prompt (Windows) or a normal terminal on non-Windows OS
   3. Run `nvm install --lts`
   4. Run `nvm use lts` (`--lts` on non-Windows)
-- Install `yarn` using `corepack enable`
-- Run `yarn` to install frontend dependencies
+- Install `pnpm` using `corepack enable`
+- Run `pnpm install` to install frontend dependencies
 - For testing, you need to `cargo install tauri-driver`, [Install Selenium IDE](https://www.selenium.dev/selenium-ide/), and on Windows add [msedgedriver.exe x64](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) to your Path environment variable.
   - A good place to store `msedgedriver.exe` is `C:\Windows` if you have administrative privileges
   - If tests are hanging on Windows, you will need to update `msedgedriver.exe` to the latest version
@@ -43,7 +43,7 @@ you would list some things related to understanding said cryptocurrency.
 ### App Icons
 
 ```sh
-yarn tauri icon path\to\image.ext --output .\src-tauri\icons\
+pnpm tauri icon path\to\image.ext --output .\src-tauri\icons\
 ```
 
 This will overwrite images in .\src-tauri\icons so ensure you are using `git`
@@ -54,7 +54,7 @@ This only applies when your source icon is not an ico.
 I suggest keeping source images in the `git` repo.
 
 ```sh
-yarn tauri icon .\src-tauri\icons\SystemTray1.png --output .\src-tauri\icons\SystemTray1
+pnpm tauri icon .\src-tauri\icons\SystemTray1.png --output .\src-tauri\icons\SystemTray1
 ```
 
 After running this, simply rename the ico file in the new directory and move it one level up.
@@ -110,7 +110,7 @@ await invoke('command2', {arg: 'two'}).then(msg => console.log(msg));
 ### How to Upgrade Mantine?
 
 ```sh
-yarn upgrade --pattern *mantine*
+pnpm upgrade --pattern *mantine*
 ```
 
 ### Playing Audio and Video
@@ -119,32 +119,32 @@ yarn upgrade --pattern *mantine*
 
 ## Scripts in `package.json`
 
-### `yarn dev`
+### `pnpm dev`
 
-An alias for `yarn tauri dev` which runs `yarn start` and opens a debug enabled window app that renders the frontend
+An alias for `pnpm tauri dev` which runs `pnpm start` and opens a debug enabled window app that renders the frontend
 
-### `yarn test`
+### `pnpm test`
 
 Run integrated tests using selenium-webdriver on a release build of the application
 
-### `yarn rls`
+### `pnpm rls`
 
-An alias for `yarn tauri build` which builds the frontend and bundles it into a Tauri release build
+An alias for `pnpm tauri build` which builds the frontend and bundles it into a Tauri release build
 
-### `yarn update`
+### `pnpm update`
 
 Upgrades packages/crates in `./packages.json` and `./src-tauri/Cargo.toml`. This will also cleanup rust builds
 
-### `yarn build`
+### `pnpm build`
 
 A performance optimized build of the front-end intended for use in production. Output is the `build` folder.
 
-### `yarn start`
+### `pnpm start`
 
 Run the app in the development mode ~~and opens [http://localhost:3000](http://localhost:3000) in your browser~~.
 The page should reload when you make changes. You may also see lint errors in the console
 
-### `yarn serve`
+### `pnpm serve`
 
 Serve `/build` with the global `serve` package
 
@@ -155,7 +155,7 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ## Tips and Trouble Shooting
 
-- Slow computer / low storage / Frontend edits only? `yarn start`
+- Slow computer / low storage / Frontend edits only? `pnpm start`
   - no Tauri API access of course
 - Publishing to the web? Edit `package.json`, `index.html`, `manifest.html`
 - Don't want to Alt-Tab? Set `alwaysOnTop` to `true` in `tauri.conf.json`
@@ -163,5 +163,5 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 - Add `"devtools"` to Tauri features in `Cargo.toml` to get devtools in a production build
 - If a cookie is not being set from cross-site, add `SameSite: 'lax'` when setting cookies
 - Use `cd src-tauri && cargo clean` to fix abnormal bugs or issues
-- Windows VSCode `yarn` package installation issues: **close** not reload all VS Code windows and retry
+- Windows VSCode `pnpm install` dependency installation issues: **close** not reload all VS Code windows and retry
 - Use `npx --yes npm-check-updates` to check which packages to upgrade, check their changelogs, and then perform updates
