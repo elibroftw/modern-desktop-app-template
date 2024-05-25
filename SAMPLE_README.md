@@ -37,6 +37,10 @@ you would list some things related to understanding said cryptocurrency.
 - [Tauri (Rust)](https://docs.rs/tauri/)
 - [React Icons](https://react-icons.github.io/react-icons)
 - [Mantine Docs](https://mantine.dev/pages/basics/)
+  - Styling (X.module.css`)
+    - `import classes from './TitleBar.module.css';`
+    - `className={classes.myClass}`
+    - Use `@mixin light` for normal classes and `@mixin light-root` on `:root` or `html`
 - [Mantine Default Theme](https://github.com/mantinedev/mantine/blob/master/src/mantine-styles/src/theme/default-theme.ts)
 - [react-18next Trans Component](https://react.i18next.com/latest/trans-component)
 

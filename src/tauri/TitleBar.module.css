@@ -38,10 +38,9 @@
     margin: 0 5px 0 10px;
     vertical-align: middle;
 
-    @mixin light {
+    /* @mixin light {
         filter: grayscale(100%) contrast(0);
-    }
-
+    } */
 }
 
 .verticalAlign {
