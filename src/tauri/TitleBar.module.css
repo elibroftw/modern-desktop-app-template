@@ -69,9 +69,10 @@
         background: #e81123;
     }
 
-    &.titlebarCloseHover>svg {
+    /* This was commented out as it was found that light theme was broken */
+    /* &.titlebarCloseHover>svg {
         fill: white;
-    }
+    } */
 
     &.titlebarCloseHover:active {
         background: light-dark(#8b0a14, #f1707a);
