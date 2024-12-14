@@ -1,6 +1,5 @@
 .simpleBar {
     max-height: 100vh;
-    margin-right: 6px;
 }
 
 .simpleBar :global(.simplebar-scrollbar)::before {

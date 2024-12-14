@@ -3,7 +3,7 @@ import * as fs from '@tauri-apps/api/fs';
 import * as os from '@tauri-apps/api/os';
 import * as tauriPath from '@tauri-apps/api/path';
 import { appWindow, currentMonitor, getCurrent } from '@tauri-apps/api/window';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
 import tauriConfJson from '../../src-tauri/tauri.conf.json';
 
 const WIN32_CUSTOM_TITLEBAR = true;
@@ -15,7 +15,20 @@ const EXTS = new Set(['.json']);
 //   that you want to use synchronously across components in your app
 
 // defaults are only for auto-complete
-const TauriContext = React.createContext({
+
+interface SystemProvideContext {
+  loading: boolean,
+  downloads?: string,
+  documents?: string,
+  appDocuments?: string,
+  osType?: string,
+  fileSep: string,
+  isFullScreen: boolean,
+  usingCustomTitleBar: boolean
+  scaleFactor: number
+}
+
+const TauriContext = React.createContext<SystemProvideContext>({
   loading: true,
   downloads: undefined,
   documents: undefined,
@@ -24,25 +37,39 @@ const TauriContext = React.createContext({
   fileSep: '/',
   isFullScreen: false,
   usingCustomTitleBar: false,
+  scaleFactor: 1
 });
 
 export const useTauriContext = () => useContext(TauriContext);
 
-export function TauriProvider({ children }) {
+var root: HTMLElement;
+
+export function TauriProvider({ children }: PropsWithChildren) {
 
   const [loading, setLoading] = useState(true);
-  const [downloads, setDownloadDir] = useState();
-  const [documents, setDocumentDir] = useState();
-  const [osType, setOsType] = useState();
+  const [downloads, setDownloadDir] = useState<string>();
+  const [documents, setDocumentDir] = useState<string>();
+  const [osType, setOsType] = useState<string>();
   const [fileSep, setFileSep] = useState('/');
-  const [appDocuments, setAppDocuments] = useState();
+  const [appDocuments, setAppDocuments] = useState<string>();
   const [isFullScreen, setFullscreen] = useState(false);
   // false because might be running in web
   const [usingCustomTitleBar, setUsingCustomTitleBar] = useState(false);
+  const [scaleFactor, setScaleFactor] = useState(1);
+  const [containerSize, setContainerSize] = useState('100%');
 
   if (RUNNING_IN_TAURI) {
-    const tauriInterval = useInterval(() => {
-      appWindow.isFullscreen().then(setFullscreen);
+
+    const tauriInterval = useInterval(async () => {
+      setFullscreen(await appWindow.isFullscreen());
+
+      const monitor = await currentMonitor();
+      if (monitor !== null) {
+        const scaleFactor = monitor.scaleFactor;
+        if (osType === 'Linux') setContainerSize(`${100 / scaleFactor}%`);
+      }
+
+      setScaleFactor(scaleFactor);
     }, 200);
 
     useEffect(() => {
@@ -89,7 +116,7 @@ export function TauriProvider({ children }) {
     }, []);
   }
 
-  return <TauriContext.Provider value={{ loading, fileSep, downloads, documents, osType, appDocuments, isFullScreen, usingCustomTitleBar }}>
+  return <TauriContext.Provider value={{ loading, fileSep, downloads, documents, osType, appDocuments, isFullScreen, usingCustomTitleBar, scaleFactor }}>
     {children}
   </TauriContext.Provider>;
 }
@@ -106,7 +133,7 @@ export async function getUserAppFiles() {
     const osType = await os.type();
     const sep = osType === 'Windows_NT' ? '\\' : '/'
     const appFolder = `${documents}${sep}${APP_NAME}`;
-    for (const { path } of flattenFiles(entries)) {
+    for (const path of flattenFiles(entries)) {
       const friendlyName = path.substring(appFolder.length + 1, path.length);
       if (EXTS.has(getExtension(path).toLowerCase())) saveFiles.push({ path, name: friendlyName });
     }
@@ -114,7 +141,7 @@ export async function getUserAppFiles() {
   return saveFiles;
 }
 
-export function useMinWidth(minWidth) {
+export function useMinWidth(minWidth: number) {
   if (RUNNING_IN_TAURI) {
     useEffect(() => {
       async function resizeWindow() {
@@ -125,11 +152,13 @@ export function useMinWidth(minWidth) {
         //   to get the current monitor scale factor
         //   to convert the physical size into a logical size
         const monitor = await currentMonitor();
-        const scaleFactor = monitor.scaleFactor;
-        const logicalSize = physicalSize.toLogical(scaleFactor);
-        if (logicalSize.width < minWidth) {
-          logicalSize.width = minWidth;
-          await getCurrent().setSize(logicalSize);
+        if (monitor !== null) {
+          const scaleFactor = monitor.scaleFactor;
+          const logicalSize = physicalSize.toLogical(scaleFactor);
+          if (logicalSize.width < minWidth) {
+            logicalSize.width = minWidth;
+            await getCurrent().setSize(logicalSize);
+          }
         }
       }
       resizeWindow().catch(console.error);
@@ -137,21 +166,22 @@ export function useMinWidth(minWidth) {
   }
 }
 
-function* flattenFiles(entries) {
+function* flattenFiles(entries: fs.FileEntry[]): Generator<string> {
   for (const entry of entries) {
-    entry.children === null ? yield entry.path : yield* flattenFiles(entry.children);
+    entry.children === undefined ? yield entry.path : yield* flattenFiles(entry.children);
   }
 }
 
 // const getExtensionTests = ['/.test/.ext', './asdf.mz', '/asdf/qwer.maz', 'asdf.mm', 'sdf/qwer.ww', './.asdf.mz', '/asdf/.qwer.maz', '.asdf.mm', 'sdf/.qwer.ww', './asdf', '/adsf/qwer', 'asdf', 'sdf/qewr', './.asdf', '/adsf/.qwer', '.asdf', 'sdf/.qewr']
 
-function getExtension(path) {
+function getExtension(path: string) {
   // Modified from https://stackoverflow.com/a/12900504/7732434
   // get filename from full path that uses '\\' or '/' for seperators
-  var basename = path.split(/[\\/]/).pop(),
-    pos = basename.lastIndexOf('.');
+  const basename = path.split(/[\\/]/).pop();
+  if (basename === undefined) return '';
+  const pos = basename.lastIndexOf('.');
   // if `.` is not in the basename
   if (pos < 0) return '';
   // extract extension including `.`
-  return basename.slice(pos);
+  return basename!.slice(pos);
 }

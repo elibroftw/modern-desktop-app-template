@@ -1,13 +1,15 @@
 {
-    "Minimize": "Réduire",
-    "Maximize": "Agrandir",
-    "Restore Down": "Niveau inf.",
-    "Close": "Fermer",
-    "Home": "Accueil",
-    "Monday to Saturday": "Lundi à Samedi",
-    "transExample": "Ce modèle se trouve sur <0>github.com{{variable}}</0>",
-    "Update v{{ v }} available": "Mise à jour v{{ v }} disponible",
-    "Install update and relaunch": "Installer la mise à jour et relancer",
-    "Installing update v{{ v }}": "Installation de la mise à jour v{{ v }}",
-    "Will relaunch afterwards": "Relancera ensuite"
+  "Close": "Fermer",
+  "Example View": "Exemple de vue",
+  "Home": "Accueil",
+  "Install update and relaunch": "Installer la mise à jour et relancer",
+  "Installing update v{{ v }}": "Installation de la mise à jour v{{ v }}",
+  "Maximize": "Agrandir",
+  "Minimize": "Réduire",
+  "Modern Desktop App Examples": "Exemples d'Applications de Bureau Modernes",
+  "Monday to Saturday": "Lundi à Samedi",
+  "Restore Down": "Niveau inf.",
+  "Update v{{ v }} available": "Mise à jour v{{ v }} disponible",
+  "Will relaunch afterwards": "Relancera ensuite",
+  "transExample": "Ce modèle se trouve sur <0>github.com{{variable}}</0>"
 }

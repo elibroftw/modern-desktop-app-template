@@ -5,8 +5,9 @@ import en from './en.json'
 import fr from './fr.json'
 
 export const defaultLng = 'en';
+export const defaultNS = 'translations';
 // this is exported in order to avoid hard coding supported languages in more than 1 place
-const resources = {
+export const resources = {
   en: {
     translations: en
   },
@@ -19,17 +20,13 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    // we init with resources
     resources,
     fallbackLng: defaultLng,
     debug: false,
-
-    // have a common namespace used around the full app
-    ns: ['translations'],
-    defaultNS: 'translations',
-
-    keySeparator: false, // we use content as keys
-
+    ns: [defaultNS],
+    defaultNS: defaultNS,
+    // by default ".". "if working with a flat JSON, it's recommended to set this to false"
+    keySeparator: false,
     interpolation: {
       escapeValue: false
     }
