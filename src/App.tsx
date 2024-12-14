@@ -169,7 +169,7 @@ export default function () {
       header={{ height: 60 }}
       footer={showFooter ? { height: 60 } : undefined}
       navbar={{ width: 200, breakpoint: 'sm', collapsed: { mobile: !mobileNavOpened, desktop: !desktopNavOpened } }}
-      aside={{ width: 200, breakpoint: 'sm', collapsed: { desktop: true, mobile: true } }}
+      aside={{ width: 200, breakpoint: 'sm', collapsed: { desktop: false, mobile: true } }}
       className={classes.appShell}>
       <AppShellMain>
         {usingCustomTitleBar && <Space h='xl' />}
