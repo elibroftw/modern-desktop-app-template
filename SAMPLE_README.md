@@ -104,7 +104,7 @@ tauri::Builder::default()
 ```js
 
 import { invoke } from '@tauri-apps/api/tauri'
-// or const invoke = window.__TAURI__.invoke
+// or const invoke = window.__TAURI_INTERNALS__.invoke
 // in an async function...
 await invoke('command1');
 await invoke('command2', {arg: 'two'}).then(msg => console.log(msg));

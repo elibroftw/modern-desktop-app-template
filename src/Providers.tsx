@@ -5,13 +5,13 @@ import Mantine from './components/Mantine';
 import { TauriProvider } from './tauri/TauriProvider';
 
 export default function ({ children }: PropsWithChildren) {
-  return (
-    <TauriProvider>
-      <Mantine>
-        <BrowserRouter>
-          {children}
-        </BrowserRouter>
-      </Mantine>
-    </TauriProvider>
-  );
+	return (
+		<TauriProvider>
+			<Mantine>
+				<BrowserRouter>
+					{children}
+				</BrowserRouter>
+			</Mantine>
+		</TauriProvider>
+	);
 }

@@ -28,6 +28,8 @@ I do not recommend pulling from my repo because you will need to edit the same f
 
 ## [Tips](/SAMPLE_README.md#tips-and-trouble-shooting)
 
+- [Upgrading to Tauri v2](https://v2.tauri.app/start/migrate/from-tauri-1/)
+
 ## Screenshots
 
 - The four views not found in boilerplate were added by yours truly. My About is the ViewExample provided in `src`

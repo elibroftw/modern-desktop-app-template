@@ -2,7 +2,7 @@ use serde::Serialize;
 use std::process::Command;
 use std::time::Duration;
 // State is used by linux
-use tauri::{Manager, State};
+use tauri::{Emitter, Manager, State};
 
 #[cfg(not(target_os = "windows"))]
 use std::path::PathBuf;
@@ -81,7 +81,7 @@ pub fn show_item_in_folder(path: String) -> Result<(), String> {
 #[tauri::command]
 pub fn show_main_window(window: tauri::Window) {
   // replace "main" by the name of your window
-  window.get_window("main").unwrap().show().unwrap();
+  window.get_webview_window("main").unwrap().show().unwrap();
 }
 
 #[derive(Clone, Serialize)]
@@ -93,7 +93,7 @@ pub async fn long_running_thread(app: &tauri::AppHandle) {
   loop {
     // sleep
     tokio::time::sleep(Duration::from_secs(2)).await;
-    let _ = app.get_window("main").and_then(|w| {
+    let _ = app.get_webview_window("main").and_then(|w| {
       w.emit(
         "longRunningThread",
         LongRunningThreadStruct {

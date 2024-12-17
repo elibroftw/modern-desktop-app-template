@@ -1,11 +1,11 @@
 // API for Tauri or web storage
 import localforage from 'localforage';
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
-import { Store } from 'tauri-plugin-store-api';
+import { Store } from '@tauri-apps/plugin-store';
 import { useTauriContext } from './TauriProvider';
 // docs: https://github.com/tauri-apps/tauri-plugin-store/blob/dev/webview-src/index.ts
 
-const RUNNING_IN_TAURI = window.__TAURI__ !== undefined;
+const RUNNING_IN_TAURI = window.__TAURI_INTERNALS__ !== undefined;
 export const USE_STORE = false && RUNNING_IN_TAURI;
 // save data after setState
 // https://blog.seethis.link/scan-rate-estimator/
