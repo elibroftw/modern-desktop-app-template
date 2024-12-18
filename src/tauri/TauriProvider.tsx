@@ -10,7 +10,24 @@ const appWindow = getCurrentWebviewWindow()
 
 const WIN32_CUSTOM_TITLEBAR = true;
 export const APP_NAME = tauriConfJson.productName;
+// running on a desktop app or a mobile app - but not in the browser
 export const RUNNING_IN_TAURI = window.__TAURI_INTERNALS__ !== undefined;
+// running on the browser on either desktop or mobile - but not as a tauri app
+export const isWeb = !RUNNING_IN_TAURI;
+// running in mobile either in the browser or as a tauri app
+export const isMobile = navigator.maxTouchPoints > 0;
+// running in desktop either in the browser or as a tauri app
+export const isDesktop = !isMobile;
+// running on mobile as a tauri app - but not on the browser
+export const isTauriMobile = RUNNING_IN_TAURI && isMobile;
+// running on desktop as a tauri app - but not on the browser
+export const isTauriDesktop = RUNNING_IN_TAURI && isDesktop;
+// running on mobile in the browser - but not as a tauri app
+export const isWebMobile = isWeb && isMobile;
+// running on desktop in the browser - but not as a tauri app
+export const isWebDesktop = isWeb && isDesktop;
+
+
 const EXTS = new Set(['.json']);
 
 // NOTE: Add memoized Tauri calls in this file
