@@ -11,10 +11,9 @@ import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { notify } from '../common/utils';
 import { createStorage } from '../tauri/storage';
 import { APP_NAME, RUNNING_IN_TAURI, useMinWidth, useTauriContext } from '../tauri/TauriProvider';
-const appWindow = getCurrentWebviewWindow()
-
 
 function toggleFullscreen() {
+	const appWindow = getCurrentWebviewWindow();
 	appWindow.isFullscreen().then(x => appWindow.setFullscreen(!x));
 }
 

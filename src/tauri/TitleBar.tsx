@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { VscChromeClose, VscChromeMaximize, VscChromeMinimize, VscChromeRestore } from 'react-icons/vsc';
 import AppIcon from '../../src-tauri/icons/32x32.png';
 import classes from './TitleBar.module.css';
-const appWindow = getCurrentWebviewWindow()
 
 export function TitleBar() {
 	const { t } = useTranslation();
@@ -15,6 +14,7 @@ export function TitleBar() {
 	const [windowTitle, setWindowTitle] = useState('');
 
 	const tauriInterval = useInterval(() => {
+		const appWindow = getCurrentWebviewWindow()
 		appWindow.isMaximized().then(setMaximized);
 		appWindow.isFullscreen().then(setFullscreen);
 		appWindow.title().then(title => {

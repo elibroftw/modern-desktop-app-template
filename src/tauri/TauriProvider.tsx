@@ -6,7 +6,6 @@ import * as fs from '@tauri-apps/plugin-fs';
 import * as os from '@tauri-apps/plugin-os';
 import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
 import tauriConfJson from '../../src-tauri/tauri.conf.json';
-const appWindow = getCurrentWebviewWindow()
 
 const WIN32_CUSTOM_TITLEBAR = true;
 export const APP_NAME = tauriConfJson.productName;
@@ -78,6 +77,7 @@ export function TauriProvider({ children }: PropsWithChildren) {
 	const [containerSize, setContainerSize] = useState('100%');
 
 	if (RUNNING_IN_TAURI) {
+		const appWindow = getCurrentWebviewWindow();
 
 		const tauriInterval = useInterval(async () => {
 			setFullscreen(await appWindow.isFullscreen());
