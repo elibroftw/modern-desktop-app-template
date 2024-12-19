@@ -1,8 +1,8 @@
-import { Anchor, Text } from "@mantine/core";
-import { useHotkeys } from "@mantine/hooks";
-import { Fragment } from "react";
-import { useTranslation } from "react-i18next";
-import { resources } from "../translations/i18n";
+import { Anchor, Text } from '@mantine/core';
+import { useHotkeys } from '@mantine/hooks';
+import { Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
+import { resources } from '../translations/i18n';
 
 // when many languages are supported, a dropdown (Select) may be optimal
 export default function LanguageHeaders() {

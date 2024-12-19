@@ -47,6 +47,7 @@
     "dialog:default",
     "process:default",
     "store:default",
-    "opener:default"
+    "opener:default",
+    "log:default"
   ]
 }

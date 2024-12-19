@@ -58,6 +58,7 @@ pub fn run() {
   main_prelude();
   // main window should be invisible to allow either the setup delay or the plugin to show the window
   tauri::Builder::default()
+    .plugin(tauri_plugin_log::Builder::new().build())
     .plugin(tauri_plugin_opener::init())
     .plugin(tauri_plugin_store::Builder::new().build())
     .plugin(tauri_plugin_updater::Builder::new().build())
@@ -98,8 +99,8 @@ pub fn run() {
         dbus::blocking::SyncConnection::new_session().ok(),
       )));
 
-			// TODO: AUTOSTART
-			// FOLLOW: https://v2.tauri.app/plugin/autostart/
+      // TODO: AUTOSTART
+      // FOLLOW: https://v2.tauri.app/plugin/autostart/
 
       Ok(())
     })

@@ -1,5 +1,7 @@
 # Modern Desktop App Template
 
+Last Updated: 2024-12-19
+
 Tauri and React boilerplate for a modern desktop application. Not a project nor a substitute tutorial for my video tutorials. I didn't use yew (wasm) since its component libraries are not to the calibre of existing React component libraries.
 
 ## Template Instructions
@@ -11,7 +13,7 @@ Tauri and React boilerplate for a modern desktop application. Not a project nor 
 5. While you run `pnpm install` to install dependencies,
     - Modify `productName, identifier, title` found in [`src-tauri/tauri.conf.json`](./src-tauri/tauri.conf.json)
     - Modify `authors` in [`src-tauri/Cargo.toml`](./src-tauri/Cargo.toml)
-    - Modify `HEADER_TITLE, FOOTER` found in [`src/utils.js`](./src/utils.js)
+    - You can modify the header and the deafult footer by using Find feature in your IDE (`const FOOTER = 'footerI18nKey';`, `HEADER_TITLE`)
     - If you didn't click "use this template", remove the `.git` folder and reinitialize your own git repo
     - Delete or replace `LICENSE.md` since this template is public domain
     - Edit `SAMPLE_README.md` and replace `README.md`
@@ -23,7 +25,7 @@ Tauri and React boilerplate for a modern desktop application. Not a project nor 
 
 ## RSS of Commit History
 
-Add https://github.com/elibroftw/modern-desktop-app-template/commits.atom to your RSS reader to stay up to date!
+Add <https://github.com/elibroftw/modern-desktop-app-template/commits.atom> to your RSS reader to stay up to date!
 I do not recommend pulling from my repo because you will need to edit the same files I reorganize
 
 ## [Tips](/SAMPLE_README.md#tips-and-trouble-shooting)

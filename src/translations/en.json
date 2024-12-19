@@ -1,14 +1,14 @@
 {
-  "Close": "Close",
-  "ExampleView": "Example View",
-  "Maximize": "Maximize",
-  "Minimize": "Minimize",
-  "Modern Desktop App Examples": "Modern Desktop App Examples",
-  "Restore Down": "Restore Down",
-  "transExample": "This template is located on <0>github.com{{variable}}</0>",
-  "installingUpdate": "Installing update v{{ v }}",
-  "updateAvailable": "Update v{{ v }} available",
-  "relaunchMsg": "Will relaunch afterwards",
-  "installAndRelaunch": "Install update and relaunch",
-  "footerI18nKey": "FOOTER message from translation files"
+	"Close": "Close",
+	"ExampleView": "Example View",
+	"Maximize": "Maximize",
+	"Minimize": "Minimize",
+	"Modern Desktop App Examples": "Modern Desktop App Examples",
+	"Restore Down": "Restore Down",
+	"transExample": "This template is located on <0>github.com{{variable}}</0>",
+	"installingUpdate": "Installing update v{{ v }}",
+	"updateAvailable": "Update v{{ v }} available",
+	"relaunchMsg": "Will relaunch afterwards",
+	"installAndRelaunch": "Install update and relaunch",
+	"footer[0]": "FOOTER message from translation files"
 }

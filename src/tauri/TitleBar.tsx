@@ -12,9 +12,9 @@ export function TitleBar() {
 	const [maximized, setMaximized] = useState(false);
 	const [fullscreen, setFullscreen] = useState(false);
 	const [windowTitle, setWindowTitle] = useState('');
+	const appWindow = getCurrentWebviewWindow();
 
 	const tauriInterval = useInterval(() => {
-		const appWindow = getCurrentWebviewWindow()
 		appWindow.isMaximized().then(setMaximized);
 		appWindow.isFullscreen().then(setFullscreen);
 		appWindow.title().then(title => {

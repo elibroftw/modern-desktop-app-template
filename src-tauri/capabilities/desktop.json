@@ -13,6 +13,7 @@
     "store:default",
     "autostart:default",
     "opener:default",
-    "autostart:default"
+    "autostart:default",
+    "log:default"
   ]
 }

@@ -1,13 +1,11 @@
 // component example
 import { Anchor, Button, Stack, Text, TextInput, Title } from '@mantine/core';
-import { Trans, useTranslation } from 'react-i18next';
-
+import { notifications } from '@mantine/notifications';
 import { invoke } from '@tauri-apps/api/core';
+import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 import * as fs from '@tauri-apps/plugin-fs';
 import * as shell from '@tauri-apps/plugin-shell';
-
-import { notifications } from '@mantine/notifications';
-import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
+import { Trans, useTranslation } from 'react-i18next';
 import { notify } from '../common/utils';
 import { createStorage } from '../tauri/storage';
 import { APP_NAME, RUNNING_IN_TAURI, useMinWidth, useTauriContext } from '../tauri/TauriProvider';
@@ -23,7 +21,6 @@ export default function ExampleView() {
 	// store-plugin will create necessary directories
 	const storeName = `${documents}${APP_NAME}${fileSep}example_view.dat`;
 	// const storeName = 'data.dat';
-	console.log(storeName);
 	const { use: useKVP, loading, data } = createStorage(storeName);
 	const [exampleData, setExampleData] = useKVP('exampleKey', '');
 
@@ -39,7 +36,6 @@ export default function ExampleView() {
 			// show in file explorer: https://github.com/tauri-apps/tauri/issues/4062
 			await shell.open(downloads!);
 			await invoke('process_file', { filepath: filePath }).then(msg => {
-				console.log(msg === 'Hello from Rust!')
 				notify('Message from Rust', msg as string);
 				notifications.show({ title: 'Message from Rust', message: msg as string });
 			});

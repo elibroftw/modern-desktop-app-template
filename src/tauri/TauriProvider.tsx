@@ -113,10 +113,8 @@ export function TauriProvider({ children }: PropsWithChildren) {
 		useEffect(() => {
 			// if you want to listen for event listeners, use mountID trick to call unlisten on old listeners
 			const callTauriAPIs = async () => {
-				console.log('calling Tauri APIs')
 				setDownloadDir(await tauriPath.downloadDir());
 				const _documents = await tauriPath.documentDir();
-				console.log(`got documents: ${_documents}`)
 				setDocumentDir(_documents);
 				const _osType = os.type();
 				setOsType(_osType);

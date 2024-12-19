@@ -8,28 +8,28 @@ export const defaultLng = 'en';
 export const defaultNS = 'translations';
 // this is exported in order to avoid hard coding supported languages in more than 1 place
 export const resources = {
-  en: {
-    translations: en
-  },
-  fr: {
-    translations: fr
-  }
+	en: {
+		translations: en
+	},
+	fr: {
+		translations: fr
+	}
 }
 
 i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources,
-    fallbackLng: defaultLng,
-    debug: false,
-    ns: [defaultNS],
-    defaultNS: defaultNS,
-    // by default ".". "if working with a flat JSON, it's recommended to set this to false"
-    keySeparator: false,
-    interpolation: {
-      escapeValue: false
-    }
-  });
+	.use(LanguageDetector)
+	.use(initReactI18next)
+	.init({
+		resources,
+		fallbackLng: defaultLng,
+		debug: false,
+		ns: [defaultNS],
+		defaultNS: defaultNS,
+		// by default ".". "if working with a flat JSON, it's recommended to set this to false"
+		keySeparator: false,
+		interpolation: {
+			escapeValue: false
+		}
+	});
 
 export default i18n;

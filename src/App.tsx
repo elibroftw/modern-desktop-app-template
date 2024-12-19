@@ -3,9 +3,11 @@ import { useDisclosure, useHotkeys } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import * as tauriEvent from '@tauri-apps/api/event';
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
+import * as tauriLogger from '@tauri-apps/plugin-log';
 import { relaunch } from '@tauri-apps/plugin-process';
 import * as tauriUpdater from '@tauri-apps/plugin-updater';
 import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { BsMoonStarsFill } from 'react-icons/bs';
 import { ImCross } from 'react-icons/im';
@@ -13,18 +15,17 @@ import { IoSunnySharp } from 'react-icons/io5';
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 import 'simplebar-react/dist/simplebar.min.css';
-
 import classes from './App.module.css';
-import { FOOTER, HEADER_TITLE, useCookie, useLocalForage } from './common/utils';
+import { useCookie, useLocalForage } from './common/utils';
 import LanguageHeaders from './components/LanguageHeaders';
 import { ScrollToTop } from './components/ScrollToTop';
 import { RUNNING_IN_TAURI, useTauriContext } from './tauri/TauriProvider';
 import { TitleBar } from './tauri/TitleBar';
 import ExampleView from './views/ExampleView';
+import FallbackAppRender from './views/FallbackErrorBoundary';
 // fallback for React Suspense
 // import Home from './Views/Home';
 // import About from './Views/About';
-// import CIFInfo from './Views/CIFInfo';
 // if your views are large, you can use lazy loading to reduce the initial load time
 // const Settings = lazy(() => import('./Views/Settings'));
 
@@ -43,13 +44,13 @@ export default function () {
 
 	// left sidebar
 	const views: View[] = [
+		{ component: ExampleView, path: '/example-view', name: t('ExampleView') },
+		{ component: () => <Text>Woo, routing works</Text>, path: '/example-view-2', name: 'Test Routing' },
+		// Other ways to add views to this array:
 		//     { component: () => <Home prop1={'stuff'} />, path: '/home', name: t('Home') },
-		//     { component: CIFInfo, path: '/cif-info', name: 'CIF ' + t('Info') },
 		//     { component: React.memo(About), path: '/about', name: t('About') },
 		// Suspense example when a component was lazy loaded
 		//     { component: () => <React.Suspense fallback={<Fallback />}><Setting /></React.Suspense>, path: '/settings', name: t('Settings') },
-		{ component: ExampleView, path: '/example-view', name: t('ExampleView') },
-		{ component: () => <Text>Woo, routing works</Text>, path: '/example-view-2', name: 'Test Routing' },
 	];
 
 	const { toggleColorScheme } = useMantineColorScheme();
@@ -78,14 +79,14 @@ export default function () {
 	if (RUNNING_IN_TAURI) {
 		useEffect(() => {
 			const promise = tauriEvent.listen('longRunningThread', ({ payload }: { payload: any }) => {
-				console.log(payload.message);
+				tauriLogger.info(payload.message);
 			});
 			return () => { promise.then(unlisten => unlisten()) };
 		}, []);
 		// system tray events
 		useEffect(() => {
 			const promise = tauriEvent.listen('systemTray', ({ payload, ...eventObj }: { payload: { message: string } }) => {
-				console.log(payload.message);
+				tauriLogger.info(payload.message);
 				// for debugging purposes only
 				notifications.show({
 					title: '[DEBUG] System Tray Event',
@@ -112,14 +113,14 @@ export default function () {
 									case 'Started':
 										notifications.show({ title: t('installingUpdate', { v: update.version }), message: t('relaunchMsg'), autoClose: false });
 										// contentLength = event.data.contentLength;
-										// console.log(`started downloading ${event.data.contentLength} bytes`);
+										// tauriLogger.info(`started downloading ${event.data.contentLength} bytes`);
 										break;
 									case 'Progress':
 										// downloaded += event.data.chunkLength;
-										// console.log(`downloaded ${downloaded} from ${contentLength}`);
+										// tauriLogger.info(`downloaded ${downloaded} from ${contentLength}`);
 										break;
 									case 'Finished':
-										// console.log('download finished');
+										// tauriLogger.info('download finished');
 										break;
 								}
 							}).then(relaunch)}>{t('installAndRelaunch')}</Button>
@@ -162,9 +163,10 @@ export default function () {
 		);
 	}
 
-	const showFooter = FOOTER && !footersSeenLoading && !(FOOTER in footersSeen);
+	const FOOTER_KEY = 'footer[0]';
+	const showFooter = FOOTER_KEY && !footersSeenLoading && !(FOOTER_KEY in footersSeen);
 	// assume key is always available
-	const footerText = t(FOOTER);
+	const footerText = t(FOOTER_KEY);
 
 	// hack for global styling the vertical simplebar based on state
 	useEffect(() => {
@@ -186,10 +188,12 @@ export default function () {
 			<AppShellMain>
 				{usingCustomTitleBar && <Space h='xl' />}
 				<SimpleBar scrollableNodeProps={{ ref: setScroller }} autoHide={false} className={classes.simpleBar}>
-					<Routes>
-						{views[0] !== undefined && <Route path='/' element={<Navigate to={views[0].path} />} />}
-						{views.map((view, index) => <Route key={index} path={view.path} element={<view.component />} />)}
-					</Routes>
+					<ErrorBoundary FallbackComponent={FallbackAppRender} /*onReset={_details => resetState()} */ onError={e => tauriLogger.error(e.message)}>
+						<Routes>
+							{views[0] !== undefined && <Route path='/' element={<Navigate to={views[0].path} />} />}
+							{views.map((view, index) => <Route key={index} path={view.path} element={<view.component />} />)}
+						</Routes>
+					</ErrorBoundary>
 					{/* prevent the footer from covering bottom text of a route view */}
 					<Space h={showFooter ? 70 : 50} />
 					<ScrollToTop scroller={scroller} bottom={showFooter ? 70 : 20} />
@@ -199,7 +203,7 @@ export default function () {
 				<Group h='100%'>
 					<Burger hiddenFrom='sm' opened={mobileNavOpened} onClick={toggleMobileNav} size='sm' />
 					<Burger visibleFrom='sm' opened={desktopNavOpened} onClick={toggleDesktopNav} size='sm' />
-					<Text>{HEADER_TITLE}</Text>
+					<Text>HEADER_TITLE</Text>
 				</Group>
 				<Group className={classes.headerRightItems} h='110%'>
 					<LanguageHeaders />
@@ -225,7 +229,7 @@ export default function () {
 			{showFooter &&
 				<AppShellFooter ref={footerRef} p='md' className={classes.footer}>
 					{footerText}
-					<Button variant='subtle' size='xs' onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER]: '' }))}>
+					<Button variant='subtle' size='xs' onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER_KEY]: '' }))}>
 						<ImCross />
 					</Button>
 				</AppShellFooter>}
