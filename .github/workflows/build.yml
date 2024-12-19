@@ -30,7 +30,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-latest, windows-latest]
+        include:
+          - platform: 'macos-latest' # for Arm based macs (M1 and above).
+            args: '--target aarch64-apple-darwin'
+          - platform: 'macos-latest' # for Intel based macs.
+            args: '--target x86_64-apple-darwin'
+          - platform: 'ubuntu-22.04'
+            args: ''
+          - platform: 'windows-latest'
+            args: ''
     runs-on: ${{ matrix.platform }}
     needs: [changelog]
     steps:
@@ -51,7 +59,7 @@ jobs:
           cache: pnpm
           # node-version-file: '.nvmrc'
 
-      - name: install Rust stable
+      - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
         with:
           # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
@@ -68,7 +76,7 @@ jobs:
           sudo apt update
           xargs sudo apt install -y < environment/apt_packages.txt
 
-      - name: Install frontend
+      - name: Install frontend dependencies
         run: |
           pnpm install
 
@@ -77,7 +85,7 @@ jobs:
         run: |
           pnpm rls
 
-      - name: CI Upload Windows
+      - name: CI upload Windows
         if: ${{ github.ref_type == 'branch' && matrix.platform == 'windows-latest' }}
         uses: actions/upload-artifact@v4
         with:
@@ -86,7 +94,7 @@ jobs:
             src-tauri/release/bundle/msi/*.msi
             src-tauri/release/bundle/nsis/*.exe
 
-      - name: CI Upload macOS
+      - name: CI upload macOS
         if: ${{ github.ref_type == 'branch' && matrix.platform == 'macos-latest' }}
         uses: actions/upload-artifact@v4
         with:
@@ -94,7 +102,7 @@ jobs:
           path: |
             src-tauri/release/bundle/dmg/*.dmg
 
-      - name: CI Upload Linux
+      - name: CI upload Linux
         if: ${{ github.ref_type == 'branch' && matrix.platform == 'ubuntu-latest' }}
         uses: actions/upload-artifact@v4
         with:
@@ -123,3 +131,4 @@ jobs:
             See the assets to download this version and install.
           releaseDraft: true
           prerelease: false
+          args: ${{ matrix.args }}
