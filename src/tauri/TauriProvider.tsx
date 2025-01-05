@@ -10,6 +10,9 @@ import tauriConfJson from '../../src-tauri/tauri.conf.json';
 const WIN32_CUSTOM_TITLEBAR = true;
 export const APP_NAME = tauriConfJson.productName;
 // running on a desktop app or a mobile app - but not in the browser
+declare global {
+	var isTauri: boolean | undefined;
+}
 export const RUNNING_IN_TAURI = window.isTauri === true;
 // running on the browser on either desktop or mobile - but not as a tauri app
 export const isWeb = !RUNNING_IN_TAURI;
