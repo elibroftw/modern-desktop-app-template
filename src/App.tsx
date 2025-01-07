@@ -6,7 +6,7 @@ import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 import * as tauriLogger from '@tauri-apps/plugin-log';
 import { relaunch } from '@tauri-apps/plugin-process';
 import * as tauriUpdater from '@tauri-apps/plugin-updater';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { JSX, lazy, LazyExoticComponent, ReactNode, Suspense, useEffect, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { BsMoonStarsFill } from 'react-icons/bs';
@@ -23,15 +23,13 @@ import { RUNNING_IN_TAURI, useTauriContext } from './tauri/TauriProvider';
 import { TitleBar } from './tauri/TitleBar';
 import ExampleView from './views/ExampleView';
 import FallbackAppRender from './views/FallbackErrorBoundary';
-// fallback for React Suspense
-// import Home from './Views/Home';
-// import About from './Views/About';
-// if your views are large, you can use lazy loading to reduce the initial load time
-// const Settings = lazy(() => import('./Views/Settings'));
+import FallbackSuspense from './views/FallbackSuspense';
+// if some views are large, you can use lazy loading to reduce the initial app load time
+const LazyView = lazy(() => import('./views/LazyView'));
 
 // imported views need to be added to the `views` list variable
 interface View {
-	component: () => ReactNode,
+	component: (() => JSX.Element) | LazyExoticComponent<() => JSX.Element>,
 	path: string,
 	exact?: boolean,
 	name: string
@@ -46,11 +44,10 @@ export default function () {
 	const views: View[] = [
 		{ component: ExampleView, path: '/example-view', name: t('ExampleView') },
 		{ component: () => <Text>Woo, routing works</Text>, path: '/example-view-2', name: 'Test Routing' },
+		{ component: LazyView, path: '/lazy-view', name: 'Lazy Load' }
 		// Other ways to add views to this array:
 		//     { component: () => <Home prop1={'stuff'} />, path: '/home', name: t('Home') },
 		//     { component: React.memo(About), path: '/about', name: t('About') },
-		// Suspense example when a component was lazy loaded
-		//     { component: () => <React.Suspense fallback={<Fallback />}><Setting /></React.Suspense>, path: '/settings', name: t('Settings') },
 	];
 
 	const { toggleColorScheme } = useMantineColorScheme();
@@ -191,7 +188,7 @@ export default function () {
 					<ErrorBoundary FallbackComponent={FallbackAppRender} /*onReset={_details => resetState()} */ onError={e => tauriLogger.error(e.message)}>
 						<Routes>
 							{views[0] !== undefined && <Route path='/' element={<Navigate to={views[0].path} />} />}
-							{views.map((view, index) => <Route key={index} path={view.path} element={<view.component />} />)}
+							{views.map((view, index) => <Route key={index} path={view.path} element={<Suspense fallback={<FallbackSuspense />}><view.component /></Suspense>} />)}
 						</Routes>
 					</ErrorBoundary>
 					{/* prevent the footer from covering bottom text of a route view */}
