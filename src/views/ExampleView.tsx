@@ -4,6 +4,7 @@ import { notifications } from '@mantine/notifications';
 import { invoke } from '@tauri-apps/api/core';
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 import * as fs from '@tauri-apps/plugin-fs';
+import { revealItemInDir } from '@tauri-apps/plugin-opener';
 import * as shell from '@tauri-apps/plugin-shell';
 import { Trans, useTranslation } from 'react-i18next';
 import { notify } from '../common/utils';
@@ -53,11 +54,16 @@ export default function ExampleView() {
 
 		<Title order={4}>Interpolating components in translations</Title>
 		<Trans i18nKey='transExample'
-			values={{ variable: '/elibroftw/modern-desktop-template' }}
-			components={[<Anchor href="https://github.com/elibroftw/modern-desktop-app-template" />]}
+			values={{ variable: 'github.com/elibroftw/modern-desktop-template' }}
+			components={[<Anchor href='https://github.com/elibroftw/modern-desktop-app-template' />]}
 			// optional stuff:
-			default='FALLBACK if key does not exist. This template is located on <0>github.com{{variable}}</0>' t={t} />
+			default='FALLBACK if key does not exist. This template is from <0>github.com{{variable}}</0>' t={t} />
 
-		{loading ? <Text>Loading Tauri Store</Text> : <TextInput label={'Persistent data'} value={exampleData} onChange={e => setExampleData(e.currentTarget.value)} />}
+		{loading ? <Text>Loading Tauri Store</Text> :
+			<>
+				<TextInput label={'Persistent data'} value={exampleData} onChange={e => setExampleData(e.currentTarget.value)} />
+				<Button onClick={() => revealItemInDir(storeName)}>Reveal store file in file directory</Button>
+			</>
+		}
 	</Stack>
 }

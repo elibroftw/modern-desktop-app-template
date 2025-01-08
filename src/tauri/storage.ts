@@ -24,8 +24,7 @@ function getTauriStore(filename: string): LazyStore {
 export function createStorage(storeName: string) {
 	let loading = useTauriContext().loading;
 	const [data, setData] = useState<Record<string, any>>();
-	loading = loading || storeName === undefined || data === undefined;
-
+	loading = loading || data === undefined;
 	const localDataRef = useRef(null);
 	const fileStoreRef = useRef<LazyStore | null>(
 		RUNNING_IN_TAURI ? getTauriStore(storeName) : null
@@ -34,21 +33,23 @@ export function createStorage(storeName: string) {
 
 	// load data
 	useEffect(() => {
-		if (storeName === undefined)
-			return;
-
 		if (RUNNING_IN_TAURI) {
-			fileStoreRef.current!.get('data').then(
-				value => {
-					if (value === null) {
-						const newValue = {};
-						fileStoreRef.current!.set('data', newValue)
-							.then(() => setData(newValue));
-					} else {
-						setData(value);
+			if (fileStoreRef.current === null) console.error('fileStoreRef is undefined');
+			else {
+				fileStoreRef.current.get('data').then(
+					value => {
+						if (value === undefined || value === null) {
+							const newValue = {};
+							fileStoreRef.current!.set('data', newValue)
+								.then(() => setData(newValue));
+						} else {
+							console.log(`value is undefined? ${value === undefined}`);
+							setData(value);
+						}
 					}
-				}
-			)
+				)
+			}
+
 		} else {
 			localforage.getItem(storeName, (err, value) => {
 				// make store a {} again in catch

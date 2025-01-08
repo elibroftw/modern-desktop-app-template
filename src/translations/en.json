@@ -5,7 +5,7 @@
 	"Minimize": "Minimize",
 	"Modern Desktop App Examples": "Modern Desktop App Examples",
 	"Restore Down": "Restore Down",
-	"transExample": "This template is located on <0>github.com{{variable}}</0>",
+	"transExample": "This template is from <0>{{variable}}</0>",
 	"installingUpdate": "Installing update v{{ v }}",
 	"updateAvailable": "Update v{{ v }} available",
 	"relaunchMsg": "Will relaunch afterwards",
