@@ -19,7 +19,7 @@ mod tray_icon;
 mod utils;
 
 use tray_icon::{create_tray_icon, tray_update_lang, TrayState};
-use utils::{long_running_thread, show_item_in_folder};
+use utils::long_running_thread;
 
 #[derive(Clone, Serialize)]
 struct SingleInstancePayload {
@@ -69,11 +69,7 @@ pub fn run() {
     .plugin(tauri_plugin_shell::init())
     .plugin(tauri_plugin_fs::init())
     // custom commands
-    .invoke_handler(tauri::generate_handler![
-      tray_update_lang,
-      process_file,
-      show_item_in_folder
-    ])
+    .invoke_handler(tauri::generate_handler![tray_update_lang, process_file,])
     // allow only one instance and propagate args and cwd to existing instance
     .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {
       app
@@ -83,8 +79,7 @@ pub fn run() {
     // persistent storage with filesystem
     .plugin(tauri_plugin_store::Builder::default().build())
     // save window position and size between sessions
-    // if you remove this, make sure to uncomment the show_main_window code
-    //  in this file and TauriProvider.jsx
+    // if you remove this, make sure to uncomment the mainWebview?.show line in TauriProvider.tsx
     .plugin(tauri_plugin_window_state::Builder::default().build())
     // custom setup code
     .setup(|app| {

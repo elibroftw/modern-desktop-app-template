@@ -126,12 +126,13 @@ export function TauriProvider({ children }: PropsWithChildren) {
 				await fs.mkdir(APP_NAME, { baseDir: fs.BaseDirectory.Document, recursive: true });
 				setAppDocuments(`${_documents}${APP_NAME}`);
 				setLoading(false);
-				// if you aren't using the window-state plugin,
-				//  you need to manually show the window (uncomment code)
-				// import { invoke } from '@tauri-apps/api';
-				// invoke('show_main_window');
-				// Why? The default background color of webview is white
-				//  so we should show the window when the react app loads
+				// if you aren't using the window-state plugin, you need to import the following
+				// import { Webview } from '@tauri-apps/api/webview';
+				// and uncomment the following
+				// const mainWebview = await Webview.getByLabel('main')!;
+				// mainWebview?.show();
+				// Why do we need to do this? The default background color of webviews is white
+				//  so we should show the window after the react has mounted
 				// See: https://github.com/tauri-apps/tauri/issues/1564
 			}
 			callTauriAPIs().catch(console.error);
