@@ -1,4 +1,4 @@
-import { ActionIcon, AppShell, AppShellAside, AppShellFooter, AppShellHeader, AppShellMain, AppShellNavbar, AppShellSection, Burger, Button, Group, Space, Text, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, AppShell, Burger, Button, Group, Space, Text, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 import { useDisclosure, useHotkeys } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import * as tauriEvent from '@tauri-apps/api/event';
@@ -6,13 +6,13 @@ import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 import * as tauriLogger from '@tauri-apps/plugin-log';
 import { relaunch } from '@tauri-apps/plugin-process';
 import * as tauriUpdater from '@tauri-apps/plugin-updater';
-import { JSX, lazy, LazyExoticComponent, ReactNode, Suspense, useEffect, useRef, useState } from 'react';
+import { JSX, lazy, LazyExoticComponent, Suspense, useEffect, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { BsMoonStarsFill } from 'react-icons/bs';
 import { ImCross } from 'react-icons/im';
 import { IoSunnySharp } from 'react-icons/io5';
-import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 import 'simplebar-react/dist/simplebar.min.css';
 import classes from './App.module.css';
@@ -180,9 +180,9 @@ export default function () {
 			header={{ height: 60 }}
 			footer={showFooter ? { height: 60 } : undefined}
 			navbar={{ width: 200, breakpoint: 'sm', collapsed: { mobile: !mobileNavOpened, desktop: !desktopNavOpened } }}
-			aside={{ width: 200, breakpoint: 'sm', collapsed: { desktop: false, mobile: true } }}
+			aside={{ width: 300, breakpoint: 'md', collapsed: { desktop: false, mobile: true } }}
 			className={classes.appShell}>
-			<AppShellMain>
+			<AppShell.Main>
 				{usingCustomTitleBar && <Space h='xl' />}
 				<SimpleBar scrollableNodeProps={{ ref: setScroller }} autoHide={false} className={classes.simpleBar}>
 					<ErrorBoundary FallbackComponent={FallbackAppRender} /*onReset={_details => resetState()} */ onError={e => tauriLogger.error(e.message)}>
@@ -195,8 +195,8 @@ export default function () {
 					<Space h={showFooter ? 70 : 50} />
 					<ScrollToTop scroller={scroller} bottom={showFooter ? 70 : 20} />
 				</SimpleBar>
-			</AppShellMain>
-			<AppShellHeader data-tauri-drag-region p='md' className={classes.header}>
+			</AppShell.Main>
+			<AppShell.Header data-tauri-drag-region p='md' className={classes.header}>
 				<Group h='100%'>
 					<Burger hiddenFrom='sm' opened={mobileNavOpened} onClick={toggleMobileNav} size='sm' />
 					<Burger visibleFrom='sm' opened={desktopNavOpened} onClick={toggleDesktopNav} size='sm' />
@@ -209,27 +209,27 @@ export default function () {
 						{colorScheme === 'dark' ? <IoSunnySharp size={'1.5em'} /> : <BsMoonStarsFill />}
 					</ActionIcon>
 				</Group>
-			</AppShellHeader>
+			</AppShell.Header>
 
-			<AppShellNavbar className={classes.titleBarAdjustedHeight} h='100%' w={{ sm: 200 }} p='xs' hidden={!mobileNavOpened}>
-				<AppShellSection grow><NavLinks /></AppShellSection>
-				<AppShellSection>
+			<AppShell.Navbar className={classes.titleBarAdjustedHeight} h='100%' w={{ sm: 200 }} p='xs' hidden={!mobileNavOpened}>
+				<AppShell.Section grow><NavLinks /></AppShell.Section>
+				<AppShell.Section>
 					{/* Bottom of Navbar Example: https://github.com/mantinedev/mantine/blob/master/src/mantine-demos/src/demos/core/AppShell/_user.tsx */}
 					<Space h={navbarClearance} /> {/* Account for footer */}
-				</AppShellSection>
-			</AppShellNavbar>
+				</AppShell.Section>
+			</AppShell.Navbar >
 
-			<AppShellAside className={classes.titleBarAdjustedHeight} p='md' w={{ sm: 200, lg: 300 }}>
+			<AppShell.Aside className={classes.titleBarAdjustedHeight} p='md'>
 				<Text>Right Side. Use for help, support, quick action menu? For example, if we were building a trading app, we could use the aside for the trade parameters while leaving the main UI with the data</Text>
-			</AppShellAside>
+			</AppShell.Aside >
 
 			{showFooter &&
-				<AppShellFooter ref={footerRef} p='md' className={classes.footer}>
+				<AppShell.Footer ref={footerRef} p='md' className={classes.footer}>
 					{footerText}
 					<Button variant='subtle' size='xs' onClick={() => setFootersSeen(prev => ({ ...prev, [FOOTER_KEY]: '' }))}>
 						<ImCross />
 					</Button>
-				</AppShellFooter>}
+				</AppShell.Footer>}
 		</AppShell>
 
 	</>;
