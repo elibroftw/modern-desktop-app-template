@@ -7,7 +7,7 @@ import * as os from '@tauri-apps/plugin-os';
 import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
 import tauriConfJson from '../../src-tauri/tauri.conf.json';
 
-const WIN32_CUSTOM_TITLEBAR = true;
+const WIN32_CUSTOM_TITLEBAR = false;
 export const APP_NAME = tauriConfJson.productName;
 // running on a desktop app or a mobile app - but not in the browser
 declare global {
@@ -42,7 +42,7 @@ interface SystemProvideContext {
 	downloads?: string,
 	documents?: string,
 	appDocuments?: string,
-	osType?: string,
+	osType?: os.OsType,
 	fileSep: string,
 	isFullScreen: boolean,
 	usingCustomTitleBar: boolean
@@ -70,7 +70,7 @@ export function TauriProvider({ children }: PropsWithChildren) {
 	const [loading, setLoading] = useState(true);
 	const [downloads, setDownloadDir] = useState<string>();
 	const [documents, setDocumentDir] = useState<string>();
-	const [osType, setOsType] = useState<string>();
+	const [osType, setOsType] = useState<os.OsType>();
 	const [fileSep, setFileSep] = useState('/');
 	const [appDocuments, setAppDocuments] = useState<string>();
 	const [isFullScreen, setFullscreen] = useState(false);
@@ -88,7 +88,7 @@ export function TauriProvider({ children }: PropsWithChildren) {
 			const monitor = await currentMonitor();
 			if (monitor !== null) {
 				const scaleFactor = monitor.scaleFactor;
-				if (osType === 'Linux') setContainerSize(`${100 / scaleFactor}%`);
+				if (osType === 'linux') setContainerSize(`${100 / scaleFactor}%`);
 			}
 
 			setScaleFactor(scaleFactor);
@@ -100,17 +100,17 @@ export function TauriProvider({ children }: PropsWithChildren) {
 		}, []);
 
 		useEffect(() => {
-			if (osType === 'Windows_NT') {
+			if (osType === 'windows') {
 				appWindow.setDecorations(!WIN32_CUSTOM_TITLEBAR);
 				if (WIN32_CUSTOM_TITLEBAR) {
-					root.style.setProperty('--titlebar-height', '28px');
+					document.documentElement.style.setProperty('--titlebar-height', '28px');
 				}
 			}
 		}, [osType]);
 
 		useEffect(() => {
 			// hide titlebar when: in fullscreen, not on Windows, and explicitly allowing custom titlebar
-			setUsingCustomTitleBar(!isFullScreen && osType === 'Windows_NT' && WIN32_CUSTOM_TITLEBAR);
+			setUsingCustomTitleBar(!isFullScreen && osType === 'windows' && WIN32_CUSTOM_TITLEBAR);
 		}, [isFullScreen, osType]);
 
 		useEffect(() => {
