@@ -5,11 +5,11 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } fr
 import { useTauriContext } from './TauriProvider';
 // docs: https://github.com/tauri-apps/tauri-plugin-store/blob/dev/webview-src/index.ts
 
-const RUNNING_IN_TAURI = window.__TAURI_INTERNALS__ !== undefined;
+const RUNNING_IN_TAURI = window.isTauri === true;
 export const USE_STORE = false && RUNNING_IN_TAURI;
 // save data after setState
 // https://blog.seethis.link/scan-rate-estimator/
-const SAVE_DELAY = 400;
+const SAVE_DELAY = 100;
 
 // returns an API to get a item, set an item from a specific category of data
 // why? we don't to have loading variable for multiple values
@@ -73,11 +73,7 @@ export function createStorage(storePath: string) {
 			}
 			if (newData !== data) {
 				if (RUNNING_IN_TAURI) {
-					// avoid spiking disk IO by saving every SAVE_DELAY
-					fileStoreRef.current!.set('data', newData)
-						.then(() => {
-							timeoutRef.current = window.setTimeout(() => fileStoreRef.current!.save(), SAVE_DELAY)
-						});
+					fileStoreRef.current!.set('data', newData);
 				} else {
 					timeoutRef.current = window.setTimeout(() => localforage.setItem(storePath, newData), SAVE_DELAY);
 				}
