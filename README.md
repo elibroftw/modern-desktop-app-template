@@ -21,7 +21,7 @@ Tauri and React boilerplate for a modern desktop application. Not a project nor 
 7. Read [Tips and Trouble Shooting](#tips) section of the new `README.md`
 8. If any problems arise, open an issue or contact me
 
-[Ground-up Instructions](https://tauri.app/v1/guides/getting-started/setup/)
+[Ground-up Instructions](https://v2.tauri.app/start/)
 
 ## RSS of Commit History
 
