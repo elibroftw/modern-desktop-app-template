@@ -9,10 +9,10 @@ export const defaultNS = 'translations';
 // this is exported in order to avoid hard coding supported languages in more than 1 place
 export const resources = {
 	en: {
-		translations: en
+		[defaultNS]: en
 	},
 	fr: {
-		translations: fr
+		[defaultNS]: fr
 	}
 }
 
