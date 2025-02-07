@@ -7,7 +7,7 @@ import * as os from '@tauri-apps/plugin-os';
 import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
 import tauriConfJson from '../../src-tauri/tauri.conf.json';
 
-const WIN32_CUSTOM_TITLEBAR = true;
+const WIN32_CUSTOM_TITLEBAR = false;
 export const APP_NAME = tauriConfJson.productName;
 // running on a desktop app or a mobile app - but not in the browser
 declare global {
