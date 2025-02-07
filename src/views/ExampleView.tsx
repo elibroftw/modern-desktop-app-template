@@ -7,7 +7,7 @@ import * as fs from '@tauri-apps/plugin-fs';
 import { revealItemInDir } from '@tauri-apps/plugin-opener';
 import * as shell from '@tauri-apps/plugin-shell';
 import { Trans, useTranslation } from 'react-i18next';
-import { notify } from '../common/utils';
+import { notify, join } from '../common/utils';
 import { createStorage } from '../tauri/storage';
 import { APP_NAME, RUNNING_IN_TAURI, useMinWidth, useTauriContext } from '../tauri/TauriProvider';
 
@@ -18,10 +18,9 @@ function toggleFullscreen() {
 
 export default function ExampleView() {
 	const { t } = useTranslation();
-	const { fileSep, documents, downloads } = useTauriContext();
+	const { fileSep, documents, downloads, loading: tauriLoading } = useTauriContext();
 	// store-plugin will create necessary directories
-	const storeName = `${documents}${APP_NAME}${fileSep}example_view.dat`;
-	// const storeName = 'data.dat';
+	const storeName = join(fileSep, documents!, APP_NAME, 'example_view.dat');
 	const { use: useKVP, loading, data } = createStorage(storeName);
 	const [exampleData, setExampleData] = useKVP('exampleKey', '');
 

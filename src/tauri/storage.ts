@@ -26,8 +26,8 @@ export function createStorage(storePath: string) {
 		if (RUNNING_IN_TAURI) {
 			(async () => {
 				try {
-					const store = await getStore(storePath);
-					if (store === null) throw new Error('invalid path for store');
+					const store = await Store.load(storePath);
+					if (store === null) throw new Error(`invalid path ${storePath} for store`);
 					fileStoreRef.current = store;
 					const value = await fileStoreRef.current.get<Record<string, any>>('data');
 					if (value === undefined) {
