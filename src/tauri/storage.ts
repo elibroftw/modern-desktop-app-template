@@ -1,7 +1,8 @@
 // API for Tauri or web storage
-import { getStore, Store } from '@tauri-apps/plugin-store';
+import { Store } from '@tauri-apps/plugin-store';
 import localforage from 'localforage';
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { useMutative } from 'use-mutative';
 import { useTauriContext } from './TauriProvider';
 // docs: https://github.com/tauri-apps/tauri-plugin-store/blob/dev/webview-src/index.ts
 
@@ -13,16 +14,16 @@ const SAVE_DELAY = 100;
 
 // returns an API to get a item, set an item from a specific category of data
 // why? we don't to have loading variable for multiple values
-export function createStorage(storePath: string) {
-	let loading = useTauriContext().loading;
-	const [data, setData] = useState<Record<string, any>>();
-	loading = loading || data === undefined;
+export function createStorage(storePath: string | null) {
+	const [data, setData] = useMutative<Record<string, any> | undefined>(undefined);
+	const [loading, setLoading] = useState(true);
 	const localDataRef = useRef(null);
 	const fileStoreRef = useRef<Store | null>(null);
 	const timeoutRef = useRef<number>(undefined);
 
 	// load data
 	useEffect(() => {
+		if (storePath === null) return;
 		if (RUNNING_IN_TAURI) {
 			(async () => {
 				try {
@@ -31,13 +32,14 @@ export function createStorage(storePath: string) {
 					fileStoreRef.current = store;
 					const value = await fileStoreRef.current.get<Record<string, any>>('data');
 					if (value === undefined) {
-						const newValue = {};
-						await fileStoreRef.current!.set('data', newValue);
-						setData(newValue);
+						const newObj = {};
+						await fileStoreRef.current!.set('data', newObj);
+						setData(newObj);
 					} else {
 						console.log(`value is undefined? ${JSON.stringify(value)}`);
 						setData(value);
 					}
+					setLoading(false);
 				} catch (e) {
 					console.error(e);
 				}
@@ -55,6 +57,7 @@ export function createStorage(storePath: string) {
 				} else {
 					setData(value as any);
 				}
+				setLoading(false);
 			});
 		}
 	}, [storePath]);
@@ -63,22 +66,20 @@ export function createStorage(storePath: string) {
 		if (loading) return;
 		window.clearTimeout(timeoutRef.current);
 		setData(data => {
-			if (loading || data === undefined) return data;
+			if (loading || data === undefined) return;
 			const prev = data[key];
-			let newData = data;
+			let value: any = newValueOrHandler;
 			try {
-				newData = { ...data, [key]: newValueOrHandler(prev) };
-			} catch (TypeError) {
-				newData = { ...data, [key]: newValueOrHandler };
-			}
-			if (newData !== data) {
+				value = newValueOrHandler(prev);
+			} catch { }
+			data[key] = value;
+			if (value !== prev) {
 				if (RUNNING_IN_TAURI) {
-					fileStoreRef.current!.set('data', newData);
+					fileStoreRef.current!.set('data', data);
 				} else {
-					timeoutRef.current = window.setTimeout(() => localforage.setItem(storePath, newData), SAVE_DELAY);
+					timeoutRef.current = window.setTimeout(() => localforage.setItem(storePath, data), SAVE_DELAY);
 				}
 			}
-			return newData;
 		});
 	}, [storePath, loading, fileStoreRef, localDataRef, timeoutRef]);
 
@@ -86,7 +87,9 @@ export function createStorage(storePath: string) {
 		if (loading || data === undefined) return defaultValue;
 		const value = data[key];
 		if (value === undefined && defaultValue !== undefined) {
-			setData(data => ({ ...data, [key]: defaultValue }));
+			setData(data => {
+				if (data !== undefined) data[key] = defaultValue;
+			});
 			return defaultValue;
 		}
 		return value;

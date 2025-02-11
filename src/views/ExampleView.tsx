@@ -19,8 +19,9 @@ function toggleFullscreen() {
 export default function ExampleView() {
 	const { t } = useTranslation();
 	const { fileSep, documents, downloads, loading: tauriLoading } = useTauriContext();
+	// do not use Tauri variables on the browser target
+	const storeName = RUNNING_IN_TAURI ? join(fileSep, documents!, APP_NAME, 'example_view.dat') : 'example_view';
 	// store-plugin will create necessary directories
-	const storeName = join(fileSep, documents!, APP_NAME, 'example_view.dat');
 	const { use: useKVP, loading, data } = createStorage(storeName);
 	const [exampleData, setExampleData] = useKVP('exampleKey', '');
 
