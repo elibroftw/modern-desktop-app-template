@@ -1,6 +1,7 @@
 import { ActionIcon, AppShell, Burger, Button, Group, Space, Text, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 import { useDisclosure, useHotkeys } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
+import { isTauri } from '@tauri-apps/api/core';
 import * as tauriEvent from '@tauri-apps/api/event';
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 import * as tauriLogger from '@tauri-apps/plugin-log';
@@ -19,7 +20,7 @@ import classes from './App.module.css';
 import { useCookie, useLocalForage } from './common/utils';
 import LanguageHeaders from './components/LanguageHeaders';
 import { ScrollToTop } from './components/ScrollToTop';
-import { RUNNING_IN_TAURI, useTauriContext } from './tauri/TauriProvider';
+import { useTauriContext } from './tauri/TauriProvider';
 import { TitleBar } from './tauri/TitleBar';
 import ExampleView from './views/ExampleView';
 import FallbackAppRender from './views/FallbackErrorBoundary';
@@ -73,7 +74,7 @@ export default function () {
 
 
 	// Tauri event listeners (run on mount)
-	if (RUNNING_IN_TAURI) {
+	if (isTauri()) {
 		useEffect(() => {
 			const promise = tauriEvent.listen('longRunningThread', ({ payload }: { payload: any }) => {
 				tauriLogger.info(payload.message);

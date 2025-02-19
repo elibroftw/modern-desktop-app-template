@@ -1,4 +1,5 @@
 import { useInterval } from '@mantine/hooks';
+import { isTauri } from '@tauri-apps/api/core';
 import * as tauriPath from '@tauri-apps/api/path';
 import { getCurrentWebviewWindow, WebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { currentMonitor } from '@tauri-apps/api/window';
@@ -9,25 +10,7 @@ import tauriConfJson from '../../src-tauri/tauri.conf.json';
 
 const WIN32_CUSTOM_TITLEBAR = false;
 export const APP_NAME = tauriConfJson.productName;
-// running on a desktop app or a mobile app - but not in the browser
-declare global {
-	var isTauri: boolean | undefined;
-}
-export const RUNNING_IN_TAURI = window.isTauri === true;
-// running on the browser on either desktop or mobile - but not as a tauri app
-export const isWeb = !RUNNING_IN_TAURI;
-// running in mobile either in the browser or as a tauri app
-export const isMobile = navigator.maxTouchPoints > 0;
-// running in desktop either in the browser or as a tauri app
-export const isDesktop = !isMobile;
-// running on mobile as a tauri app - but not on the browser
-export const isTauriMobile = RUNNING_IN_TAURI && isMobile;
-// running on desktop as a tauri app - but not on the browser
-export const isTauriDesktop = RUNNING_IN_TAURI && isDesktop;
-// running on mobile in the browser - but not as a tauri app
-export const isWebMobile = isWeb && isMobile;
-// running on desktop in the browser - but not as a tauri app
-export const isWebDesktop = isWeb && isDesktop;
+export const IS_MOBILE = navigator.maxTouchPoints > 0;
 
 
 const EXTS = new Set(['.json']);
@@ -79,7 +62,7 @@ export function TauriProvider({ children }: PropsWithChildren) {
 	const [scaleFactor, setScaleFactor] = useState(1);
 	const [containerSize, setContainerSize] = useState('100%');
 
-	if (RUNNING_IN_TAURI) {
+	if (isTauri()) {
 		const appWindow = getCurrentWebviewWindow();
 
 		const tauriInterval = useInterval(async () => {
@@ -167,7 +150,7 @@ export async function getUserAppFiles() {
 }
 
 export function useMinWidth(minWidth: number) {
-	if (RUNNING_IN_TAURI) {
+	if (isTauri()) {
 		useEffect(() => {
 			async function resizeWindow() {
 				// to set a size consistently across devices,
