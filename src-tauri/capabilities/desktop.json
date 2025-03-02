@@ -15,6 +15,7 @@
     "opener:default",
     "autostart:default",
     "log:default",
-		"core:window:allow-toggle-maximize"
+		"core:window:allow-toggle-maximize",
+		"fs:allow-download-write-recursive"
   ]
 }
