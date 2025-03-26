@@ -9,46 +9,46 @@ dependencies:
     specifier: ^11.14.0
     version: 11.14.0(@types/react@19.0.8)(react@19.0.0)
   '@fontsource/open-sans':
-    specifier: ^5.1.0
+    specifier: ^5.1.1
     version: 5.1.1
   '@mantine/carousel':
-    specifier: ^7.15.1
+    specifier: ^7.16.3
     version: 7.16.3(@mantine/core@7.16.3)(@mantine/hooks@7.16.3)(embla-carousel-react@8.5.2)(react-dom@19.0.0)(react@19.0.0)
   '@mantine/code-highlight':
-    specifier: ^7.15.1
+    specifier: ^7.16.3
     version: 7.16.3(@mantine/core@7.16.3)(@mantine/hooks@7.16.3)(react-dom@19.0.0)(react@19.0.0)
   '@mantine/core':
-    specifier: ^7.15.1
+    specifier: ^7.16.3
     version: 7.16.3(@mantine/hooks@7.16.3)(@types/react@19.0.8)(react-dom@19.0.0)(react@19.0.0)
   '@mantine/dates':
-    specifier: ^7.15.1
+    specifier: ^7.16.3
     version: 7.16.3(@mantine/core@7.16.3)(@mantine/hooks@7.16.3)(dayjs@1.11.13)(react-dom@19.0.0)(react@19.0.0)
   '@mantine/dropzone':
-    specifier: ^7.15.1
+    specifier: ^7.16.3
     version: 7.16.3(@mantine/core@7.16.3)(@mantine/hooks@7.16.3)(react-dom@19.0.0)(react@19.0.0)
   '@mantine/form':
-    specifier: ^7.15.1
+    specifier: ^7.16.3
     version: 7.16.3(react@19.0.0)
   '@mantine/hooks':
-    specifier: ^7.15.1
+    specifier: ^7.16.3
     version: 7.16.3(react@19.0.0)
   '@mantine/modals':
-    specifier: ^7.15.1
+    specifier: ^7.16.3
     version: 7.16.3(@mantine/core@7.16.3)(@mantine/hooks@7.16.3)(react-dom@19.0.0)(react@19.0.0)
   '@mantine/notifications':
-    specifier: ^7.15.1
+    specifier: ^7.16.3
     version: 7.16.3(@mantine/core@7.16.3)(@mantine/hooks@7.16.3)(react-dom@19.0.0)(react@19.0.0)
   '@mantine/nprogress':
-    specifier: ^7.15.1
+    specifier: ^7.16.3
     version: 7.16.3(@mantine/core@7.16.3)(@mantine/hooks@7.16.3)(react-dom@19.0.0)(react@19.0.0)
   '@mantine/spotlight':
-    specifier: ^7.15.1
+    specifier: ^7.16.3
     version: 7.16.3(@mantine/core@7.16.3)(@mantine/hooks@7.16.3)(react-dom@19.0.0)(react@19.0.0)
   '@mantine/tiptap':
-    specifier: ^7.15.1
+    specifier: ^7.16.3
     version: 7.16.3(@mantine/core@7.16.3)(@mantine/hooks@7.16.3)(@tiptap/extension-link@2.11.5)(@tiptap/react@2.11.5)(react-dom@19.0.0)(react@19.0.0)
   '@tauri-apps/api':
-    specifier: ^2.1.1
+    specifier: ^2.2.0
     version: 2.2.0
   '@tauri-apps/plugin-autostart':
     specifier: ^2.2.0
@@ -63,13 +63,13 @@ dependencies:
     specifier: ~2.2.0
     version: 2.2.0
   '@tauri-apps/plugin-log':
-    specifier: ~2
+    specifier: ~2.2.1
     version: 2.2.1
   '@tauri-apps/plugin-notification':
-    specifier: ~2.2.0
+    specifier: ~2.2.1
     version: 2.2.1
   '@tauri-apps/plugin-opener':
-    specifier: ^2.2.2
+    specifier: ^2.2.5
     version: 2.2.5
   '@tauri-apps/plugin-os':
     specifier: ~2.2.0
@@ -84,43 +84,43 @@ dependencies:
     specifier: ~2.2.0
     version: 2.2.0
   '@tauri-apps/plugin-updater':
-    specifier: ~2.3.0
+    specifier: ~2.3.1
     version: 2.3.1
   '@tiptap/core':
-    specifier: ^2.10.3
+    specifier: ^2.11.5
     version: 2.11.5(@tiptap/pm@2.11.5)
   '@tiptap/extension-link':
-    specifier: ^2.10.3
+    specifier: ^2.11.5
     version: 2.11.5(@tiptap/core@2.11.5)(@tiptap/pm@2.11.5)
   '@tiptap/pm':
-    specifier: ^2.10.3
+    specifier: ^2.11.5
     version: 2.11.5
   '@tiptap/react':
-    specifier: ^2.10.3
+    specifier: ^2.11.5
     version: 2.11.5(@tiptap/core@2.11.5)(@tiptap/pm@2.11.5)(react-dom@19.0.0)(react@19.0.0)
   '@tiptap/starter-kit':
-    specifier: ^2.10.3
+    specifier: ^2.11.5
     version: 2.11.5
   '@types/jest':
     specifier: ^29.5.14
     version: 29.5.14
   '@types/node':
-    specifier: ^22.10.2
+    specifier: ^22.13.1
     version: 22.13.1
   '@types/react':
-    specifier: ^19.0.2
+    specifier: ^19.0.8
     version: 19.0.8
   '@types/react-dom':
-    specifier: ^19.0.2
+    specifier: ^19.0.3
     version: 19.0.3(@types/react@19.0.8)
   dayjs:
     specifier: ^1.11.13
     version: 1.11.13
   embla-carousel-react:
-    specifier: ^8.5.1
+    specifier: ^8.5.2
     version: 8.5.2(react@19.0.0)
   i18next:
-    specifier: ^24.1.2
+    specifier: ^24.2.2
     version: 24.2.2(typescript@5.7.3)
   i18next-browser-languagedetector:
     specifier: ^8.0.2
@@ -144,13 +144,13 @@ dependencies:
     specifier: ^4.1.2
     version: 4.1.2(react@19.0.0)
   react-i18next:
-    specifier: ^15.2.0
+    specifier: ^15.4.0
     version: 15.4.0(i18next@24.2.2)(react-dom@19.0.0)(react@19.0.0)
   react-icons:
     specifier: ^5.4.0
     version: 5.4.0(react@19.0.0)
   react-router-dom:
-    specifier: ^7.0.2
+    specifier: ^7.1.5
     version: 7.1.5(react-dom@19.0.0)(react@19.0.0)
   react-transition-group:
     specifier: ^4.4.5
@@ -159,7 +159,7 @@ dependencies:
     specifier: ^3.3.0
     version: 3.3.0(react@19.0.0)
   typescript:
-    specifier: ^5.7.2
+    specifier: ^5.7.3
     version: 5.7.3
   use-mutative:
     specifier: ^1.2.0
@@ -167,7 +167,7 @@ dependencies:
 
 devDependencies:
   '@tauri-apps/cli':
-    specifier: ^2.1.0
+    specifier: ^2.2.7
     version: 2.2.7
   '@types/js-cookie':
     specifier: ^3.0.6
@@ -179,16 +179,16 @@ devDependencies:
     specifier: ^5.1.2
     version: 5.1.2
   concurrently:
-    specifier: ^9.1.0
+    specifier: ^9.1.2
     version: 9.1.2
   dotenv-load:
     specifier: ^3.0.0
     version: 3.0.0
   mocha:
-    specifier: ^11.0.1
+    specifier: ^11.1.0
     version: 11.1.0
   postcss:
-    specifier: ^8.4.49
+    specifier: ^8.5.2
     version: 8.5.2
   postcss-preset-mantine:
     specifier: ^1.17.0
@@ -197,19 +197,19 @@ devDependencies:
     specifier: ^7.0.1
     version: 7.0.1(postcss@8.5.2)
   rollup-plugin-visualizer:
-    specifier: ^5.12.0
+    specifier: ^5.14.0
     version: 5.14.0
   selenium-webdriver:
-    specifier: ^4.27.0
+    specifier: ^4.28.1
     version: 4.28.1
   terser:
-    specifier: ^5.37.0
+    specifier: ^5.38.1
     version: 5.38.1
   toml:
     specifier: ^3.0.0
     version: 3.0.0
   vite:
-    specifier: ^6.0.3
+    specifier: ^6.1.0
     version: 6.1.0(@types/node@22.13.1)(terser@5.38.1)
   vite-plugin-remove-console:
     specifier: ^2.2.0
