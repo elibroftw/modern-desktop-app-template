@@ -186,7 +186,7 @@ export default function () {
 			<AppShell.Main>
 				{usingCustomTitleBar && <Space h='xl' />}
 				<SimpleBar scrollableNodeProps={{ ref: setScroller }} autoHide={false} className={classes.simpleBar}>
-					<ErrorBoundary FallbackComponent={FallbackAppRender} /*onReset={_details => resetState()} */ onError={e => tauriLogger.error(e.message)}>
+					<ErrorBoundary FallbackComponent={FallbackAppRender} /*onReset={_details => resetState()} */ onError={(e: Error) => tauriLogger.error(e.message)}>
 						<Routes>
 							{views[0] !== undefined && <Route path='/' element={<Navigate to={views[0].path} />} />}
 							{views.map((view, index) => <Route key={index} path={view.path} element={<Suspense fallback={<FallbackSuspense />}><view.component /></Suspense>} />)}
