@@ -58,6 +58,7 @@ static TRAY_ID: &'static str = "tray-main";
 
 pub fn create_tray_icon(app: &tauri::AppHandle) -> Result<TrayIcon, tauri::Error> {
   TrayIconBuilder::with_id(TRAY_ID)
+		.icon(tauri::image::Image::from_bytes(include_bytes!("../icons/SystemTray1.ico")).ok().expect("SystemTray1.icon not found"))
     .menu(&create_tray_menu(app, "en".into())?)
     .menu_on_left_click(true)
     .on_menu_event(move |app, event| {
