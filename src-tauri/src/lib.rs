@@ -18,7 +18,7 @@ use tauri_plugin_window_state;
 mod tray_icon;
 mod utils;
 
-use tray_icon::{create_tray_icon, tray_update_lang, TrayState};
+use tray_icon::{TrayState, create_tray_icon, tray_update_lang};
 use utils::long_running_thread;
 
 #[derive(Clone, Serialize)]
@@ -57,8 +57,20 @@ fn main_prelude() {
 pub fn run() {
   main_prelude();
   // main window should be invisible to allow either the setup delay or the plugin to show the window
+  let mut log_builder = tauri_plugin_log::Builder::new().target(tauri_plugin_log::Target::new(
+    tauri_plugin_log::TargetKind::LogDir {
+      file_name: Some("logs".to_string()),
+    },
+  ));
+  #[cfg(debug_assertions)]
+  {
+    log_builder = log_builder.target(tauri_plugin_log::Target::new(
+      tauri_plugin_log::TargetKind::Webview,
+    ));
+  }
+
   tauri::Builder::default()
-    .plugin(tauri_plugin_log::Builder::new().build())
+    .plugin(log_builder.build())
     .plugin(tauri_plugin_opener::init())
     .plugin(tauri_plugin_store::Builder::new().build())
     .plugin(tauri_plugin_updater::Builder::new().build())
