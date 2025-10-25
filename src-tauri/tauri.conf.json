@@ -71,10 +71,6 @@
         "useHttpsScheme": true
       }
     ],
-    "trayIcon": {
-      "iconPath": "icons/SystemTray1.ico",
-      "iconAsTemplate": true
-    },
     "withGlobalTauri": false
   }
 }

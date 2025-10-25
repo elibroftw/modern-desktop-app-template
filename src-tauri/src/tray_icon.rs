@@ -54,13 +54,14 @@ pub fn create_tray_menu<R: Runtime>(
     .build()
 }
 
-static TRAY_ID: &'static str = "tray-main";
+static TRAY_ID: &'static str = "main";
 
 pub fn create_tray_icon(app: &tauri::AppHandle) -> Result<TrayIcon, tauri::Error> {
   TrayIconBuilder::with_id(TRAY_ID)
 		.icon(tauri::image::Image::from_bytes(include_bytes!("../icons/SystemTray1.ico")).ok().expect("SystemTray1.icon not found"))
     .menu(&create_tray_menu(app, "en".into())?)
-    .menu_on_left_click(true)
+		.tooltip("App Tooltip")
+    .show_menu_on_left_click(false)
     .on_menu_event(move |app, event| {
       if let Some(main_window) = app.get_webview_window("main") {
         let _ = main_window.emit("systemTray", IconTrayPayload::new(&event.id().as_ref()));
