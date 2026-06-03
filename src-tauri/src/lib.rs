@@ -43,19 +43,20 @@ fn process_file(filepath: String) -> String {
 }
 
 #[cfg(target_os = "linux")]
-fn webkit_hidpi_workaround() {
+unsafe fn webkit_hidpi_workaround() {
   // See: https://github.com/spacedriveapp/spacedrive/issues/1512#issuecomment-1758550164
   std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
 }
 
-fn main_prelude() {
+unsafe fn main_prelude() {
   #[cfg(target_os = "linux")]
   webkit_hidpi_workaround();
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-  main_prelude();
+  // SAFETY: running on single thread
+	unsafe { main_prelude(); }
   // main window should be invisible to allow either the setup delay or the plugin to show the window
   let mut log_builder = tauri_plugin_log::Builder::new().target(tauri_plugin_log::Target::new(
     tauri_plugin_log::TargetKind::LogDir {
