@@ -48,8 +48,6 @@ jobs:
       # build the changelog based on the commit messages between the versioned tags
       - name: Install pnpm
         uses: pnpm/action-setup@master
-        with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@main
