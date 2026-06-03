@@ -68,6 +68,19 @@ All `.\src-tauri\icons\SystemTray*\` directories are ignored in [`.gitignore`](.
 
 [Watch Tauri Part 10](https://youtu.be/ZXjlZBisYPQ)
 
+Add the following after `"identifier": "App.Name",` to your `tauri.conf.json`
+
+```json
+"plugins": {
+		"updater": {
+			"endpoints": [
+				"endpoint"
+			],
+			"pubkey": "gen-public-key"
+		}
+	},
+```
+
 These sample projects/code are licensed under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) so you
 do not need to worry about violating my copyright. The backends can convert a github releases API response
 into a Tauri-Updater friendly JSON response with a 5 minute cache and room for custom logic.

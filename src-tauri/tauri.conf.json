@@ -45,14 +45,6 @@
   "mainBinaryName": "Product Name",
   "version": "../package.json",
   "identifier": "App.Name",
-  "plugins": {
-    "updater": {
-      "endpoints": [
-        "https://youtu.be/ZXjlZBisYPQ"
-      ],
-      "pubkey": ""
-    }
-  },
   "app": {
     "security": {
       "csp": "default-src blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self' img-src: 'self'; connect-src ipc: http://ipc.localhost"
