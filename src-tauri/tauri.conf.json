@@ -33,7 +33,7 @@
         "depends": []
       }
     },
-    "createUpdaterArtifacts": true
+    "createUpdaterArtifacts": false
   },
   "build": {
     "beforeDevCommand": "pnpm start",

@@ -66,9 +66,13 @@ All `.\src-tauri\icons\SystemTray*\` directories are ignored in [`.gitignore`](.
 
 ### Implementing Auto-Update
 
-[Watch Tauri Part 10](https://youtu.be/ZXjlZBisYPQ)
+Update `tauri.conf.json`
 
-Add the following after `"identifier": "App.Name",` to your `tauri.conf.json`
+```json
+"createUpdaterArtifacts": false
+```
+
+Add the following after `"identifier": "App.Name"`
 
 ```json
 "plugins": {
@@ -80,6 +84,8 @@ Add the following after `"identifier": "App.Name",` to your `tauri.conf.json`
 		}
 	},
 ```
+
+[Watch Tauri Part 10](https://youtu.be/ZXjlZBisYPQ)
 
 These sample projects/code are licensed under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) so you
 do not need to worry about violating my copyright. The backends can convert a github releases API response
