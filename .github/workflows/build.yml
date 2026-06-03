@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@main
 
       - name: Build changelog
         id: build_changelog
@@ -43,16 +43,16 @@ jobs:
     needs: [changelog]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@main
 
       # build the changelog based on the commit messages between the versioned tags
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@main
         with:
           version: 9
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@main
         # NOTE: enterprise developers may hard code a version
         with:
           node-version: 'lts/*'
@@ -87,7 +87,7 @@ jobs:
 
       - name: CI upload Windows
         if: ${{ github.ref_type == 'branch' && matrix.platform == 'windows-latest' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@main
         with:
           name: 'Windows Installers'
           path: |
@@ -96,7 +96,7 @@ jobs:
 
       - name: CI upload macOS
         if: ${{ github.ref_type == 'branch' && matrix.platform == 'macos-latest' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@main
         with:
           name: 'macOS Installer'
           path: |
@@ -104,7 +104,7 @@ jobs:
 
       - name: CI upload Linux
         if: ${{ github.ref_type == 'branch' && matrix.platform == 'ubuntu-latest' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@main
         with:
           name: 'Linux Distributions'
           path: |
