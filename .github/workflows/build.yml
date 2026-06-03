@@ -35,7 +35,9 @@ jobs:
             args: '--target aarch64-apple-darwin'
           - platform: 'macos-latest' # for Intel based macs.
             args: '--target x86_64-apple-darwin'
-          - platform: 'ubuntu-latest'
+          # build on oldest distro to increase AppImage robustness/compatibility
+          # https://v2.tauri.app/distribute/appimage/#limitations
+          - platform: 'ubuntu-22.04'
             args: ''
           - platform: 'windows-latest'
             args: ''
