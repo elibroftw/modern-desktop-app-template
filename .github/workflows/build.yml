@@ -73,7 +73,7 @@ jobs:
           workspaces: './src-tauri -> target'
 
       - name: Install Ubuntu dependencies
-        if: matrix.platform == 'ubuntu-latest'
+        if: startsWith(matrix.platform, 'ubuntu')
         run: |
           sudo apt update
           xargs sudo apt install -y < environment/apt_packages.txt
@@ -105,7 +105,7 @@ jobs:
             src-tauri/release/bundle/dmg/*.dmg
 
       - name: CI upload Linux
-        if: ${{ github.ref_type == 'branch' && matrix.platform == 'ubuntu-latest' }}
+        if: ${{ github.ref_type == 'branch' && startsWith(matrix.platform, 'ubuntu') }}
         uses: actions/upload-artifact@main
         with:
           name: 'Linux Distributions'
