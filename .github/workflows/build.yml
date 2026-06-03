@@ -39,6 +39,8 @@ jobs:
           # https://v2.tauri.app/distribute/appimage/#limitations
           - platform: 'ubuntu-22.04'
             args: ''
+          - platform: 'ubuntu-22.04-arm'
+            args: ''
           - platform: 'windows-latest'
             args: ''
     runs-on: ${{ matrix.platform }}
