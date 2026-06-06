@@ -94,16 +94,17 @@ jobs:
         with:
           name: 'Windows Installers'
           path: |
-            src-tauri/release/bundle/msi/*.msi
-            src-tauri/release/bundle/nsis/*.exe
+            src-tauri/target/release/bundle/msi/*.msi
+            src-tauri/target/release/bundle/nsis/*.exe
 
       - name: CI upload macOS
         if: ${{ github.ref_type == 'branch' && matrix.platform == 'macos-latest' }}
         uses: actions/upload-artifact@main
         with:
-          name: 'macOS Installer'
+          name: 'macOS Installers'
           path: |
-            src-tauri/release/bundle/dmg/*.dmg
+            src-tauri/target/release/bundle/app/*.app
+            src-tauri/target/release/bundle/app/*.app
 
       - name: CI upload Linux
         if: ${{ github.ref_type == 'branch' && startsWith(matrix.platform, 'ubuntu') }}
