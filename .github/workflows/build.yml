@@ -115,12 +115,11 @@ jobs:
             src-tauri/target/release/bundle/deb/*.deb
             src-tauri/target/release/bundle/AppImage/*.AppImage
 
-      # TODO: https://tauri.app/v1/guides/building/linux#cross-compiling-tauri-applications-for-arm-based-devices
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
         if: ${{ github.ref_type == 'tag' }}
         # if u get Error: Resource not accessible by integration
-        # go to repository Settings => Action => General => Workflow permissions => Switch to Read and Write permisions
+        # go to repository Settings => Action => General => Workflow permissions => Switch to Read and Write permissions
         env:
           CI: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
