@@ -6,10 +6,9 @@ import { currentMonitor } from '@tauri-apps/api/window';
 import * as fs from '@tauri-apps/plugin-fs';
 import * as os from '@tauri-apps/plugin-os';
 import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
-import tauriConfJson from '../../src-tauri/tauri.conf.json';
 
 const WIN32_CUSTOM_TITLEBAR = false;
-export const APP_NAME = tauriConfJson.productName;
+export const APP_NAME = __APP_NAME__;
 export const IS_MOBILE = navigator.maxTouchPoints > 0;
 
 

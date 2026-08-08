@@ -1,11 +1,19 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-// import topLevelAwait from 'vite-plugin-top-level-await';
 import { visualizer } from 'rollup-plugin-visualizer';
-import removeConsole from 'vite-plugin-remove-console';
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
+
+const packageJson = JSON.parse(readFileSync(resolve(import.meta.dirname, 'package.json'), 'utf-8'));
+const tauriConf = JSON.parse(readFileSync(resolve(import.meta.dirname, 'src-tauri/tauri.conf.json'), 'utf-8'));
+
 // https://vitejs.dev/config/
 // https://tauri.app/v1/guides/getting-started/setup/vite#create-the-frontend
 export default defineConfig({
+	define: {
+		__VERSION__: JSON.stringify(packageJson.version),
+		__APP_NAME__: JSON.stringify(tauriConf.productName),
+	},
   plugins: [
     react(),
     // topLevelAwait({
