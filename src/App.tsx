@@ -17,7 +17,7 @@ import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 import 'simplebar-react/dist/simplebar.min.css';
 import classes from './App.module.css';
-import { useCookie, useLocalForage } from './common/utils';
+import { fmtError, useCookie, useLocalForage } from './common/utils';
 import LanguageHeaders from './components/LanguageHeaders';
 import { ScrollToTop } from './components/ScrollToTop';
 import { useTauriContext } from './tauri/TauriProvider';
@@ -186,7 +186,7 @@ export default function () {
 			<AppShell.Main>
 				{usingCustomTitleBar && <Space h='xl' />}
 				<SimpleBar scrollableNodeProps={{ ref: setScroller }} autoHide={false} className={classes.simpleBar}>
-					<ErrorBoundary FallbackComponent={FallbackAppRender} /*onReset={_details => resetState()} */ onError={(e: Error) => tauriLogger.error(e.message)}>
+					<ErrorBoundary FallbackComponent={FallbackAppRender} /*onReset={_details => resetState()} */ onError={(error, info) => tauriLogger.error(`Render error: ${fmtError(error)}${info.componentStack ?? ''}`)}>
 						<Routes>
 							{views[0] !== undefined && <Route path='/' element={<Navigate to={views[0].path} />} />}
 							{views.map((view, index) => <Route key={index} path={view.path} element={<Suspense fallback={<FallbackSuspense />}><view.component /></Suspense>} />)}
@@ -201,7 +201,7 @@ export default function () {
 				<Group h='100%'>
 					<Burger hiddenFrom='sm' opened={mobileNavOpened} onClick={toggleMobileNav} size='sm' />
 					<Burger visibleFrom='sm' opened={desktopNavOpened} onClick={toggleDesktopNav} size='sm' />
-					<Text>HEADER_TITLE</Text>
+					<Text>HEADER_TITLE {__VERSION__}</Text>
 				</Group>
 				<Group className={classes.headerRightItems} h='110%'>
 					<LanguageHeaders />
